@@ -1,2 +1,5 @@
 #!/bin/bash
-exit 127
+
+cd antscuttle
+./gradlew tests:test
+cd ..
