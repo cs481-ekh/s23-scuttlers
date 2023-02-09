@@ -13,7 +13,6 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
 		config.setTitle("AntScuttle");
-		new Lwjgl3Application(new AntScuttle(), config);
-		
+		new Lwjgl3Application(new MainMenu(), config);
 	}
 }
