@@ -2,15 +2,14 @@ package com.antscuttle.game.Buttons;
 
 import com.badlogic.gdx.graphics.Texture;
 
-public class ExitButton extends Button {
+public class LoadGameButton extends Button {
 
     private final int WIDTH = 200;
     private final int HEIGHT = 100;
-    // public SpriteBatch batch;
     
-    private final Texture INACTIVE = new Texture("buttons/Exit-Button.png");
-    private final Texture ACTIVE = new Texture("buttons/Exit-Button-Active.png");
-   
+    private Texture INACTIVE = new Texture("buttons/Load-Game-Button.png");
+    private Texture ACTIVE = new Texture("buttons/Load-Game-Button-Active.png");
+    
     @Override
     public int getWidth() {
         return WIDTH;
@@ -29,6 +28,6 @@ public class ExitButton extends Button {
     }		
     @Override
     public String getButtonType() {
-        return ButtonType.exit.toString();
-    }
+        return ButtonType.action.toString();
+    }		
 }
