@@ -12,15 +12,15 @@ public abstract class Armor {
     private int defense;
     private String img;
     
-    String getImgLocation(){
+    public String getImgLocation(){
         return img;
     }
     
-    int getDefense(){
+    public int getDefense(){
         return defense;
     }
     
-    String getName(){
+    public String getName(){
         return name;
     }
 }
