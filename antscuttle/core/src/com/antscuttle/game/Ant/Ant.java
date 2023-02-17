@@ -23,12 +23,11 @@ public abstract class Ant {
     private Armor armor;
     private int speed;
     private AI ai;
+    private AI defaultAI;
     private String moveAnimations[];
     private String attackAnimations[];
     
-    public Ant(String name){
-        this.name = name;
-    }
+    
     public void equipMeleeWeapon(MeleeWeapon weapon){
         this.meleeWeapon = weapon;
     }
@@ -45,6 +44,9 @@ public abstract class Ant {
         this.ai = ai;
     }
     
+    public void setAIToDefault(){
+        ai = defaultAI;
+    }
     public int getSpeed(){
         return speed;
     }
@@ -62,7 +64,9 @@ public abstract class Ant {
     }
     
     public AI getAI(){
-        return ai;
+        if(ai != null) 
+           return ai;
+        return defaultAI;
     }
     
     public int getHealth(){
