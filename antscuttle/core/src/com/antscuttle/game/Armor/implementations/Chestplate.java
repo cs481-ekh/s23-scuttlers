@@ -10,5 +10,5 @@ import com.antscuttle.game.Armor.Armor;
 public class Chestplate extends Armor{
     private String name = "Chestplate";
     private int defense = 10;
-    private String img = "";
+    private String img = "assets/armor/chestplate.png";
 }
