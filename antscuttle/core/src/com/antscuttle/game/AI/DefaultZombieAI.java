@@ -9,5 +9,10 @@ package com.antscuttle.game.AI;
  * @author antho
  */
 public class DefaultZombieAI extends AI{
+    private Node root;
     
+    public DefaultZombieAI(Node root){
+        super(root);
+        // TODO: Build default Zombie AI tree here
+    }
 }
