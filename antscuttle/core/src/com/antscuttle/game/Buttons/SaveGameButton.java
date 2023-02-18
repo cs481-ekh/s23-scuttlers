@@ -1,11 +1,8 @@
 package com.antscuttle.game.Buttons;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class SaveGameButton extends Button {
-
 
         private final int WIDTH = 200;
         private final int HEIGHT = 100;
