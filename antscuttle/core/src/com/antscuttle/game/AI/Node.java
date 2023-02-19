@@ -75,9 +75,6 @@ public class Node {
     }
     
     public boolean removeChild(Node child){
-        int index = children.indexOf(child);
-        if(index < 0)
-            return false;
         if(child.prev != null)
             child.prev.next = child.next;
         if(child.next != null)
