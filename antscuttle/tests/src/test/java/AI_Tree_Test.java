@@ -77,10 +77,8 @@ public class AI_Tree_Test {
         String s[] = {"a", "b", "c","d", "e", "f"};
         for(int i=0; i<s.length; i++){
             DecisionBlock tblock = (DecisionBlock)it.next();
-            if(tblock != null){
                 tblock.execute();
                 assertEquals(s[i], ((MoveBlock)tblock).getDirection());
-            }
         }
     }
     @Test
@@ -99,10 +97,8 @@ public class AI_Tree_Test {
         String s[] = {"c"};
         for(int i=0; i<s.length; i++){
             DecisionBlock tblock = (DecisionBlock)it.next();
-            if(tblock != null){
-                tblock.execute();
-                assertEquals(s[i], ((MoveBlock)tblock).getDirection());
-            }
+            tblock.execute();
+            assertEquals(s[i], ((MoveBlock)tblock).getDirection());
         }
     }
     @Test
@@ -121,10 +117,8 @@ public class AI_Tree_Test {
         String s[] = {"a", "b"};
         for(int i=0; i<s.length; i++){
             DecisionBlock tblock = (DecisionBlock)it.next();
-            if(tblock != null){
-                tblock.execute();
-                assertEquals(s[i], ((MoveBlock)tblock).getDirection());
-            }
+            tblock.execute();
+            assertEquals(s[i], ((MoveBlock)tblock).getDirection());
         }
     }
     @Test
@@ -150,10 +144,8 @@ public class AI_Tree_Test {
         String s[] = {"a", "b", "c", "f"};
         for(int i=0; i<s.length; i++){
             DecisionBlock tblock = (DecisionBlock)it.next();
-            if(tblock != null){
-                tblock.execute();
-                assertEquals(s[i], ((MoveBlock)tblock).getDirection());
-            }
+            tblock.execute();
+            assertEquals(s[i], ((MoveBlock)tblock).getDirection());
         }
     }
     
