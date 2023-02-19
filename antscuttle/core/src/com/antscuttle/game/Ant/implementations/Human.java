@@ -4,7 +4,10 @@
 package com.antscuttle.game.Ant.implementations;
 
 import com.antscuttle.game.AI.AI;
+import com.antscuttle.game.AI.DecisionBlock;
 import com.antscuttle.game.AI.DefaultHumanAI;
+import com.antscuttle.game.AI.Node;
+import com.antscuttle.game.AI.implementations.MoveBlock;
 import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.Armor.Armor;
 import com.antscuttle.game.Weapon.MeleeWeapon;
@@ -26,7 +29,7 @@ public class Human extends Ant{
     private Armor armor = null;
     private int speed = 40;
     private AI ai = null;
-    private AI defaultAI = new DefaultHumanAI();
+    private AI defaultAI = new DefaultHumanAI(new Node(new MoveBlock()));
     private String moveAnimations[] = {
         "assets/animations/human/human_unarmed_walk_up.png",
         "assets/animations/human/human_unarmed_walk_right.png",

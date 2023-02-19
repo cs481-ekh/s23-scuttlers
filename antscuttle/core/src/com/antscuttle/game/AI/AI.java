@@ -7,4 +7,13 @@ package com.antscuttle.game.AI;
  */
 public class AI {
     
+    private Node root;
+    
+    public AI(Node root){
+        this.root = root;
+    }
+    
+    public Node getRoot(){
+        return root;
+    }
 }
