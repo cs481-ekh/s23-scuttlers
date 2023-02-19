@@ -11,5 +11,12 @@ import com.antscuttle.game.AI.DecisionBlock;
  * @author antho
  */
 public class MoveBlock extends DecisionBlock{
+    private String direction;
     
+    public MoveBlock(String dir){
+        this.direction = dir;
+    }
+    public String getDirection(){
+        return direction;
+    }
 }
