@@ -1,13 +1,21 @@
 package com.antscuttle.game.Buttons;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.antscuttle.game.AntScuttleGame;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
+
 
 public abstract class Button {
 
-    enum ButtonType {exit, newgame, savegame, loadgame, settings, character, aibuilder, main, start, level}
+    enum ButtonType {exit, newgame, savegame, loadgame, settings, character, aibuilder, main, start, level, music, sfx}
 
     public Button() {
-        super();
+        super();      
+    }
+
+    public void playButtonPressSound(AntScuttleGame game) {
+        long id = game.sfx.play(game.VOLUME);
     }
 
     /**
@@ -36,5 +44,4 @@ public abstract class Button {
 
     public abstract String getButtonType();
 
-    
 }

@@ -1,6 +1,7 @@
 package com.antscuttle.game;
 
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Sound;
 import com.antscuttle.game.Buttons.Button;
 import com.antscuttle.game.Buttons.ExitButton;
 import com.antscuttle.game.Buttons.LoadGameButton;
@@ -35,6 +36,8 @@ public class MainMenuScreen extends ScreenAdapter {
 
     AntScuttleGame game;
 
+
+
     public MainMenuScreen(AntScuttleGame game) {
         this.game = game;
         exitButton = new ExitButton();
@@ -46,6 +49,7 @@ public class MainMenuScreen extends ScreenAdapter {
         /* Grab the menu size (1280x720) */
         MAIN_MENU_HEIGHT = Gdx.graphics.getHeight();
         MAIN_MENU_WIDTH = Gdx.graphics.getWidth();
+
     }
 
 
@@ -58,8 +62,6 @@ public class MainMenuScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0, 38/255f, 66/255f, 1);
-        // Gdx.gl.glClearColor(0, 38/255f, 66/255f, 0);
-        // Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.batch.begin();
 
         /* New Game Button */
@@ -111,9 +113,11 @@ public class MainMenuScreen extends ScreenAdapter {
             game.batch.draw(button.inactive(), x, y, w, h);
 
             if (button.getButtonType() == "exit" && Gdx.input.isTouched()) {
+                button.playButtonPressSound(game);
                 Gdx.app.exit();
             }
             if (button.getButtonType() == "settings" && Gdx.input.isTouched()) {
+                button.playButtonPressSound(game);
                 game.setScreen(new SettingsMenuScreen(game, this));
             }
         } else {
