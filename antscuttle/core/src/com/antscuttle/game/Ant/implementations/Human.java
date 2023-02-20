@@ -29,7 +29,7 @@ public class Human extends Ant{
     private Armor armor = null;
     private int speed = 40;
     private AI ai = null;
-    private AI defaultAI = new DefaultHumanAI(new Node(new MoveBlock()));
+    private AI defaultAI = new DefaultHumanAI(new Node(new MoveBlock("")));
     private String moveAnimations[] = {
         "assets/animations/human/human_unarmed_walk_up.png",
         "assets/animations/human/human_unarmed_walk_right.png",
