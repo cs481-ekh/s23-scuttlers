@@ -28,6 +28,6 @@ public class BackButton extends Button {
     }		
     @Override
     public String getButtonType() {
-        return ButtonType.navigation.toString();
+        return ButtonType.back.toString();
     }	
 }

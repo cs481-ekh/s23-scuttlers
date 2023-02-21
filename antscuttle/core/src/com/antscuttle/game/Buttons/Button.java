@@ -8,7 +8,7 @@ import com.badlogic.gdx.audio.Sound;
 
 public abstract class Button {
 
-    enum ButtonType {exit, newgame, savegame, loadgame, settings, character, aibuilder, main, start, level, music, sfx}
+    enum ButtonType {exit, newgame, savegame, loadgame, settings, character, aibuilder, main, start, level, music, sfx, back}
 
     public Button() {
         super();      

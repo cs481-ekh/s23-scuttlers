@@ -1,7 +1,8 @@
 package com.Screens;
 
 import com.badlogic.gdx.Screen;
-import com.antscuttle.game.AntScuttle;
+import com.badlogic.gdx.ScreenAdapter;
+import com.antscuttle.game.AntScuttleGame;
 import com.antscuttle.game.Buttons.Button;
 import com.antscuttle.game.Buttons.ExitButton;
 import com.antscuttle.game.Buttons.LoadGameButton;
@@ -9,12 +10,11 @@ import com.antscuttle.game.Buttons.NewGameButton;
 import com.antscuttle.game.Buttons.SaveGameButton;
 import com.antscuttle.game.Buttons.SettingsButton;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-public class MainMenuScreen implements Screen {
-    SpriteBatch batch;
-    private AntScuttle game;
+public class MainMenuScreen extends ScreenAdapter {
     /* Buttons */
     private Button exitButton;
     private Button newGameButton;
@@ -34,9 +34,10 @@ public class MainMenuScreen implements Screen {
 
     int x;
 
-    public MainMenuScreen(AntScuttle game) {
+    AntScuttleGame game;
+
+    public MainMenuScreen(AntScuttleGame game) {
         this.game = game;
-        /* init buttons */
         exitButton = new ExitButton();
         newGameButton = new NewGameButton();
         loadGameButton = new LoadGameButton();
@@ -46,12 +47,19 @@ public class MainMenuScreen implements Screen {
         /* Grab the menu size (1280x720) */
         MAIN_MENU_HEIGHT = Gdx.graphics.getHeight();
         MAIN_MENU_WIDTH = Gdx.graphics.getWidth();
+
+    }
+
+
+    @Override
+    public void show() {
+        Gdx.input.setInputProcessor(new InputAdapter() {
+        });
     }
 
     @Override
     public void render(float delta) {
-
-        ScreenUtils.clear(0, 0.5f, 1, 1);
+        ScreenUtils.clear(0, 38/255f, 66/255f, 1);
         game.batch.begin();
 
         /* New Game Button */
@@ -81,6 +89,11 @@ public class MainMenuScreen implements Screen {
         game.batch.end();
     }
 
+    @Override
+    public void hide() {
+        Gdx.input.setInputProcessor(null);
+    }
+
     /**
      * Draw the Button
      * @param x
@@ -97,52 +110,20 @@ public class MainMenuScreen implements Screen {
 
             game.batch.draw(button.inactive(), x, y, w, h);
 
-            if (button.getButtonType() == "exit" && Gdx.input.isTouched()) {
+            if (button.getButtonType() == "exit" && Gdx.input.justTouched()) {
+                button.playButtonPressSound(game);
                 Gdx.app.exit();
             }
-            if (button.getButtonType() == "newgame" && Gdx.input.isTouched()){
+            if (button.getButtonType() == "newgame" && Gdx.input.justTouched()){
                 this.dispose();
                 game.setScreen(new NewGameScreen(game));
+            }
+            if (button.getButtonType() == "settings" && Gdx.input.justTouched()) {
+                button.playButtonPressSound(game);
+                game.setScreen(new SettingsMenuScreen(game, this));
             }
         } else {
             game.batch.draw(button.active(), x, y, w, h);
         }
-    }
-
-    @Override
-    public void dispose() {
-        if(game.batch != null){
-            game.batch.dispose();
-        }
-    }
-
-    @Override
-    public void show() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void hide() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void pause() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void resume() {
-        // TODO Auto-generated method stub
-        
     }
 }

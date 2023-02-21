@@ -15,6 +15,6 @@ public class DesktopLauncher {
 		config.setWindowedMode(1280, 720);
 		config.setTitle("AntScuttle");
 		config.setResizable(false);
-		new Lwjgl3Application(new AntScuttle(), config);
+		new Lwjgl3Application(new AntScuttleGame(), config);
 	}
 }

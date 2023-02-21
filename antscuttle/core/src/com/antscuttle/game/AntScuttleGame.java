@@ -1,5 +1,6 @@
 package com.antscuttle.game;
 
+import com.Screens.MainMenuScreen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
@@ -9,11 +10,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class AntScuttleGame extends Game {
 	public SpriteBatch batch;
-	protected BitmapFont font;
+	public BitmapFont font;
 	
 	public Sound sfx;
 	public float VOLUME = 1f;
 	public Music music;
+
+	public boolean musicActive = true;
+	public boolean sfxActive = true;
 	
 	@Override
 	public void create () {

@@ -1,6 +1,7 @@
-package com.antscuttle.game;
+package com.Screens;
 
 import com.antscuttle.game.Buttons.Button;
+import com.antscuttle.game.AntScuttleGame;
 import com.antscuttle.game.Buttons.BackButton;
 import com.antscuttle.game.Buttons.MusicButton;
 import com.antscuttle.game.Buttons.SFXButton;
@@ -38,8 +39,8 @@ public class SettingsMenuScreen extends ScreenAdapter {
         SETTINGS_MENU_WIDTH = Gdx.graphics.getWidth();
 
         backButton = new BackButton();
-        musicButton = new MusicButton();
-        sfxButton = new SFXButton();
+        musicButton = new MusicButton(game);
+        sfxButton = new SFXButton(game);
 
         /* Grabs the dimensions of the given string with the given font */
         bounds = new GlyphLayout();
@@ -84,16 +85,16 @@ public class SettingsMenuScreen extends ScreenAdapter {
 
             game.batch.draw(button.inactive(), x, y, w, h);
 
-            if (button.getButtonType() == "navigation" && Gdx.input.isTouched()) {
+            if (button.getButtonType() == "back" && Gdx.input.justTouched()) {
                 button.playButtonPressSound(game);
                 game.setScreen(previousScreen);
-            } else if (Gdx.input.isTouched() && button.getButtonType() == "music") {
+            } else if (Gdx.input.justTouched() && button.getButtonType() == "music") {
                 button.playButtonPressSound(game);
-                musicButton.toggleMusic(game);
+                musicButton.toggleMusic();
                 
-            } else if (Gdx.input.isTouched() && button.getButtonType() == "sfx") {
+            } else if (Gdx.input.justTouched() && button.getButtonType() == "sfx") {
                 button.playButtonPressSound(game);
-                sfxButton.toggleSFX(game);
+                sfxButton.toggleSFX();
             }
 
         } else {

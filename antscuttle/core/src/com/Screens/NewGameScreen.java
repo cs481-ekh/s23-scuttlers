@@ -1,6 +1,6 @@
 package com.Screens;
 
-import com.antscuttle.game.AntScuttle;
+import com.antscuttle.game.AntScuttleGame;
 import com.antscuttle.game.Buttons.Button;
 import com.antscuttle.game.Buttons.MainButton;
 import com.antscuttle.game.Buttons.AIButton;
@@ -8,11 +8,11 @@ import com.antscuttle.game.Buttons.StartButton;
 import com.antscuttle.game.Buttons.CharacterButton;
 import com.antscuttle.game.Buttons.SettingsButton;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-public class NewGameScreen implements Screen{
-    AntScuttle game;
+public class NewGameScreen extends ScreenAdapter{
+    AntScuttleGame game;
     /* Buttons */
     private Button startButton;
    // private Button levelButton;
@@ -35,7 +35,7 @@ public class NewGameScreen implements Screen{
 
     int x;
 
-    public NewGameScreen(AntScuttle game) {
+    public NewGameScreen(AntScuttleGame game) {
         this.game = game;
         /* init buttons */
         mainButton = new MainButton();
@@ -116,34 +116,5 @@ public class NewGameScreen implements Screen{
         }
     }
 
-    @Override
-    public void show() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void hide() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void pause() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void resume() {
-        // TODO Auto-generated method stub
-        
-    }
     
 }
