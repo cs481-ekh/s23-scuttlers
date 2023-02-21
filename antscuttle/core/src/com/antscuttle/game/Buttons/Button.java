@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 
 public abstract class Button {
 
-    enum ButtonType {exit, navigation, action}
+    enum ButtonType {exit, newgame, savegame, loadgame, settings, character, aibuilder, main, start, level}
 
     public Button() {
         super();

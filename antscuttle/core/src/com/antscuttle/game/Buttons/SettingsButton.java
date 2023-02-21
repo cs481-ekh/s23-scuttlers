@@ -30,7 +30,7 @@ public class SettingsButton extends Button {
     }
     @Override
     public String getButtonType() {
-        return ButtonType.navigation.toString();
+        return ButtonType.settings.toString();
     }
 
 }
