@@ -29,6 +29,6 @@ public class NewGameButton extends Button {
     }		
     @Override
     public String getButtonType() {
-        return ButtonType.navigation.toString();
+        return ButtonType.newgame.toString();
     }	
 }

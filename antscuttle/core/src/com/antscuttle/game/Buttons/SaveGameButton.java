@@ -32,6 +32,6 @@ public class SaveGameButton extends Button {
         }		
         @Override
         public String getButtonType() {
-            return ButtonType.action.toString();
+            return ButtonType.savegame.toString();
         }	
 }

@@ -28,6 +28,6 @@ public class LoadGameButton extends Button {
     }		
     @Override
     public String getButtonType() {
-        return ButtonType.action.toString();
+        return ButtonType.loadgame.toString();
     }		
 }
