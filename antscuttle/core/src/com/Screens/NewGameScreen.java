@@ -24,10 +24,10 @@ public class NewGameScreen extends ScreenAdapter{
 
 
     /* y-axis for buttons */
-    private static final int MAIN_BUTTON_Y = 30;
-    private static final int AI_BUILDER_BUTTON_Y = 140;
-    private static final int CHAR_BUTTON_Y = 250;
-    private static final int START_BUTTON_Y = 360;
+    private static final int MAIN_BUTTON_Y = 10;
+    private static final int AI_BUILDER_BUTTON_Y = 155;
+    private static final int CHAR_BUTTON_Y = 300;
+    private static final int START_BUTTON_Y = 445;
     private static final int SETTINGS_BUTTON_Y = 10;
 
     private static int MAIN_MENU_HEIGHT;
@@ -98,8 +98,8 @@ public class NewGameScreen extends ScreenAdapter{
 
             game.batch.draw(button.inactive(), x, y, w, h);
 
-            if (button.getButtonType() == "exit" && Gdx.input.isTouched()) {
-                Gdx.app.exit();
+            if (button.getButtonType() == "main" && Gdx.input.isTouched()) {
+                game.setScreen(new MainMenuScreen(game));
             }
             if (button.getButtonType() == "newgame" && Gdx.input.isTouched()){
                 
