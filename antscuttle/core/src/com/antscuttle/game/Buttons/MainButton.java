@@ -4,11 +4,11 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class MainButton extends Button {
 
-    private final int WIDTH = 70;
-    private final int HEIGHT = 70;
+    private final int WIDTH = 140;
+    private final int HEIGHT = 140;
     
-    private final Texture INACTIVE = new Texture("buttons/cog1.png");
-    private final Texture ACTIVE = new Texture("buttons/cog2.png");
+    private final Texture INACTIVE = new Texture("buttons/Main.png");
+    private final Texture ACTIVE = new Texture("buttons/Main-Active.png");
 
 	@Override
 	public int getWidth() {
