@@ -52,7 +52,8 @@ public class NewGameScreen extends ScreenAdapter{
     @Override
     public void render(float delta) {
 
-        ScreenUtils.clear(0, 0.5f, 1, 1);
+        ScreenUtils.clear(0, 38/255f, 66/255f, 1);
+
         game.batch.begin();
 
         /* New Game Button */
