@@ -63,7 +63,7 @@ public class SettingsMenuScreen extends ScreenAdapter {
 
         /* Sound buttons */
         x = (SETTINGS_MENU_WIDTH/2) - 80;
-        game.font.getData().setScale(0.75f);
+        // game.font.getData().setScale(0.75f);
         game.font.draw(game.batch, musicTxt, x, SETTINGS_MENU_HEIGHT/2+musicButton.getHeight() + bounds.height+10);
         drawButton(x, SETTINGS_MENU_HEIGHT/2, musicButton);
 

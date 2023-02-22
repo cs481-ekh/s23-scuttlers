@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.Cursor.SystemCursor;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-public class AIEditorScreen extends ScreenAdapter {
+public class AntEditorScreen extends ScreenAdapter {
     AntScuttleGame game;
 
     Button settingsButton;
@@ -19,21 +19,21 @@ public class AIEditorScreen extends ScreenAdapter {
 
     int x;
 
-    private static int AI_EDITOR_HEIGHT;
-    private static int AI_EDITOR_WIDTH;
+    private static int ANT_EDITOR_HEIGHT;
+    private static int ANT_EDITOR_WIDTH;
 
     private static final int SETTINGS_BUTTON_Y = 10;
 
-    String title = "AI Editor";
+    String title = "Ant Editor";
     GlyphLayout bounds;
 
-    public AIEditorScreen(AntScuttleGame game) {
+    public AntEditorScreen(AntScuttleGame game) {
         this.game = game;
         settingsButton = new SettingsButton();
         backButton = new BackButton();
 
-        AI_EDITOR_HEIGHT = Gdx.graphics.getHeight();
-        AI_EDITOR_WIDTH = Gdx.graphics.getWidth();
+        ANT_EDITOR_HEIGHT = Gdx.graphics.getHeight();
+        ANT_EDITOR_WIDTH = Gdx.graphics.getWidth();
 
         bounds = new GlyphLayout();
         bounds.setText(game.font, title);
@@ -51,13 +51,13 @@ public class AIEditorScreen extends ScreenAdapter {
         game.batch.begin();
 
         /* Back Button */
-        drawButton(20, AI_EDITOR_HEIGHT - backButton.getHeight() - 20, backButton);
+        drawButton(20, ANT_EDITOR_HEIGHT - backButton.getHeight() - 20, backButton);
 
-        game.font.draw(game.batch, title, AI_EDITOR_WIDTH/2, AI_EDITOR_HEIGHT/2 + bounds.height+10);
+        game.font.draw(game.batch, title, ANT_EDITOR_WIDTH/2, ANT_EDITOR_HEIGHT/2 + bounds.height+10);
 
 
         /* Settings Button */
-        x = AI_EDITOR_WIDTH - settingsButton.getWidth() - 10;
+        x = ANT_EDITOR_WIDTH - settingsButton.getWidth() - 10;
         drawButton(x, SETTINGS_BUTTON_Y, settingsButton);
 
         game.batch.end();
@@ -80,7 +80,7 @@ public class AIEditorScreen extends ScreenAdapter {
 
         /* if the cursor is inbounds of the button */
         if (Gdx.input.getX() < x + w && Gdx.input.getX() > x &&
-            AI_EDITOR_HEIGHT - Gdx.input.getY() < y + h && AI_EDITOR_HEIGHT - Gdx.input.getY() > y) {
+            ANT_EDITOR_HEIGHT - Gdx.input.getY() < y + h && ANT_EDITOR_HEIGHT - Gdx.input.getY() > y) {
 
             // Gdx.graphics.setSystemCursor(SystemCursor.Hand);
             game.batch.draw(button.inactive(), x, y, w, h);
