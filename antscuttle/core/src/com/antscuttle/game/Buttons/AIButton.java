@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class AIButton extends Button {
 
-    private final int WIDTH = 140;
-    private final int HEIGHT = 140;
+    private final int WIDTH = 200;
+    private final int HEIGHT = 100;
     
     private final Texture INACTIVE = new Texture("buttons/AI.png");
     private final Texture ACTIVE = new Texture("buttons/AI-Active.png");
@@ -28,7 +28,7 @@ public class AIButton extends Button {
     }
     @Override
     public String getButtonType() {
-        return ButtonType.aibuilder.toString();
+        return ButtonType.ai.toString();
     }
     
 }

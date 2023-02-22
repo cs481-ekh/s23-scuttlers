@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class CharacterButton extends Button{
 
-    private final int WIDTH = 140;
-    private final int HEIGHT = 140;
+    private final int WIDTH = 200;
+    private final int HEIGHT = 100;
     
     private final Texture INACTIVE = new Texture("buttons/Character.png");
     private final Texture ACTIVE = new Texture("buttons/Character-Active.png");

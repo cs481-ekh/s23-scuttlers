@@ -116,6 +116,7 @@ public class MainMenuScreen extends ScreenAdapter {
             }
             if (button.getButtonType() == "newgame" && Gdx.input.justTouched()){
                 this.dispose();
+                button.playButtonPressSound(game);
                 game.setScreen(new NewGameScreen(game));
             }
             if (button.getButtonType() == "settings" && Gdx.input.justTouched()) {

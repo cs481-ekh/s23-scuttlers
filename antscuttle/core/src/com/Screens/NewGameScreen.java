@@ -56,12 +56,12 @@ public class NewGameScreen extends ScreenAdapter{
 
         game.batch.begin();
 
-        /* New Game Button */
+        /* Start Game Button */
         x = (MAIN_MENU_WIDTH / 2) - (startButton.getWidth() / 2);
         drawButton(x, START_BUTTON_Y, startButton);
 
       
-        /* Load Game Button */
+        /* AI Editor Button */
         x = (MAIN_MENU_WIDTH / 2) - (aiButton.getWidth() / 2);
         drawButton(x, AI_BUILDER_BUTTON_Y, aiButton);
 
@@ -99,10 +99,19 @@ public class NewGameScreen extends ScreenAdapter{
 
             game.batch.draw(button.inactive(), x, y, w, h);
 
-            if (button.getButtonType() == "main" && Gdx.input.isTouched()) {
+            if (button.getButtonType() == "main" && Gdx.input.justTouched()) {
+                button.playButtonPressSound(game);
                 game.setScreen(new MainMenuScreen(game));
             }
-            if (button.getButtonType() == "newgame" && Gdx.input.isTouched()){
+            if (button.getButtonType() == "settings" && Gdx.input.justTouched()) {
+                button.playButtonPressSound(game);
+                game.setScreen(new SettingsMenuScreen(game, this));
+            }
+            if (button.getButtonType() == "ai" && Gdx.input.justTouched()) {
+                button.playButtonPressSound(game);
+                game.setScreen(new AIEditorScreen(game));
+            }
+            if (button.getButtonType() == "newgame" && Gdx.input.justTouched()){
                 
             }
         } else {
