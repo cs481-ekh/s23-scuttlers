@@ -63,7 +63,7 @@ public class SettingsMenuScreen extends ScreenAdapter {
 
         /* Sound buttons */
         x = (SETTINGS_MENU_WIDTH/2) - 80;
-        game.font.getData().setScale(0.75f);
+        // game.font.getData().setScale(0.75f);
         game.font.draw(game.batch, musicTxt, x, SETTINGS_MENU_HEIGHT/2+musicButton.getHeight() + bounds.height+10);
         drawButton(x, SETTINGS_MENU_HEIGHT/2, musicButton);
 
@@ -83,7 +83,7 @@ public class SettingsMenuScreen extends ScreenAdapter {
         if (Gdx.input.getX() < x + w && Gdx.input.getX() > x &&
             SETTINGS_MENU_HEIGHT - Gdx.input.getY() < y + h && SETTINGS_MENU_HEIGHT - Gdx.input.getY() > y) {
 
-            game.batch.draw(button.inactive(), x, y, w, h);
+            game.batch.draw(button.active(), x, y, w, h);
 
             if (button.getButtonType() == "back" && Gdx.input.justTouched()) {
                 button.playButtonPressSound(game);
@@ -98,7 +98,7 @@ public class SettingsMenuScreen extends ScreenAdapter {
             }
 
         } else {
-            game.batch.draw(button.active(), x, y, w, h);
+            game.batch.draw(button.inactive(), x, y, w, h);
         }
     }
 

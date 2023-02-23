@@ -2,13 +2,13 @@ package com.antscuttle.game.Buttons;
 
 import com.badlogic.gdx.graphics.Texture;
 
-public class CharacterButton extends Button{
+public class AntButton extends Button{
 
-    private final int WIDTH = 140;
-    private final int HEIGHT = 140;
+    private final int WIDTH = 200;
+    private final int HEIGHT = 100;
     
-    private final Texture INACTIVE = new Texture("buttons/Character.png");
-    private final Texture ACTIVE = new Texture("buttons/Character-Active.png");
+    private final Texture INACTIVE = new Texture("buttons/Ant-Button.png");
+    private final Texture ACTIVE = new Texture("buttons/Ant-Button-Active.png");
 
 	@Override
 	public int getWidth() {
@@ -28,6 +28,6 @@ public class CharacterButton extends Button{
     }
     @Override
     public String getButtonType() {
-        return ButtonType.character.toString();
+        return ButtonType.ant.toString();
     }
 }

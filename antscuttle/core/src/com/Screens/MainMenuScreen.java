@@ -24,9 +24,9 @@ public class MainMenuScreen extends ScreenAdapter {
 
     /* y-axis for buttons */
     private static final int EXIT_BUTTON_Y = 30;
-    private static final int LOAD_BUTTON_Y = 140;
-    private static final int SAVE_GAME_BUTTON_Y = 250;
-    private static final int NEW_GAME_BUTTON_Y = 360;
+    private static final int LOAD_BUTTON_Y = 175;
+    private static final int SAVE_GAME_BUTTON_Y = 320;
+    private static final int NEW_GAME_BUTTON_Y = 465;
     private static final int SETTINGS_BUTTON_Y = 10;
 
     private static int MAIN_MENU_HEIGHT;
@@ -108,7 +108,7 @@ public class MainMenuScreen extends ScreenAdapter {
         if (Gdx.input.getX() < x + w && Gdx.input.getX() > x &&
             MAIN_MENU_HEIGHT - Gdx.input.getY() < y + h && MAIN_MENU_HEIGHT - Gdx.input.getY() > y) {
 
-            game.batch.draw(button.inactive(), x, y, w, h);
+            game.batch.draw(button.active(), x, y, w, h);
 
             if (button.getButtonType() == "exit" && Gdx.input.justTouched()) {
                 button.playButtonPressSound(game);
@@ -116,6 +116,7 @@ public class MainMenuScreen extends ScreenAdapter {
             }
             if (button.getButtonType() == "newgame" && Gdx.input.justTouched()){
                 this.dispose();
+                button.playButtonPressSound(game);
                 game.setScreen(new NewGameScreen(game));
             }
             if (button.getButtonType() == "settings" && Gdx.input.justTouched()) {
@@ -123,7 +124,7 @@ public class MainMenuScreen extends ScreenAdapter {
                 game.setScreen(new SettingsMenuScreen(game, this));
             }
         } else {
-            game.batch.draw(button.active(), x, y, w, h);
+            game.batch.draw(button.inactive(), x, y, w, h);
         }
     }
 }

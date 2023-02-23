@@ -14,6 +14,7 @@ public class AntScuttleGame extends Game {
 	
 	public Sound sfx;
 	public float VOLUME = 1f;
+	public float FONT_SCALE = 0.75f;
 	public Music music;
 
 	public boolean musicActive = true;
@@ -23,6 +24,7 @@ public class AntScuttleGame extends Game {
 	public void create () {
 		batch = new SpriteBatch();
 		font = new BitmapFont(Gdx.files.internal("fonts/myFont.fnt"));
+		font.getData().setScale(FONT_SCALE);
 
 		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/space.mp3"));
 		sfx = Gdx.audio.newSound(Gdx.files.internal("sounds/buttonPress.wav"));
