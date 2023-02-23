@@ -83,7 +83,7 @@ public class AIEditorScreen extends ScreenAdapter {
             AI_EDITOR_HEIGHT - Gdx.input.getY() < y + h && AI_EDITOR_HEIGHT - Gdx.input.getY() > y) {
 
             // Gdx.graphics.setSystemCursor(SystemCursor.Hand);
-            game.batch.draw(button.inactive(), x, y, w, h);
+            game.batch.draw(button.active(), x, y, w, h);
 
             if (button.getButtonType() == "settings" && Gdx.input.justTouched()) {
                 button.playButtonPressSound(game);
@@ -94,7 +94,7 @@ public class AIEditorScreen extends ScreenAdapter {
                 game.setScreen(new NewGameScreen(game));
             }
         } else {
-            game.batch.draw(button.active(), x, y, w, h);
+            game.batch.draw(button.inactive(), x, y, w, h);
             // Gdx.graphics.setSystemCursor(SystemCursor.Arrow);
         }
     }   
