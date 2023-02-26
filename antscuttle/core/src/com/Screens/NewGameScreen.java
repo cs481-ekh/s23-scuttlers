@@ -115,6 +115,10 @@ public class NewGameScreen extends ScreenAdapter{
                 button.playButtonPressSound(game);
                 game.setScreen(new AntEditorScreen(game));
             }
+            if (button.getButtonType() == "start" && Gdx.input.justTouched()){
+                button.playButtonPressSound(game);
+                game.setScreen(new GameplayScreen(game));
+            }
         } else {
             game.batch.draw(button.inactive(), x, y, w, h);
         }
