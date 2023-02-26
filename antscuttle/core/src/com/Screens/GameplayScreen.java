@@ -1,5 +1,9 @@
 package com.Screens;
 import com.antscuttle.game.AntScuttleGame;
+import com.antscuttle.game.Buttons.BackButton;
+import com.antscuttle.game.Buttons.Button;
+import com.antscuttle.game.Buttons.PauseButton;
+import com.antscuttle.game.Buttons.StartButton;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
@@ -17,11 +21,16 @@ import com.badlogic.gdx.ScreenAdapter;
 
 public class GameplayScreen extends ScreenAdapter{
 	public static final float SPEED = 100;
+    private static final int START_BUTTON_Y = 200;
 
     SpriteBatch gameBatch;
     SpriteBatch characterBatch;
     SpriteBatch menuBatch;
     SpriteBatch titleBatch;
+    SpriteBatch buttonBatch;
+    Button back;
+    Button pause;
+    Button start;
     Texture titleImg;
     Texture menuImg;
     Texture img;
@@ -29,6 +38,7 @@ public class GameplayScreen extends ScreenAdapter{
 	float charX;
     float gameX;
     float gameY;
+    float startX;
     private Viewport gameView;
     private Camera camera;
     float stateTime = 0;
@@ -51,14 +61,22 @@ public class GameplayScreen extends ScreenAdapter{
         gameBatch = new SpriteBatch();
         characterBatch = new SpriteBatch();
         titleBatch = new SpriteBatch();
+        buttonBatch = new SpriteBatch();
         menuBatch = new SpriteBatch();
-        Pixmap pixmap = new Pixmap((int)gameView.getWorldWidth() * 1/3, (int)gameView.getWorldHeight(),Format.RGBA8888);
-        Color color = new Color(0, 38/255f, 66/255f, 1);
-        pixmap.setColor(color);
-        pixmap.fill();
-        menuImg = new Texture(pixmap);
+        Pixmap treeMap = new Pixmap((int)gameView.getWorldWidth() * 1/3, (int)gameView.getWorldHeight(),Format.RGBA8888);
+        Color treeColor = new Color(0, 38/255f, 66/255f, 1);
+        treeMap.setColor(treeColor);
+        treeMap.fill();
+        Pixmap playMap = new Pixmap((int)gameView.getWorldWidth() * 2/3, (int)gameView.getWorldHeight(),Format.RGBA8888);
+        Color playColor = Color.BLACK;
+        playMap.setColor(playColor);
+        playMap.fill();
+        menuImg = new Texture(treeMap);
         titleImg = new Texture("antscuttle.png");
-        img = new Texture("pixilart-drawing.png");
+        img = new Texture(playMap);
+        start = new StartButton();
+        back = new BackButton();
+        pause = new PauseButton();
         // TODO Auto-generated method stub
         
     }
@@ -89,8 +107,20 @@ public class GameplayScreen extends ScreenAdapter{
         gameBatch.end();
 
         titleBatch.begin();
-        titleBatch.draw(titleImg, gameX + (gameView.getWorldWidth() * 1/12), gameY + (gameView.getWorldHeight() * 7/12), gameView.getWorldWidth() * 1/2, gameView.getWorldHeight()/3);
+        titleBatch.draw(titleImg, gameX + (gameView.getWorldWidth() * 1/12), gameY + (gameView.getWorldHeight() * 6/12), gameView.getWorldWidth() * 1/2, gameView.getWorldHeight()/3);
         titleBatch.end();
+
+        buttonBatch.begin();
+        /* Back Button */
+        drawButton(20, (int)(gameView.getWorldHeight() - back.getHeight() - 20),  back);
+
+        /* Start Game Button */
+        startX = gameX + (gameView.getWorldWidth() * 3/12);
+        drawButton((int)startX, START_BUTTON_Y, start);
+        
+        /* Pause Game Button */
+        drawButton((int) startX + 80, START_BUTTON_Y - 150, pause);
+        buttonBatch.end();
 
         characterBatch.begin();
         characterBatch.draw(frames[animation.getKeyFrameIndex(stateTime)], charX, charY);
@@ -100,6 +130,39 @@ public class GameplayScreen extends ScreenAdapter{
         characterBatch.end();
 
         
+    }
+
+    /**
+     * Draw the Button
+     * @param x
+     * @param y
+     * @param button type of button
+     */
+    private void drawButton(int x, int y, Button button) {
+        int w = button.getWidth();
+        int h = button.getHeight();
+
+        /* if the cursor is inbounds of the button */
+        if (Gdx.input.getX() < x + w && Gdx.input.getX() > x &&
+            gameView.getWorldHeight() - Gdx.input.getY() < y + h && gameView.getWorldWidth() - Gdx.input.getY() > y) {
+
+            buttonBatch.draw(button.active(), x, y, w, h);
+
+            if (button.getButtonType() == "back" && Gdx.input.justTouched()) {
+                button.playButtonPressSound(game);
+                game.setScreen(new MainMenuScreen(game));
+            }
+            if (button.getButtonType() == "pause" && Gdx.input.justTouched()) {
+                button.playButtonPressSound(game);
+                //pause game
+            }
+            if (button.getButtonType() == "start" && Gdx.input.justTouched()){
+                button.playButtonPressSound(game);
+                //start game
+            }
+        } else {
+            buttonBatch.draw(button.inactive(), x, y, w, h);
+        }
     }
 
     @Override
