@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.antscuttle.game.AntScuttleGame;
 
 
-public abstract class Button {
+public abstract class Button{
 
     enum ButtonType {exit, newgame, savegame, loadgame, settings, ant, ai, main, start, level, music, sfx, back}
 
