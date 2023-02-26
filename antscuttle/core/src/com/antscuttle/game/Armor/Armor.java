@@ -3,6 +3,8 @@
  */
 package com.antscuttle.game.Armor;
 
+import com.badlogic.gdx.graphics.Texture;
+
 /**
  *
  * @author antho
@@ -10,9 +12,9 @@ package com.antscuttle.game.Armor;
 public abstract class Armor {
     private String name;
     private int defense;
-    private String img;
+    private Texture img;
     
-    public String getImgLocation(){
+    public Texture getTexture(){
         return img;
     }
     
