@@ -11,8 +11,11 @@ import com.antscuttle.game.Buttons.SaveGameButton;
 import com.antscuttle.game.Buttons.SettingsButton;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
+import java.awt.Point;
 
 public class MainMenuScreen extends ScreenAdapter {
     /* Buttons */
@@ -21,13 +24,15 @@ public class MainMenuScreen extends ScreenAdapter {
     private Button loadGameButton;
     private Button saveGameButton;
     private Button settingsButton;
+    private final Texture logo = new Texture("antscuttle.png");
 
     /* y-axis for buttons */
-    private static final int EXIT_BUTTON_Y = 30;
-    private static final int LOAD_BUTTON_Y = 175;
-    private static final int SAVE_GAME_BUTTON_Y = 320;
-    private static final int NEW_GAME_BUTTON_Y = 465;
-    private static final int SETTINGS_BUTTON_Y = 10;
+    private static Point EXIT_BUTTON_LOC;
+    private static Point LOAD_BUTTON_LOC;
+    private static Point SAVE_GAME_BUTTON_LOC;
+    private static Point NEW_GAME_BUTTON_LOC;
+    private static Point SETTINGS_BUTTON_LOC;
+    private static Point LOGO_LOC;
 
     private static int MAIN_MENU_HEIGHT;
     private static int MAIN_MENU_WIDTH;
@@ -47,7 +52,19 @@ public class MainMenuScreen extends ScreenAdapter {
         /* Grab the menu size (1280x720) */
         MAIN_MENU_HEIGHT = Gdx.graphics.getHeight();
         MAIN_MENU_WIDTH = Gdx.graphics.getWidth();
-
+        
+        int firstColumnX = (2*MAIN_MENU_WIDTH / 5) - (newGameButton.getWidth() / 2);
+        int secondColumnX = (3* MAIN_MENU_WIDTH / 5) - (newGameButton.getWidth() / 2);
+        int settingsX = MAIN_MENU_WIDTH - settingsButton.getWidth() - 20;
+        int logoX = MAIN_MENU_WIDTH/2 - logo.getWidth()/2;
+        int logoY = MAIN_MENU_HEIGHT * 3/5;
+        
+        NEW_GAME_BUTTON_LOC = new Point(firstColumnX, 235);
+        LOAD_BUTTON_LOC = new Point(firstColumnX, 90);
+        SAVE_GAME_BUTTON_LOC = new Point(secondColumnX, 235);
+        EXIT_BUTTON_LOC = new Point(secondColumnX, 90);
+        SETTINGS_BUTTON_LOC = new Point(settingsX, 20);
+        LOGO_LOC = new Point(logoX, logoY);
     }
 
 
@@ -62,30 +79,23 @@ public class MainMenuScreen extends ScreenAdapter {
         ScreenUtils.clear(0, 38/255f, 66/255f, 1);
         game.batch.begin();
 
+        drawLogo();
         /* New Game Button */
-        x = (MAIN_MENU_WIDTH / 2) - (newGameButton.getWidth() / 2);
-        drawButton(x, NEW_GAME_BUTTON_Y, newGameButton);
-
+        drawButton(NEW_GAME_BUTTON_LOC.x, NEW_GAME_BUTTON_LOC.y, newGameButton);
       
         /* Load Game Button */
-        x = (MAIN_MENU_WIDTH / 2) - (loadGameButton.getWidth() / 2);
-        drawButton(x, LOAD_BUTTON_Y, loadGameButton);
-
+        drawButton(LOAD_BUTTON_LOC.x, LOAD_BUTTON_LOC.y, loadGameButton);
     
         /* Save Game Button */
-        x = (MAIN_MENU_WIDTH / 2) - (saveGameButton.getWidth() / 2);
-        drawButton(x, SAVE_GAME_BUTTON_Y, saveGameButton);
+        drawButton(SAVE_GAME_BUTTON_LOC.x, SAVE_GAME_BUTTON_LOC.y, saveGameButton);
 
-    
         /* Exit Button */
-        x = (MAIN_MENU_WIDTH / 2) - (exitButton.getWidth() / 2);
-        drawButton(x, EXIT_BUTTON_Y, exitButton);
-
+        drawButton(EXIT_BUTTON_LOC.x, EXIT_BUTTON_LOC.y, exitButton);
 
         /* Settings Button */
-        x = MAIN_MENU_WIDTH - settingsButton.getWidth() - 10;
-        drawButton(x, SETTINGS_BUTTON_Y, settingsButton);
+        drawButton(SETTINGS_BUTTON_LOC.x, SETTINGS_BUTTON_LOC.y, settingsButton);
 
+        
         game.batch.end();
     }
 
@@ -94,6 +104,10 @@ public class MainMenuScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(null);
     }
 
+    private void drawLogo(){
+        game.batch.draw(logo, LOGO_LOC.x, LOGO_LOC.y);
+    }
+    
     /**
      * Draw the Button
      * @param x
