@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class PauseButton extends Button {
 
-    private final int WIDTH = 200;
-    private final int HEIGHT = 100;
+    private final int WIDTH = 50;
+    private final int HEIGHT = 75;
     
     private final Texture INACTIVE = new Texture("buttons/pause.png");
     private final Texture ACTIVE = new Texture("buttons/pause-active.png");
