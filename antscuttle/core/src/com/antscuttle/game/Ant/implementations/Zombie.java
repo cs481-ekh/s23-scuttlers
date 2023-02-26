@@ -6,7 +6,7 @@ package com.antscuttle.game.Ant.implementations;
 import com.antscuttle.game.AI.AI;
 import com.antscuttle.game.AI.DefaultZombieAI;
 import com.antscuttle.game.AI.Node;
-import com.antscuttle.game.AI.implementations.MoveBlock;
+import com.antscuttle.game.AI.implementations.RootBlock;
 import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.Armor.Armor;
 import com.antscuttle.game.Weapon.MeleeWeapon;
@@ -27,7 +27,7 @@ public class Zombie extends Ant{
     private Armor armor = null;
     private int speed = 20;
     private AI ai = null;
-    private AI defaultAI = new DefaultZombieAI(new Node(new MoveBlock("")));
+    private AI defaultAI = new DefaultZombieAI(new Node(new RootBlock()));
     private String moveAnimations[] = {
         "assets/animations/zombie/zombie_walk_up.png",
         "assets/animations/zombie/zombie_walk_right.png",

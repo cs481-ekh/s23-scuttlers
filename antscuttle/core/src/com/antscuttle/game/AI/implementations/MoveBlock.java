@@ -1,22 +1,45 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.antscuttle.game.AI.implementations;
 
 import com.antscuttle.game.AI.DecisionBlock;
+import com.antscuttle.game.Ant.Ant;
+import com.antscuttle.game.Level.LevelObject;
 
 /**
  *
  * @author antho
  */
 public class MoveBlock extends DecisionBlock{
-    private String direction;
+    public enum MoveType { DIRECTIONAL, TARGET }
+    public enum MoveDirection { LEFT, RIGHT, UP, DOWN, RANDOM }
+    private final MoveType type;
+    private final MoveDirection dir;
+    private final LevelObject target; 
     
-    public MoveBlock(String dir){
-        this.direction = dir;
+    public MoveBlock(MoveDirection dir, int duration){
+        this.type = MoveType.DIRECTIONAL;
+        this.target = null;
+        this.dir = dir;
+        this.duration = duration;
+    }
+    public MoveBlock(LevelObject target){
+        this.type = MoveType.TARGET;
+        this.target = target;
+        this.dir = null;
+        this.duration = Integer.MAX_VALUE;
     }
     public String getDirection(){
-        return direction;
+        return dir.toString();
+    }
+    public String getType(){
+        return type.toString();
+    }
+    public Object getTarget(){
+        return target;
+    }
+    @Override
+    public void execute(Ant ant){
+        super.execute(ant);
+        // If directional, move coords to that dir
+        // If target, get the targets coords and move towards it
     }
 }
