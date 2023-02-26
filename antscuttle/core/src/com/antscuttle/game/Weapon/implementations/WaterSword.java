@@ -10,8 +10,8 @@ import com.badlogic.gdx.graphics.Texture;
  *
  * @author antho
  */
-public class WaterSword {
-    private String name = "Sword";
+public class WaterSword extends Sword{
+    private String name = "Water Sword";
     private int damage = 20;
     private DamageType damageType = DamageType.WATER;
     private int minRange = 0;

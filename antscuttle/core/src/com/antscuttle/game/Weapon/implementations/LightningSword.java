@@ -10,8 +10,8 @@ import com.badlogic.gdx.graphics.Texture;
  *
  * @author antho
  */
-public class LightningSword {
-    private String name = "Sword";
+public class LightningSword extends Sword{
+    private String name = "Lightning Sword";
     private int damage = 20;
     private DamageType damageType = DamageType.ELECTRIC;
     private int minRange = 0;

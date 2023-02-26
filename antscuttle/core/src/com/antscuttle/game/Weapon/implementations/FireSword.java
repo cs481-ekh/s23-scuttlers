@@ -10,8 +10,8 @@ import com.badlogic.gdx.graphics.Texture;
  *
  * @author antho
  */
-public class FireSword {
-    private String name = "Sword";
+public class FireSword extends Sword{
+    private String name = "Fire Sword";
     private int damage = 20;
     private DamageType damageType = DamageType.FIRE;
     private int minRange = 0;

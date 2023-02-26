@@ -8,6 +8,9 @@ import com.antscuttle.game.Armor.Armor;
 import com.antscuttle.game.Damage.DamageType;
 import com.antscuttle.game.Weapon.MeleeWeapon;
 import com.antscuttle.game.Weapon.RangedWeapon;
+import com.antscuttle.game.Weapon.implementations.Pistol;
+import com.antscuttle.game.Weapon.implementations.Sword;
+import com.badlogic.gdx.graphics.Texture;
 
 /**
  *
@@ -25,9 +28,107 @@ public abstract class Ant {
     private int speed;
     private AI ai;
     private AI defaultAI;
-    private String moveAnimations[];
-    private String attackAnimations[];
+    private AnimationType lastTypeUsed = null;
+    // In the following arrays, store in order:
+    //  up, right, down, left
+    private Texture[] moveAnimationUnarmed;
+    private Texture[] moveAnimationSword;
+    private Texture[] moveAnimationPistol;
+    private Texture[] attackAnimationUnarmed;
+    private Texture[] attackAnimationSword;
+    private Texture[] attackAnimationPistol;
+
+    public enum AnimationType { Move, MeleeAttack, RangedAttack }
+    public enum AnimationDirection { Up, Right, Down, Left }
     
+    public Texture getAnimation(AnimationType type, AnimationDirection dir){
+        switch(type){
+            case MeleeAttack: 
+                lastTypeUsed = AnimationType.MeleeAttack;
+                return getMeleeAttackAnimation(dir); 
+            case RangedAttack:
+                lastTypeUsed = AnimationType.RangedAttack;
+                return getRangedAttackAnimation(dir);
+            case Move:
+                return getMoveAnimation(dir);
+            default:
+                return null;
+        }
+    }
+    protected Texture getMoveAnimation(AnimationDirection dir){
+        switch(lastTypeUsed){
+            case MeleeAttack: return getMeleeMoveAnimation(dir); 
+            case RangedAttack: return getRangedMoveAnimation(dir);
+            default: return getUnarmedMoveAnimation(dir);
+        }
+    }
+    protected Texture getMeleeMoveAnimation(AnimationDirection dir){
+        if(meleeWeapon instanceof Sword){
+            switch(dir){
+                case Up: return moveAnimationSword[0];
+                case Right: return moveAnimationSword[1];
+                case Down: return moveAnimationSword[2];
+                case Left: return moveAnimationSword[3];
+            }
+        }
+        return null;
+    }
+    protected Texture getRangedMoveAnimation(AnimationDirection dir){
+        if(rangedWeapon instanceof Pistol){
+            switch(dir){
+                case Up: return moveAnimationPistol[0];
+                case Right: return moveAnimationPistol[1];
+                case Down: return moveAnimationPistol[2];
+                case Left: return moveAnimationPistol[3];
+            }
+        }
+        return null;
+    }
+    protected Texture getUnarmedMoveAnimation(AnimationDirection dir){
+        switch(dir){
+            case Up: return moveAnimationUnarmed[0];
+            case Right: return moveAnimationUnarmed[1];
+            case Down: return moveAnimationUnarmed[2];
+            case Left: return moveAnimationUnarmed[3];
+        }
+        return null;
+    }
+    protected Texture getMeleeAttackAnimation(AnimationDirection dir){
+        if(meleeWeapon == null)
+            return getUnarmedAttackAnimation(dir);
+        return getMeleeWeaponAttackAnimation(dir);
+    }
+    protected Texture getMeleeWeaponAttackAnimation(AnimationDirection dir){
+        if(meleeWeapon instanceof Sword){
+            switch(dir){
+                case Up: return attackAnimationSword[0];
+                case Right: return attackAnimationSword[1];
+                case Down: return attackAnimationSword[2];
+                case Left: return attackAnimationSword[3];
+            }
+        }
+        return null;
+    }
+    protected Texture getUnarmedAttackAnimation(AnimationDirection dir) {
+       switch(dir){
+            case Up: return attackAnimationUnarmed[0];
+            case Right: return attackAnimationUnarmed[1];
+            case Down: return attackAnimationUnarmed[2];
+            case Left: return attackAnimationUnarmed[3];
+        }
+       return null;
+    }
+    protected Texture getRangedAttackAnimation(AnimationDirection dir) {
+        if(rangedWeapon instanceof Pistol){
+            switch(dir){
+                case Up: return attackAnimationPistol[0];
+                case Right: return attackAnimationPistol[1];
+                case Down: return attackAnimationPistol[2];
+                case Left: return attackAnimationPistol[3];
+            }
+        }
+        return null;
+    }
     
     public void equipMeleeWeapon(MeleeWeapon weapon){
         this.meleeWeapon = weapon;
@@ -100,14 +201,6 @@ public abstract class Ant {
     public DamageType getRangedDamageType(){
         return (rangedWeapon == null) ? null : rangedWeapon.getDamageType();
     }
-    public String[] getMoveAnimationLocations(){
-        return moveAnimations;
-    }
-    
-    public String[] getAttackAnimationLocations(){
-        return attackAnimations;
-    }
-    
     public int attack(int damage, DamageType damageType){
         int defense = (armor == null) ? baseDefense : baseDefense + armor.getDefense();
         int damageTaken = damage - defense;
