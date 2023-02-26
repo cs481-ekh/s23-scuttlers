@@ -10,6 +10,7 @@ Pixel Art:
 https://opengameart.org/content/characters-zombies-and-weapons-oh-my
 https://opengameart.org/content/roguelikerpg-pack-1700-tiles
 https://opengameart.org/content/play-pause-mute-and-unmute-buttons
+https://www.flaticon.com/free-icons/pause
 
 Sounds:
 https://opengameart.org/content/space-1
