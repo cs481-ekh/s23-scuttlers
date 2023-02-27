@@ -11,6 +11,7 @@ import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.Armor.Armor;
 import com.antscuttle.game.Weapon.MeleeWeapon;
 import com.antscuttle.game.Weapon.RangedWeapon;
+import com.badlogic.gdx.graphics.Texture;
 
 /**
  *
@@ -29,16 +30,42 @@ public class Human extends Ant{
     private int speed = 40;
     private AI ai = null;
     private AI defaultAI = new DefaultHumanAI(new Node(new RootBlock()));
-    private String moveAnimations[] = {
-        "assets/animations/human/human_unarmed_walk_up.png",
-        "assets/animations/human/human_unarmed_walk_right.png",
-        "assets/animations/human/human_unarmed_walk_down.png",
-        "assets/animations/human/human_unarmed_walk_left.png"};
-    private String attackAnimations[]= {
-        "assets/animations/human/human_unarmed_attack_up.png",
-        "assets/animations/human/human_unarmed_attack_right.png",
-        "assets/animations/human/human_unarmed_attack_down.png",
-        "assets/animations/human/human_unarmed_attack_left.png"};
+    private Texture[] moveAnimationUnarmed = {
+        new Texture("animations/human/human_unarmed_walk_up.png"),
+        new Texture("animations/human/human_unarmed_walk_right.png"),
+        new Texture("animations/human/human_unarmed_walk_down.png"),
+        new Texture("animations/human/human_unarmed_walk_left.png"),
+    };
+    private Texture[] moveAnimationSword = {
+        new Texture("animations/human/human_sword_walk_up.png"),
+        new Texture("animations/human/human_sword_walk_right.png"),
+        new Texture("animations/human/human_sword_walk_down.png"),
+        new Texture("animations/human/human_sword_walk_left.png"),
+    };
+    private Texture[] moveAnimationPistol = {
+        new Texture("animations/human/human_pistol_walk_up.png"),
+        new Texture("animations/human/human_pistol_walk_right.png"),
+        new Texture("animations/human/human_pistol_walk_down.png"),
+        new Texture("animations/human/human_pistol_walk_left.png"),
+    };
+    private Texture[] attackAnimationUnarmed = {
+        new Texture("animations/human/human_unarmed_attack_up.png"),
+        new Texture("animations/human/human_unarmed_attack_right.png"),
+        new Texture("animations/human/human_unarmed_attack_down.png"),
+        new Texture("animations/human/human_unarmed_attack_left.png"),
+    };
+    private Texture[] attackAnimationSword = {
+        new Texture("animations/human/human_sword_attack_up.png"),
+        new Texture("animations/human/human_sword_attack_right.png"),
+        new Texture("animations/human/human_sword_attack_down.png"),
+        new Texture("animations/human/human_sword_attack_left.png"),
+    };
+    private Texture[] attackAnimationPistol = {
+        new Texture("animations/human/human_pistol_attack_up.png"),
+        new Texture("animations/human/human_pistol_attack_right.png"),
+        new Texture("animations/human/human_pistol_attack_down.png"),
+        new Texture("animations/human/human_pistol_attack_left.png"),
+    };
     
     public Human(String name){
         this.name = name;

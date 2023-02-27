@@ -11,6 +11,7 @@ import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.Armor.Armor;
 import com.antscuttle.game.Weapon.MeleeWeapon;
 import com.antscuttle.game.Weapon.RangedWeapon;
+import com.badlogic.gdx.graphics.Texture;
 
 /**
  *
@@ -28,22 +29,31 @@ public class Zombie extends Ant{
     private int speed = 20;
     private AI ai = null;
     private AI defaultAI = new DefaultZombieAI(new Node(new RootBlock()));
-    private String moveAnimations[] = {
-        "assets/animations/zombie/zombie_walk_up.png",
-        "assets/animations/zombie/zombie_walk_right.png",
-        "assets/animations/zombie/zombie_walk_down.png",
-        "assets/animations/zombie/zombie_walk_left.png"};
-    private String attackAnimations[]= {
-        "assets/animations/zombie/zombie_attack_up.png",
-        "assets/animations/zombie/zombie_attack_right.png",
-        "assets/animations/zombie/zombie_attack_down.png",
-        "assets/animations/zombie/zombie_attack_left.png"};
+    
+    private Texture[] moveAnimationUnarmed = {
+        new Texture("animations/zombie/zombie_walk_up.png"),
+        new Texture("animations/zombie/zombie_walk_right.png"),
+        new Texture("animations/zombie/zombie_walk_down.png"),
+        new Texture("animations/zombie/zombie_walk_left.png"),
+    };
+    private Texture[] attackAnimationUnarmed = {
+        new Texture("animations/zombie/zombie_attack_up.png"),
+        new Texture("animations/zombie/zombie_attack_right.png"),
+        new Texture("animations/zombie/zombie_attack_down.png"),
+        new Texture("animations/zombie/zombie_attack_left.png"),
+    };
     
     public Zombie(String name){
         this.name = name;
         setAIToDefault();
     }
-    
+    @Override
+    public Texture getAnimation(AnimationType type, AnimationDirection dir){
+        switch(type){
+            case Move: return getUnarmedMoveAnimation(dir);
+            default: return getUnarmedAttackAnimation(dir);
+        }
+    }
     @Override
     public void equipMeleeWeapon(MeleeWeapon weapon){
         // Do nothing, zombies can't use weapons

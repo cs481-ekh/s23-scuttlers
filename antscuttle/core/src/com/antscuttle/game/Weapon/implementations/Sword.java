@@ -2,6 +2,7 @@ package com.antscuttle.game.Weapon.implementations;
 
 
 import com.antscuttle.game.Damage.DamageType;
+import com.antscuttle.game.Weapon.MeleeWeapon;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,7 +12,7 @@ import com.badlogic.gdx.graphics.Texture;
  *
  * @author antho
  */
-public class Sword {
+public class Sword extends MeleeWeapon{
     private String name = "Sword";
     private int damage = 20;
     private DamageType damageType = DamageType.PHYSICAL;
