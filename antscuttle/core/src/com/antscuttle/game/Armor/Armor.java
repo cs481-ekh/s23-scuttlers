@@ -14,6 +14,11 @@ public abstract class Armor {
     private int defense;
     private Texture img;
     
+    public Armor(String name, int defense, Texture img){
+        this.name = name;
+        this.defense = defense;
+        this.img = img;
+    }
     public Texture getTexture(){
         return img;
     }

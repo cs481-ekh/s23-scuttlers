@@ -8,8 +8,8 @@ import com.antscuttle.game.Armor.Armor;
 import com.antscuttle.game.Damage.DamageType;
 import com.antscuttle.game.Weapon.MeleeWeapon;
 import com.antscuttle.game.Weapon.RangedWeapon;
-import com.antscuttle.game.Weapon.implementations.Pistol;
-import com.antscuttle.game.Weapon.implementations.Sword;
+import com.antscuttle.game.Weapon.Pistol;
+import com.antscuttle.game.Weapon.Sword;
 import com.badlogic.gdx.graphics.Texture;
 
 /**

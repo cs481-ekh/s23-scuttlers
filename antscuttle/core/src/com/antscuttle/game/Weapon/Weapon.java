@@ -18,6 +18,17 @@ public abstract class Weapon {
     private int maxRange;
     private Texture img;
     private Sound attackSound;
+
+    public Weapon(String name, int damage, DamageType damageType, int minRange, int maxRange, Texture img, Sound attackSound) {
+        this.name = name;
+        this.damage = damage;
+        this.damageType = damageType;
+        this.minRange = minRange;
+        this.maxRange = maxRange;
+        this.img = img;
+        this.attackSound = attackSound;
+    }
+    
     
     public void playAttackSound(AntScuttleGame game){
         attackSound.play(game.VOLUME);
