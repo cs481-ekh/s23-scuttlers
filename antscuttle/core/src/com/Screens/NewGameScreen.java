@@ -8,12 +8,15 @@ import com.antscuttle.game.Buttons.BackButton;
 import com.antscuttle.game.Buttons.StartButton;
 import com.antscuttle.game.Buttons.AntButton;
 import com.antscuttle.game.Buttons.SettingsButton;
+import com.antscuttle.game.Util.GameData;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class NewGameScreen extends ScreenAdapter{
     AntScuttleGame game;
+    GameData gameData;
+    
     /* Buttons */
     private Button startButton;
    // private Button levelButton;
@@ -22,7 +25,7 @@ public class NewGameScreen extends ScreenAdapter{
     // private Button mainButton;
     private Button settingsButton;
     private Button backButton;
-
+    
 
 
     /* y-axis for buttons */
@@ -36,8 +39,10 @@ public class NewGameScreen extends ScreenAdapter{
 
     int x;
 
-    public NewGameScreen(AntScuttleGame game) {
+    public NewGameScreen(AntScuttleGame game, GameData gamedata) {
         this.game = game;
+        this.gameData = gameData;
+        
         /* init buttons */
         // mainButton = new MainButton();
         backButton = new BackButton();
@@ -109,15 +114,15 @@ public class NewGameScreen extends ScreenAdapter{
             }
             if (button.getButtonType() == "ai" && Gdx.input.justTouched()) {
                 button.playButtonPressSound(game);
-                game.setScreen(new AIEditorScreen(game));
+                game.setScreen(new AIEditorScreen(game, gameData));
             }
             if (button.getButtonType() == "ant" && Gdx.input.justTouched()){
                 button.playButtonPressSound(game);
-                game.setScreen(new AntEditorScreen(game));
+                game.setScreen(new AntEditorScreen(game, gameData));
             }
             if (button.getButtonType() == "start" && Gdx.input.justTouched()){
                 button.playButtonPressSound(game);
-                game.setScreen(new GameplayScreen(game));
+                game.setScreen(new GameplayScreen(game, gameData));
             }
         } else {
             game.batch.draw(button.inactive(), x, y, w, h);

@@ -21,7 +21,7 @@ public class ClassDetector {
     private static final String basePath = "../core/src/com/antscuttle/game/";
     private static final String basePackage = "com.antscuttle.game.";
     
-    public static Set<Armor> findArmors() {
+    public Set<Armor> findArmors() {
         Set<Armor> armors = new HashSet<>();
         String armorPackage = "Armor.implementations.";
         File actual = new File(basePath + "Armor/implementations");
@@ -54,7 +54,7 @@ public class ClassDetector {
         return armors;
     }
     
-    public static Set<Weapon> findWeapons() {
+    public Set<Weapon> findWeapons() {
         Set<Weapon> weapons = new HashSet<>();
         String weaponPackage = "Weapon.implementations.";
         File actual = new File(basePath + "Weapon/implementations");
@@ -87,7 +87,7 @@ public class ClassDetector {
         return weapons;
     }
     
-    public static LinkedList<Class<? extends Ant>> findAntTypes(){
+    public LinkedList<Class<? extends Ant>> findAntTypes(){
         LinkedList<Class<? extends Ant>> antTypes = new LinkedList<>();
         String antPackage = "Ant.implementations.";
         File actual = new File(basePath + "Ant/implementations");
@@ -117,7 +117,7 @@ public class ClassDetector {
         return antTypes;
     }
     
-    public static LinkedList<Class<? extends Level>> findLevels(){
+    public LinkedList<Class<? extends Level>> findLevels(){
         LinkedList<Class<? extends Level>> levels = new LinkedList<>();
         String levelPackage = "Level.levels.";
         File actual = new File(basePath + "Level/levels");
@@ -147,7 +147,7 @@ public class ClassDetector {
         return levels;
     }
     
-    public static LinkedList<Class<? extends DecisionBlock>> findBlocks(){
+    public LinkedList<Class<? extends DecisionBlock>> findBlocks(){
         LinkedList<Class<? extends DecisionBlock>> blocks = new LinkedList<>();
         String dbPackage = "AI.implementations.";
         File actual = new File(basePath + "AI/implementations");
