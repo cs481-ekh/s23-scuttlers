@@ -30,13 +30,13 @@ public class Zombie extends Ant{
     private AI ai = null;
     private AI defaultAI = new DefaultZombieAI(new Node(new RootBlock()));
     
-    private Texture[] moveAnimationUnarmed = {
+    private static Texture[] moveAnimationUnarmed = {
         new Texture("animations/zombie/zombie_walk_up.png"),
         new Texture("animations/zombie/zombie_walk_right.png"),
         new Texture("animations/zombie/zombie_walk_down.png"),
         new Texture("animations/zombie/zombie_walk_left.png"),
     };
-    private Texture[] attackAnimationUnarmed = {
+    private static Texture[] attackAnimationUnarmed = {
         new Texture("animations/zombie/zombie_attack_up.png"),
         new Texture("animations/zombie/zombie_attack_right.png"),
         new Texture("animations/zombie/zombie_attack_down.png"),
@@ -44,8 +44,19 @@ public class Zombie extends Ant{
     };
     
     public Zombie(String name){
-        this.name = name;
-        setAIToDefault();
+        super(name, 
+            100, 
+            100, 
+            8, 
+            4,
+            40, 
+            new DefaultZombieAI(new Node(new RootBlock())), 
+            moveAnimationUnarmed, 
+            null, 
+            null, 
+            attackAnimationUnarmed, 
+            null, 
+            null);
     }
     @Override
     public Texture getAnimation(AnimationType type, AnimationDirection dir){
