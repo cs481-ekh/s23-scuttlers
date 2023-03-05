@@ -9,7 +9,8 @@ import com.badlogic.gdx.graphics.Texture;
  * @author antho
  */
 public class Chestplate extends Armor{
-    private String name = "Chestplate";
-    private int defense = 10;
-    private Texture img = new Texture("armor/chestplate.png");
+    
+    public Chestplate(){
+        super("Chestplate", 10, new Texture("armor/chestplate.png"));
+    }
 }
