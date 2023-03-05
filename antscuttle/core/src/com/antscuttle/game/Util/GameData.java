@@ -6,6 +6,8 @@ import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.Armor.Armor;
 import com.antscuttle.game.Level.Level;
 import com.antscuttle.game.Weapon.Weapon;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.Set;
@@ -24,7 +26,7 @@ public class GameData {
     private LinkedList<AI> allAIs;
     
     /* Class info */
-    private LinkedList<Level> allLevels;
+    private LinkedList<Class<? extends Level>> allLevels;
     private Set<Armor> allArmors;
     private Set<Weapon> allWeapons;
     private LinkedList<DecisionBlock> allDBs;
@@ -32,11 +34,11 @@ public class GameData {
     /* Unlocked */
     private LinkedList<Armor> unlockedArmors;
     private LinkedList<Weapon> unlockedWeapons;
-    private LinkedList<Level> unlockedLevels;
+    private LinkedList<Class<? extends Level>> unlockedLevels;
     
     /* Locked */
     private LinkedList<Object> lockedItems;
-    private LinkedList<Level> lockedLevels;
+    private LinkedList<Class<? extends Level>> lockedLevels;
 
     /* Constructor for new games */
     public GameData() {
@@ -67,7 +69,7 @@ public class GameData {
         return allAIs;
     }
 
-    public LinkedList<Level> getAllLevels() {
+    public LinkedList<Class<? extends Level>> getAllLevels() {
         return allLevels;
     }
 
@@ -91,7 +93,7 @@ public class GameData {
         return unlockedWeapons;
     }
 
-    public LinkedList<Level> getUnlockedLevels() {
+    public LinkedList<Class<? extends Level>> getUnlockedLevels() {
         return unlockedLevels;
     }
 
@@ -138,8 +140,16 @@ public class GameData {
     public boolean unlockNewLevel(){
         if(lockedLevels.isEmpty())
             return false;
-        unlockedLevels.add(lockedLevels.poll());
-        currentLevel = unlockedLevels.peekLast();
+        Class<? extends Level> unlockedLevel = lockedLevels.poll();
+        unlockedLevels.add(unlockedLevel);
+        try{
+            @SuppressWarnings("unchecked") Constructor<? extends Level> cons = (Constructor<? extends Level>) unlockedLevel.getConstructors()[0];
+            Level level = cons.newInstance();
+            currentLevel = level;
+        } catch (IllegalAccessException | InstantiationException | InvocationTargetException ex){
+            System.err.println("Error loading new level: " + unlockedLevel.getName());
+            return false;
+        }
         return true;
     }
 }
