@@ -80,7 +80,10 @@ public class GameData {
     public LinkedList<AI> getAllAIs() {
         return userAIs;
     }
-
+    
+    public LinkedList<Class<? extends Ant>> getAntTypes(){
+        return allAntTypes;
+    }
     public LinkedList<Class<? extends Level>> getAllLevels() {
         return allLevels;
     }

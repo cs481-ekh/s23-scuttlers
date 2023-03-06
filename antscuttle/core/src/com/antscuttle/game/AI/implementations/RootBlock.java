@@ -2,14 +2,15 @@
 package com.antscuttle.game.AI.implementations;
 
 import com.antscuttle.game.AI.DecisionBlock;
+import com.antscuttle.game.Ant.implementations.Human;
 
 /**
  *
  * @author antho
  */
 public class RootBlock extends DecisionBlock {
-    private boolean executionResult;
     public RootBlock(){
-        this.executionResult = true;
+        super();
+        execute(null);
     }
 }
