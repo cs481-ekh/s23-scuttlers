@@ -10,11 +10,11 @@ import com.antscuttle.game.AI.implementations.MoveBlock;
 import com.antscuttle.game.AI.implementations.RootBlock;
 import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.Armor.Armor;
+import com.antscuttle.game.Level.Level;
 import com.antscuttle.game.Level.LevelObject;
 import com.antscuttle.game.Weapon.Weapon;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.logging.Level;
 
 /**
  *
