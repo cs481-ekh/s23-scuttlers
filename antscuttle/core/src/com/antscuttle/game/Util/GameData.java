@@ -48,6 +48,8 @@ public class GameData {
         this.unlockedArmors = new LinkedList<>();
         this.unlockedWeapons = new LinkedList<>();
         this.unlockedLevels = new LinkedList<>();
+        this.lockedItems = new LinkedList<>();
+        this.lockedLevels = new LinkedList<>();
         
         /* Need to read available implemented objs */
         ClassDetector cd = new ClassDetector();
