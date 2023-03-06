@@ -45,11 +45,11 @@ public class Zombie extends Ant{
     
     public Zombie(String name){
         super(name, 
-            100, 
-            100, 
-            8, 
-            4,
-            40, 
+            30, 
+            30, 
+            6, 
+            2,
+            20, 
             new DefaultZombieAI(new Node(new RootBlock())), 
             moveAnimationUnarmed, 
             null, 

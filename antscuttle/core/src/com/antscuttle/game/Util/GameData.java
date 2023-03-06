@@ -77,6 +77,10 @@ public class GameData {
         return userAnts;
     }
 
+    public LinkedList<Class<? extends Ant>> getAllAntTypes() {
+        return allAntTypes;
+    }
+
     public LinkedList<AI> getAllAIs() {
         return userAIs;
     }
@@ -179,5 +183,10 @@ public class GameData {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Hi\n";
     }
 }

@@ -41,7 +41,7 @@ public class NewGameScreen extends ScreenAdapter{
 
     public NewGameScreen(AntScuttleGame game, GameData gamedata) {
         this.game = game;
-        this.gameData = gameData;
+        this.gameData = gamedata;
         
         /* init buttons */
         // mainButton = new MainButton();

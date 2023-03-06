@@ -14,4 +14,9 @@ public class DefaultHumanAI extends AI{
         super(root);
         // TODO: build default AI tree here
     }
+
+    @Override
+    public String toString() {
+        return "Default Human AI";
+    }
 }
