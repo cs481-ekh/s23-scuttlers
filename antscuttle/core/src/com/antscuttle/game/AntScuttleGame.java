@@ -1,29 +1,12 @@
 package com.antscuttle.game;
 
 import com.Screens.MainMenuScreen;
-import com.antscuttle.game.AI.DecisionBlock;
-import com.antscuttle.game.AI.implementations.AttackBlock;
-import com.antscuttle.game.AI.implementations.*;
-import com.antscuttle.game.Ant.Ant;
-import com.antscuttle.game.Ant.implementations.Human;
-import com.antscuttle.game.Ant.implementations.Zombie;
-import com.antscuttle.game.Armor.Armor;
-import com.antscuttle.game.Armor.implementations.Chestplate;
-import com.antscuttle.game.Level.Level;
-import com.antscuttle.game.Util.ClassFactory;
-import com.antscuttle.game.Util.GameData;
-import com.antscuttle.game.Weapon.Weapon;
-import com.antscuttle.game.Weapon.implementations.FireSword;
-import com.antscuttle.game.Weapon.implementations.Glock;
-import com.antscuttle.game.Weapon.implementations.SteelSword;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import java.lang.reflect.Constructor;
-import java.util.LinkedList;
 
 public class AntScuttleGame extends Game {
 	public SpriteBatch batch;
