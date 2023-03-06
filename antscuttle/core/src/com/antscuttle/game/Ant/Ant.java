@@ -40,6 +40,39 @@ public abstract class Ant {
 
     public enum AnimationType { Move, MeleeAttack, RangedAttack }
     public enum AnimationDirection { Up, Right, Down, Left }
+
+    public Ant(String name, 
+            int health, 
+            int maxHealth, 
+            int baseDamage, 
+            int baseDefense,
+            int speed, 
+            AI defaultAI, 
+            Texture[] moveAnimationUnarmed, 
+            Texture[] moveAnimationSword, 
+            Texture[] moveAnimationPistol, 
+            Texture[] attackAnimationUnarmed, 
+            Texture[] attackAnimationSword, 
+            Texture[] attackAnimationPistol) {
+        this.name = name;
+        this.health = health;
+        this.maxHealth = maxHealth;
+        this.baseDamage = baseDamage;
+        this.baseDefense = baseDefense;
+        this.meleeWeapon = null;
+        this.rangedWeapon = null;
+        this.armor = null;
+        this.speed = speed;
+        this.defaultAI = defaultAI;
+        this.moveAnimationUnarmed = moveAnimationUnarmed;
+        this.moveAnimationSword = moveAnimationSword;
+        this.moveAnimationPistol = moveAnimationPistol;
+        this.attackAnimationUnarmed = attackAnimationUnarmed;
+        this.attackAnimationSword = attackAnimationSword;
+        this.attackAnimationPistol = attackAnimationPistol;
+        this.ai = this.defaultAI;
+    }
+
     
     public Texture getAnimation(AnimationType type, AnimationDirection dir){
         switch(type){
