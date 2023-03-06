@@ -24,7 +24,7 @@ public class AIEditorScreen extends ScreenAdapter {
     private static int AI_EDITOR_HEIGHT;
     private static int AI_EDITOR_WIDTH;
 
-    private static final int SETTINGS_BUTTON_Y = 10;
+    private static final int SETTINGS_BUTTON_Y = 20;
 
     String title = "AI Editor";
     GlyphLayout bounds;
@@ -61,7 +61,7 @@ public class AIEditorScreen extends ScreenAdapter {
 
 
         /* Settings Button */
-        x = AI_EDITOR_WIDTH - settingsButton.getWidth() - 10;
+        x = AI_EDITOR_WIDTH - settingsButton.getWidth() - 20;
         drawButton(x, SETTINGS_BUTTON_Y, settingsButton);
 
         game.batch.end();

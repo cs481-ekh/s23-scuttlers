@@ -3,26 +3,23 @@ package com.Screens;
 import java.util.LinkedList;
 
 import com.antscuttle.game.AntScuttleGame;
-import com.antscuttle.game.AI.AI;
 import com.antscuttle.game.Ant.Ant;
-import com.antscuttle.game.Ant.Ant.AnimationDirection;
-import com.antscuttle.game.Ant.Ant.AnimationType;
 import com.antscuttle.game.Ant.implementations.Human;
 import com.antscuttle.game.Ant.implementations.Zombie;
 import com.antscuttle.game.Buttons.AIButton;
+import com.antscuttle.game.Buttons.AntButton;
 import com.antscuttle.game.Buttons.BackButton;
 import com.antscuttle.game.Buttons.Button;
+import com.antscuttle.game.Buttons.ItemsButton;
 import com.antscuttle.game.Buttons.SettingsButton;
 import com.antscuttle.game.Util.GameData;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Cursor.SystemCursor;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class AntEditorScreen extends ScreenAdapter {
@@ -32,14 +29,17 @@ public class AntEditorScreen extends ScreenAdapter {
     
     Button settingsButton;
     Button backButton;
+
     Button AIButton;
+    Button antButton;
+    Button itemsButton;
 
     int x;
 
     private static int ANT_EDITOR_HEIGHT;
     private static int ANT_EDITOR_WIDTH;
 
-    private static final int SETTINGS_BUTTON_Y = 10;
+    private static final int SETTINGS_BUTTON_Y = 20;
 
     String title = "Ant Editor";
     GlyphLayout bounds;
@@ -52,9 +52,12 @@ public class AntEditorScreen extends ScreenAdapter {
     public AntEditorScreen(AntScuttleGame game, GameData gameData) {
         this.game = game;
         this.gameData = gameData;
+
         settingsButton = new SettingsButton();
         backButton = new BackButton();
         AIButton = new AIButton();
+        antButton = new AntButton();
+        itemsButton = new ItemsButton();
 
         antBatch = new SpriteBatch();
 
@@ -64,8 +67,8 @@ public class AntEditorScreen extends ScreenAdapter {
         bounds = new GlyphLayout();
         bounds.setText(game.font, title);
 
-        human = new Human("jerry");
-        zombie = new Zombie("timmy");
+        human = new Human("Jerry");
+        zombie = new Zombie("Timmy");
         gameData.setCurrentAnt(human);
     }
 
@@ -81,17 +84,18 @@ public class AntEditorScreen extends ScreenAdapter {
         game.batch.begin();
 
         /* Back Button */
-        drawButton(20, ANT_EDITOR_HEIGHT - backButton.getHeight() - 20, backButton);
+        drawButton(20, ANT_EDITOR_HEIGHT - backButton.getHeight() - 20, backButton, 1);
 
-        drawButton(ANT_EDITOR_WIDTH/2, ANT_EDITOR_HEIGHT/2, AIButton);
+        drawButton(ANT_EDITOR_WIDTH/1.25f, ANT_EDITOR_HEIGHT/1.25f, AIButton, 0.75f);
+        drawButton(ANT_EDITOR_WIDTH/1.25f - antButton.getWidth()*2, ANT_EDITOR_HEIGHT/1.25f, antButton, 0.75f);
+        drawButton(ANT_EDITOR_WIDTH/1.25f - antButton.getWidth(), ANT_EDITOR_HEIGHT/1.25f, itemsButton, 0.75f);
 
         LinkedList<Class<? extends Ant>> list = gameData.getAllAntTypes();
         stateTime += Gdx.graphics.getDeltaTime();
     
         antBatch.begin();
-        // antBatch.draw(gameData.getCurrentAnt().getAnimation(AnimationType.Move, AnimationDirection.Up), 0, 0);
         Texture[] frames = gameData.getCurrentAnt().getAntPreviewAnimation();
-        Animation<Texture> animation = new Animation<>(0.3f, frames);
+        Animation<Texture> animation = new Animation<>(0.6f, frames);
         antBatch.draw(frames[animation.getKeyFrameIndex(stateTime)], 10, ANT_EDITOR_HEIGHT/2 + 130);
         if(animation.isAnimationFinished(stateTime)){
             stateTime = 0;
@@ -113,8 +117,8 @@ public class AntEditorScreen extends ScreenAdapter {
 
 
         /* Settings Button */
-        x = ANT_EDITOR_WIDTH - settingsButton.getWidth() - 10;
-        drawButton(x, SETTINGS_BUTTON_Y, settingsButton);
+        x = ANT_EDITOR_WIDTH - settingsButton.getWidth() - 20;
+        drawButton(x, SETTINGS_BUTTON_Y, settingsButton, 1);
 
         game.batch.end();
     }
@@ -130,9 +134,9 @@ public class AntEditorScreen extends ScreenAdapter {
      * @param y
      * @param button type of button
      */
-    private void drawButton(int x, int y, Button button) {
-        int w = button.getWidth();
-        int h = button.getHeight();
+    private void drawButton(float x, float y, Button button, float scale) {
+        float w = button.getWidth()*scale;
+        float h = button.getHeight()*scale;
 
         /* if the cursor is inbounds of the button */
         if (Gdx.input.getX() < x + w && Gdx.input.getX() > x &&
