@@ -4,6 +4,7 @@ import com.antscuttle.game.AntScuttleGame;
 import com.antscuttle.game.Buttons.BackButton;
 import com.antscuttle.game.Buttons.Button;
 import com.antscuttle.game.Buttons.SettingsButton;
+import com.antscuttle.game.Util.GameData;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.ScreenAdapter;
@@ -13,7 +14,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 public class AntEditorScreen extends ScreenAdapter {
     AntScuttleGame game;
-
+    GameData gameData;
+    
     Button settingsButton;
     Button backButton;
 
@@ -27,8 +29,9 @@ public class AntEditorScreen extends ScreenAdapter {
     String title = "Ant Editor";
     GlyphLayout bounds;
 
-    public AntEditorScreen(AntScuttleGame game) {
+    public AntEditorScreen(AntScuttleGame game, GameData gameData) {
         this.game = game;
+        this.gameData = gameData;
         settingsButton = new SettingsButton();
         backButton = new BackButton();
 
@@ -91,7 +94,7 @@ public class AntEditorScreen extends ScreenAdapter {
             }
             if (button.getButtonType() == "back" && Gdx.input.justTouched()) {
                 button.playButtonPressSound(game);
-                game.setScreen(new NewGameScreen(game));
+                game.setScreen(new NewGameScreen(game, gameData));
             }
         } else {
             game.batch.draw(button.inactive(), x, y, w, h);

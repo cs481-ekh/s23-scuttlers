@@ -9,6 +9,7 @@ import com.antscuttle.game.Buttons.LoadGameButton;
 import com.antscuttle.game.Buttons.NewGameButton;
 import com.antscuttle.game.Buttons.SaveGameButton;
 import com.antscuttle.game.Buttons.SettingsButton;
+import com.antscuttle.game.Util.GameData;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Texture;
@@ -131,7 +132,7 @@ public class MainMenuScreen extends ScreenAdapter {
             if (button.getButtonType() == "newgame" && Gdx.input.justTouched()){
                 this.dispose();
                 button.playButtonPressSound(game);
-                game.setScreen(new NewGameScreen(game));
+                game.setScreen(new NewGameScreen(game, new GameData()));
             }
             if (button.getButtonType() == "settings" && Gdx.input.justTouched()) {
                 button.playButtonPressSound(game);

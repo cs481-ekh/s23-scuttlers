@@ -21,22 +21,23 @@ public class GameData {
     private Ant currentAnt;
     private Level currentLevel;
     
-    /* Save info */
-    private LinkedList<Ant> allAnts;
-    private LinkedList<AI> allAIs;
+    /* Save info, user-created Ants and AIs */
+    private LinkedList<Ant> userAnts;
+    private LinkedList<AI> userAIs;
     
     /* Class info */
     private LinkedList<Class<? extends Level>> allLevels;
     private Set<Armor> allArmors;
     private Set<Weapon> allWeapons;
-    private LinkedList<DecisionBlock> allDBs;
+    private LinkedList<Class<? extends DecisionBlock>> allDBs;
+    private LinkedList<Class<? extends Ant>> allAntTypes;
     
     /* Unlocked */
     private LinkedList<Armor> unlockedArmors;
     private LinkedList<Weapon> unlockedWeapons;
     private LinkedList<Class<? extends Level>> unlockedLevels;
     
-    /* Locked */
+    /* Locked : Weapons and Armor are in the same list */
     private LinkedList<Object> lockedItems;
     private LinkedList<Class<? extends Level>> lockedLevels;
 
@@ -48,25 +49,34 @@ public class GameData {
         this.unlockedWeapons = new LinkedList<>();
         this.unlockedLevels = new LinkedList<>();
         
-        /* Need to read and assign classes from disk */
+        /* Need to read available implemented objs */
+        ClassDetector cd = new ClassDetector();
+        this.allAntTypes = cd.findAntTypes();
+        this.allLevels = cd.findLevels();
+        this.allArmors = cd.findArmors();
+        this.allWeapons = cd.findWeapons();
+        this.allDBs = cd.findBlocks();
         
-        /*this.availableAnts = availableAnts;
-        this.allAIs = findAIs();
-        this.allLevels = findLevels();
-        this.allArmors = findArmors();
-        this.allWeapons = findWeapons();
+        /* add available items to locked list */
+        for(Armor a : allArmors)
+            lockedItems.add(a);
+        for(Weapon w : allWeapons)
+            lockedItems.add(w);
+        for(Class<? extends Level> level : allLevels)
+            lockedLevels.add(level);
+    
+        /* unlock first level */
+        unlockNewLevel();
         
-        add available items to locked list
-        */
     }
 
     /* Getters */
     public LinkedList<Ant> getAllAnts() {
-        return allAnts;
+        return userAnts;
     }
 
     public LinkedList<AI> getAllAIs() {
-        return allAIs;
+        return userAIs;
     }
 
     public LinkedList<Class<? extends Level>> getAllLevels() {
@@ -81,7 +91,7 @@ public class GameData {
         return allWeapons;
     }
 
-    public LinkedList<DecisionBlock> getAllDBs() {
+    public LinkedList<Class<? extends DecisionBlock>> getAllDBs() {
         return allDBs;
     }
 
@@ -112,6 +122,22 @@ public class GameData {
 
     public void setCurrentLevel(Level currentLevel) {
         this.currentLevel = currentLevel;
+    }
+    
+    public boolean deleteAnt(Ant ant){
+        return userAnts.remove(ant);
+    }
+    
+    public void addAnt(Ant ant){
+        userAnts.add(ant);
+    }
+    
+    public boolean deleteAI(AI ai){
+        return userAIs.remove(ai);
+    }
+    
+    public void addAI(AI ai){
+        userAIs.add(ai);
     }
     
     /* Unlockables */

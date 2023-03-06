@@ -4,6 +4,7 @@ import com.antscuttle.game.Buttons.BackButton;
 import com.antscuttle.game.Buttons.Button;
 import com.antscuttle.game.Buttons.PauseButton;
 import com.antscuttle.game.Buttons.StartButton;
+import com.antscuttle.game.Util.GameData;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
@@ -48,9 +49,11 @@ public class GameplayScreen extends ScreenAdapter{
 
 
     AntScuttleGame game;
+    GameData gameData;
 
-    public GameplayScreen(AntScuttleGame game){
+    public GameplayScreen(AntScuttleGame game, GameData gameData){
         this.game = game;
+        this.gameData = gameData;
     }
 
     @Override
@@ -150,7 +153,7 @@ public class GameplayScreen extends ScreenAdapter{
 
             if (button.getButtonType() == "back" && Gdx.input.justTouched()) {
                 button.playButtonPressSound(game);
-                game.setScreen(new MainMenuScreen(game));
+                game.setScreen(new NewGameScreen(game, gameData));
             }
             if (button.getButtonType() == "pause" && Gdx.input.justTouched()) {
                 button.playButtonPressSound(game);
