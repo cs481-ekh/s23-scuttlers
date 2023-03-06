@@ -1,12 +1,18 @@
 package com.antscuttle.game;
 
 import com.Screens.MainMenuScreen;
+import com.antscuttle.game.AI.DecisionBlock;
+import com.antscuttle.game.AI.implementations.MoveBlock;
+import com.antscuttle.game.Ant.Ant;
+import com.antscuttle.game.Ant.implementations.Human;
+import com.antscuttle.game.Util.ClassFactory;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import java.lang.reflect.Constructor;
 
 public class AntScuttleGame extends Game {
 	public SpriteBatch batch;
@@ -22,6 +28,10 @@ public class AntScuttleGame extends Game {
 	
 	@Override
 	public void create () {
+                ClassFactory cf = new ClassFactory();
+                Ant ant = cf.newAntInstance(Human.class, "George");
+                System.out.println(ant.getName());
+                
 		batch = new SpriteBatch();
 		font = new BitmapFont(Gdx.files.internal("fonts/myFont.fnt"));
 		font.getData().setScale(FONT_SCALE);

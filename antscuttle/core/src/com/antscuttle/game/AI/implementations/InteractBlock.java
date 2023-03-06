@@ -13,6 +13,7 @@ public class InteractBlock extends DecisionBlock{
     private LevelObject target;
     
     public InteractBlock(LevelObject target){
+        super();
         this.target = target;
         this.duration = 1;
     }

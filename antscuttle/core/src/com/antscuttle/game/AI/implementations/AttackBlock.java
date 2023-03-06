@@ -14,10 +14,11 @@ public class AttackBlock extends DecisionBlock{
     private Object target;
     private AttackType attackType;
     //private int duration = Integer.MAX_VALUE; // Attack as long as you can
-    private enum AttackType { RANGED, MELEE }
+    public enum AttackType { RANGED, MELEE }
     
     
     public AttackBlock(Object target, AttackType type){
+        super();
         this.target = target;
         this.attackType = type;
         this.duration = Integer.MAX_VALUE;
