@@ -5,7 +5,9 @@ import com.antscuttle.game.AI.DecisionBlock;
 import com.antscuttle.game.AI.implementations.MoveBlock;
 import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.Ant.implementations.Human;
+import com.antscuttle.game.Ant.implementations.Zombie;
 import com.antscuttle.game.Util.ClassFactory;
+import com.antscuttle.game.Util.GameData;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
@@ -13,6 +15,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.lang.reflect.Constructor;
+import java.util.LinkedList;
 
 public class AntScuttleGame extends Game {
 	public SpriteBatch batch;
@@ -28,9 +31,14 @@ public class AntScuttleGame extends Game {
 	
 	@Override
 	public void create () {
+                GameData data = new GameData();
+                LinkedList<Class<? extends Ant>> antTypes = data.getAntTypes();
                 ClassFactory cf = new ClassFactory();
-                Ant ant = cf.newAntInstance(Human.class, "George");
-                System.out.println(ant.getName());
+                for(Class a : antTypes){
+                    Ant ant = cf.newAntInstance(a, "Name");
+                    System.out.println("Ant name: " + ant.getName() + 
+                            "Ant type: " + ant.getClass().getName());
+                }
                 
 		batch = new SpriteBatch();
 		font = new BitmapFont(Gdx.files.internal("fonts/myFont.fnt"));

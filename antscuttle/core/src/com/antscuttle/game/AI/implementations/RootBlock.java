@@ -11,6 +11,6 @@ import com.antscuttle.game.Ant.implementations.Human;
 public class RootBlock extends DecisionBlock {
     public RootBlock(){
         super();
-        execute(new Human("Fake"));
+        execute(null);
     }
 }
