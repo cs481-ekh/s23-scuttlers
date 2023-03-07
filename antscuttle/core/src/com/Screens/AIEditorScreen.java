@@ -109,7 +109,7 @@ public class AIEditorScreen extends ScreenAdapter{
 			@Override
 			public Payload dragStart (InputEvent event, float x, float y, int pointer) {
 				Payload payload = new Payload();
-				payload.setObject("Some payload!");
+				payload.setObject("move");
 
 				payload.setDragActor(getActor());
 
@@ -117,16 +117,32 @@ public class AIEditorScreen extends ScreenAdapter{
 				validLabel.setColor(0, 1, 0, 1);
 				payload.setValidDragActor(validLabel);
 
-				Label invalidLabel = new Label("Some payload!", skin);
-				invalidLabel.setColor(1, 0, 0, 1);
-				payload.setInvalidDragActor(invalidLabel);
-
 				return payload;
 			}
             @Override
             public void dragStop(InputEvent event, float x, float y, int pointer, Payload payload, Target target){
                 if(target == null)
                     moveImage.setBounds(gameView.getWorldWidth() * 10/12, gameView.getWorldHeight() * 8/12, 150, 100);
+            }
+		});
+        dragAndDrop.addSource(new Source(attackImage) {
+			@Override
+			public Payload dragStart (InputEvent event, float x, float y, int pointer) {
+				Payload payload = new Payload();
+				payload.setObject("attack");
+
+				payload.setDragActor(getActor());
+
+				Label validLabel = new Label("Some payload!", skin);
+				validLabel.setColor(0, 1, 0, 1);
+				payload.setValidDragActor(validLabel);
+
+				return payload;
+			}
+            @Override
+            public void dragStop(InputEvent event, float x, float y, int pointer, Payload payload, Target target){
+                if(target == null)
+                    attackImage.setBounds(gameView.getWorldWidth() * 10/12, gameView.getWorldHeight() * 6/12, 150, 100);
             }
 		});
 		dragAndDrop.addTarget(new Target(validTargetImage) {
@@ -140,21 +156,13 @@ public class AIEditorScreen extends ScreenAdapter{
 			}
 
 			public void drop (Source source, Payload payload, float x, float y, int pointer) {
-				System.out.println("Accepted: " + payload.getObject() + " " + x + ", " + y);
-                moveImage.setBounds(gameView.getWorldWidth() * 1/12, gameView.getWorldHeight() * 7/12, 150, 100);
-			}
-		});
-		dragAndDrop.addTarget(new Target(validTargetImage) {
-			public boolean drag (Source source, Payload payload, float x, float y, int pointer) {
-				getActor().setColor(Color.RED);
-				return false;
-			}
+                if (payload.getObject().equals("move")) {
+                    moveImage.setBounds(gameView.getWorldWidth() * 1/12, gameView.getWorldHeight() * 7/12, 150, 100);
+                } else if (payload.getObject().equals("attack")) {
+                    attackImage.setBounds(gameView.getWorldWidth() * 5/12, gameView.getWorldHeight() * 7/12, 150, 100);
 
-			public void reset (Source source, Payload payload) {
-				getActor().setColor(Color.WHITE);
-			}
-
-			public void drop (Source source, Payload payload, float x, float y, int pointer) {
+                }
+                
 			}
 		});
         

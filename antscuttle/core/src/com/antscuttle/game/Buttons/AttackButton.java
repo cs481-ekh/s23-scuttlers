@@ -28,7 +28,7 @@ public class AttackButton extends Button {
     }
     @Override
     public String getButtonType() {
-        return ButtonType.ai.toString();
+        return ButtonType.attack.toString();
     }
     
 }

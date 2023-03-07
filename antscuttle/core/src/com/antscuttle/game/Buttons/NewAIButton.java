@@ -2,13 +2,13 @@ package com.antscuttle.game.Buttons;
 
 import com.badlogic.gdx.graphics.Texture;
 
-public class MoveButton extends Button {
+public class NewAIButton extends Button {
 
     private final int WIDTH = 200;
     private final int HEIGHT = 100;
     
-    private final Texture INACTIVE = new Texture("buttons/Move.png");
-    private final Texture ACTIVE = new Texture("buttons/Move-Active.png");
+    private final Texture INACTIVE = new Texture("buttons/New-AI.png");
+    private final Texture ACTIVE = new Texture("buttons/New-AI-Active.png");
 
 	@Override
 	public int getWidth() {
@@ -28,7 +28,7 @@ public class MoveButton extends Button {
     }
     @Override
     public String getButtonType() {
-        return ButtonType.move.toString();
+        return ButtonType.newai.toString();
     }
     
 }

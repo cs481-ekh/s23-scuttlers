@@ -28,7 +28,7 @@ public class RootButton extends Button {
     }
     @Override
     public String getButtonType() {
-        return ButtonType.ai.toString();
+        return ButtonType.root.toString();
     }
     
 }
