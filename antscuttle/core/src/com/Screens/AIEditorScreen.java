@@ -1,105 +1,210 @@
 package com.Screens;
-
 import com.antscuttle.game.AntScuttleGame;
+import com.antscuttle.game.Buttons.AttackButton;
 import com.antscuttle.game.Buttons.BackButton;
 import com.antscuttle.game.Buttons.Button;
-import com.antscuttle.game.Buttons.SettingsButton;
+import com.antscuttle.game.Buttons.MoveButton;
+import com.antscuttle.game.Buttons.PauseButton;
+import com.antscuttle.game.Buttons.RootButton;
+import com.antscuttle.game.Buttons.StartButton;
 import com.antscuttle.game.Util.GameData;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
+import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Payload;
+import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Source;
+import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Target;
+import com.badlogic.gdx.utils.Null;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.Cursor.SystemCursor;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.antscuttle.game.Util.GameData;
 
-public class AIEditorScreen extends ScreenAdapter {
+public class AIEditorScreen extends ScreenAdapter{
+	public static final float SPEED = 100;
+    private static final int START_BUTTON_Y = 200;
+    SpriteBatch gameBatch;
+    SpriteBatch menuBatch;
+    Texture menuImg;
+    Texture img;
+    float gameX;
+    float gameY;
+    float startX;
+    private Viewport gameView;
+    private Camera camera;
+    float stateTime = 0;
+    DragAndDrop dnd;
+    Stage stage;
+    // Create an array to hold the individual frames
+
+
     AntScuttleGame game;
     GameData gameData;
 
-    Button settingsButton;
-    Button backButton;
-
-    int x;
-
-    private static int AI_EDITOR_HEIGHT;
-    private static int AI_EDITOR_WIDTH;
-
-    private static final int SETTINGS_BUTTON_Y = 10;
-
-    String title = "AI Editor";
-    GlyphLayout bounds;
-
-    public AIEditorScreen(AntScuttleGame game, GameData gameData) {
+    public AIEditorScreen(AntScuttleGame game, GameData gameData){
         this.game = game;
         this.gameData = gameData;
-        
-        settingsButton = new SettingsButton();
-        backButton = new BackButton();
-
-        AI_EDITOR_HEIGHT = Gdx.graphics.getHeight();
-        AI_EDITOR_WIDTH = Gdx.graphics.getWidth();
-
-        bounds = new GlyphLayout();
-        bounds.setText(game.font, title);
+        this.dnd = new DragAndDrop();
     }
-
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(new InputAdapter() { });
+        camera = new OrthographicCamera();
+        gameView = new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        gameView.setCamera(camera);
+        gameBatch = new SpriteBatch();
+        menuBatch = new SpriteBatch();
+        Pixmap treeMap = new Pixmap((int)gameView.getWorldWidth() * 1/3, (int)gameView.getWorldHeight(),Format.RGBA8888);
+        Color treeColor = new Color(0, 38/255f, 66/255f, 1);
+        treeMap.setColor(treeColor);
+        treeMap.fill();
+        Pixmap playMap = new Pixmap((int)gameView.getWorldWidth() * 2/3, (int)gameView.getWorldHeight(),Format.RGBA8888);
+        Color playColor = Color.BLACK;
+        playMap.setColor(playColor);
+        playMap.fill();
+        menuImg = new Texture(treeMap);
+        img = new Texture(playMap);
+
+        stage = new Stage();
+		Gdx.input.setInputProcessor(stage);
+
+		final Skin skin = new Skin();
+        skin.add("default", new LabelStyle(new BitmapFont(), Color.WHITE));
+		skin.add("move", new Texture("buttons/Move.png"));
+		skin.add("attack", new Texture("buttons/Attack.png"));
+        skin.add("root", new Texture("buttons/Root.png"));
+
+        
+
+		final Image moveImage = new Image(skin, "move");
+		moveImage.setBounds(gameView.getWorldWidth() * 10/12, gameView.getWorldHeight() * 8/12, 150, 100);
+		stage.addActor(moveImage);
+
+		final Image attackImage = new Image(skin, "attack");
+		attackImage.setBounds(gameView.getWorldWidth() * 10/12, gameView.getWorldHeight() * 6/12, 150, 100);
+		stage.addActor(attackImage);
+
+		final Image validTargetImage = new Image(skin, "root");
+		validTargetImage.setBounds(gameView.getWorldWidth() * 3/12, gameView.getWorldHeight() * 9/12, 150, 100);
+		stage.addActor(validTargetImage);
+
+		DragAndDrop dragAndDrop = new DragAndDrop();
+		dragAndDrop.addSource(new Source(moveImage) {
+			@Override
+			public Payload dragStart (InputEvent event, float x, float y, int pointer) {
+				Payload payload = new Payload();
+				payload.setObject("Some payload!");
+
+				payload.setDragActor(getActor());
+
+				Label validLabel = new Label("Some payload!", skin);
+				validLabel.setColor(0, 1, 0, 1);
+				payload.setValidDragActor(validLabel);
+
+				Label invalidLabel = new Label("Some payload!", skin);
+				invalidLabel.setColor(1, 0, 0, 1);
+				payload.setInvalidDragActor(invalidLabel);
+
+				return payload;
+			}
+            @Override
+            public void dragStop(InputEvent event, float x, float y, int pointer, Payload payload, Target target){
+                if(target == null)
+                    moveImage.setBounds(gameView.getWorldWidth() * 10/12, gameView.getWorldHeight() * 8/12, 150, 100);
+            }
+		});
+		dragAndDrop.addTarget(new Target(validTargetImage) {
+			public boolean drag (Source source, Payload payload, float x, float y, int pointer) {
+				getActor().setColor(Color.GREEN);
+				return true;
+			}
+
+			public void reset (Source source, Payload payload) {
+				getActor().setColor(Color.WHITE);
+			}
+
+			public void drop (Source source, Payload payload, float x, float y, int pointer) {
+				System.out.println("Accepted: " + payload.getObject() + " " + x + ", " + y);
+                moveImage.setBounds(gameView.getWorldWidth() * 1/12, gameView.getWorldHeight() * 7/12, 150, 100);
+			}
+		});
+		dragAndDrop.addTarget(new Target(validTargetImage) {
+			public boolean drag (Source source, Payload payload, float x, float y, int pointer) {
+				getActor().setColor(Color.RED);
+				return false;
+			}
+
+			public void reset (Source source, Payload payload) {
+				getActor().setColor(Color.WHITE);
+			}
+
+			public void drop (Source source, Payload payload, float x, float y, int pointer) {
+			}
+		});
+        
+        // TODO Auto-generated method stub
+        
     }
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0, 38/255f, 66/255f, 1);
-        game.batch.begin();
 
-        /* Back Button */
-        drawButton(20, AI_EDITOR_HEIGHT - backButton.getHeight() - 20, backButton);
+        menuBatch.begin();
+        menuBatch.draw(menuImg, gameX + (gameView.getWorldWidth() * 2/3), gameY, gameView.getWorldWidth() * 1/3,gameView.getWorldHeight());
+        menuBatch.end();
 
-        game.font.draw(game.batch, title, AI_EDITOR_WIDTH/2, AI_EDITOR_HEIGHT/2 + bounds.height+10);
+        gameBatch.begin();
+        gameBatch.draw(img, gameX, gameY, gameView.getWorldWidth()*2/3,gameView.getWorldHeight());
+        gameBatch.end();
 
+        stage.draw();
+        
+    }
+    @Override
+    public void resize(int width, int height) {
+        gameView.update(width, height);
+        // TODO Auto-generated method stub
+        
+    }
 
-        /* Settings Button */
-        x = AI_EDITOR_WIDTH - settingsButton.getWidth() - 10;
-        drawButton(x, SETTINGS_BUTTON_Y, settingsButton);
+    @Override
+    public void pause() {
+        // TODO Auto-generated method stub
+        
+    }
 
-        game.batch.end();
+    @Override
+    public void resume() {
+        // TODO Auto-generated method stub
+        
     }
 
     @Override
     public void hide() {
-        Gdx.input.setInputProcessor(null);
+        // TODO Auto-generated method stub
+        
     }
 
-    /**
-     * Draw the Button
-     * @param x
-     * @param y
-     * @param button type of button
-     */
-    private void drawButton(int x, int y, Button button) {
-        int w = button.getWidth();
-        int h = button.getHeight();
-
-        /* if the cursor is inbounds of the button */
-        if (Gdx.input.getX() < x + w && Gdx.input.getX() > x &&
-            AI_EDITOR_HEIGHT - Gdx.input.getY() < y + h && AI_EDITOR_HEIGHT - Gdx.input.getY() > y) {
-
-            // Gdx.graphics.setSystemCursor(SystemCursor.Hand);
-            game.batch.draw(button.active(), x, y, w, h);
-
-            if (button.getButtonType() == "settings" && Gdx.input.justTouched()) {
-                button.playButtonPressSound(game);
-                game.setScreen(new SettingsMenuScreen(game, this));
-            }
-            if (button.getButtonType() == "back" && Gdx.input.justTouched()) {
-                button.playButtonPressSound(game);
-                game.setScreen(new NewGameScreen(game, gameData));
-            }
-        } else {
-            game.batch.draw(button.inactive(), x, y, w, h);
-            // Gdx.graphics.setSystemCursor(SystemCursor.Arrow);
-        }
-    }   
+    @Override
+    public void dispose() {
+        // TODO Auto-generated method stub
+        
+    }
+    
 }
