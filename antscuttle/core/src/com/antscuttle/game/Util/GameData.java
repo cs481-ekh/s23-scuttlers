@@ -50,6 +50,8 @@ public class GameData {
         this.unlockedLevels = new LinkedList<>();
         this.lockedItems = new LinkedList<>();
         this.lockedLevels = new LinkedList<>();
+
+        this.userAnts = new LinkedList<>();
         
         /* Need to read available implemented objs */
         ClassDetector cd = new ClassDetector();
@@ -183,10 +185,5 @@ public class GameData {
             return false;
         }
         return true;
-    }
-
-    @Override
-    public String toString() {
-        return "Hi\n";
     }
 }
