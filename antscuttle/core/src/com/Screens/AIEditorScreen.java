@@ -39,6 +39,7 @@ import com.antscuttle.game.Util.GameData;
 public class AIEditorScreen extends ScreenAdapter{
 	public static final float SPEED = 100;
     private static final int START_BUTTON_Y = 200;
+    private static int MAIN_MENU_HEIGHT= Gdx.graphics.getHeight();;
     SpriteBatch gameBatch;
     SpriteBatch menuBatch;
     Texture menuImg;
@@ -49,8 +50,9 @@ public class AIEditorScreen extends ScreenAdapter{
     private Viewport gameView;
     private Camera camera;
     float stateTime = 0;
-    DragAndDrop dnd;
     Stage stage;
+    private Button backButton;
+
     // Create an array to hold the individual frames
 
 
@@ -58,9 +60,9 @@ public class AIEditorScreen extends ScreenAdapter{
     GameData gameData;
 
     public AIEditorScreen(AntScuttleGame game, GameData gameData){
+        backButton = new BackButton();
         this.game = game;
         this.gameData = gameData;
-        this.dnd = new DragAndDrop();
     }
 
     @Override
@@ -169,9 +171,39 @@ public class AIEditorScreen extends ScreenAdapter{
         // TODO Auto-generated method stub
         
     }
+    /**
+     * Draw the Button
+     * @param x
+     * @param y
+     * @param button type of button
+     */
+    private void drawButton(int x, int y, Button button) {
+        game.batch.begin();
+        int w = button.getWidth();
+        int h = button.getHeight();
 
+        /* if the cursor is inbounds of the button */
+        if (Gdx.input.getX() < x + w && Gdx.input.getX() > x &&
+            MAIN_MENU_HEIGHT - Gdx.input.getY() < y + h && MAIN_MENU_HEIGHT - Gdx.input.getY() > y) {
+
+            game.batch.draw(button.active(), x, y, w, h);
+
+            if (button.getButtonType() == "back" && Gdx.input.justTouched()) {
+                button.playButtonPressSound(game);
+                game.setScreen(new NewGameScreen(game, gameData));
+            }
+        }else {
+            game.batch.draw(button.inactive(), x, y, w, h);
+        }
+        game.batch.end();
+    }
     @Override
     public void render(float delta) {
+        
+
+        
+        /* Back Button */
+        drawButton(20, MAIN_MENU_HEIGHT - backButton.getHeight() - 20, backButton);
 
         menuBatch.begin();
         menuBatch.draw(menuImg, gameX + (gameView.getWorldWidth() * 2/3), gameY, gameView.getWorldWidth() * 1/3,gameView.getWorldHeight());
@@ -180,6 +212,7 @@ public class AIEditorScreen extends ScreenAdapter{
         gameBatch.begin();
         gameBatch.draw(img, gameX, gameY, gameView.getWorldWidth()*2/3,gameView.getWorldHeight());
         gameBatch.end();
+        drawButton(20, MAIN_MENU_HEIGHT - backButton.getHeight() - 20, backButton);
 
         stage.draw();
         
