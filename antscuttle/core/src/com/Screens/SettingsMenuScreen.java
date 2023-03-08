@@ -1,7 +1,6 @@
 package com.Screens;
 
 import com.antscuttle.game.Buttons.Button;
-import com.Screens.Panes.AntNameInputListener;
 import com.antscuttle.game.AntScuttleGame;
 import com.antscuttle.game.Buttons.BackButton;
 import com.antscuttle.game.Buttons.MusicButton;
@@ -10,7 +9,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.utils.ScreenUtils;
 

@@ -27,6 +27,6 @@ public class ItemsButton extends Button {
     }		
     @Override
     public String getButtonType() {
-        return ButtonType.exit.toString();
+        return ButtonType.items.toString();
     }
 }
