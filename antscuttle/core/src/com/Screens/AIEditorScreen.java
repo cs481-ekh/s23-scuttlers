@@ -350,31 +350,30 @@ public class AIEditorScreen extends ScreenAdapter{
 
             game.batch.draw(button.active(), x, y, w, h);
 
-            if (button.getButtonType() == "back" && Gdx.input.justTouched()) {
-                button.playButtonPressSound(game);
-                game.setScreen(new NewGameScreen(game, gameData));
-            }
+            if (Gdx.input.justTouched()) 
+                button.click(game, this, gameData);
+            
         }else {
             game.batch.draw(button.inactive(), x, y, w, h);
         }
         game.batch.end();
     }
     @Override
-    public void render(float delta) {
-        
-
-        
+    public void render(float delta) {        
         /* Back Button */
-        drawButton(20, MAIN_MENU_HEIGHT - backButton.getHeight() - 20, backButton);
-
+        
         menuBatch.begin();
         menuBatch.draw(menuImg, gameX + (gameView.getWorldWidth() * 2/3), gameY, gameView.getWorldWidth() * 1/3,gameView.getWorldHeight());
         menuBatch.end();
-
+        
         gameBatch.begin();
         gameBatch.draw(img, gameX, gameY, gameView.getWorldWidth()*2/3,gameView.getWorldHeight());
         gameBatch.end();
-        drawButton(20, MAIN_MENU_HEIGHT - backButton.getHeight() - 20, backButton);
+
+        game.batch.begin();
+        Button.draw(game, this, gameData, 20, MAIN_MENU_HEIGHT - backButton.getHeight() - 20, backButton, 1);
+        game.batch.end();
+        
         // a stage has its own batch so don't put it within batch.begin() and batch.end()
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f)); //you are likely missing THIS LINE :D
         stage.draw();
@@ -382,34 +381,16 @@ public class AIEditorScreen extends ScreenAdapter{
     }
     @Override
     public void resize(int width, int height) {
-        gameView.update(width, height);
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void pause() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void resume() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void hide() {
-        // TODO Auto-generated method stub
-        
+        gameView.update(width, height);        
     }
 
     @Override
     public void dispose() {
         stage.dispose();
-        // TODO Auto-generated method stub
-        
     }
     
+    @Override
+    public String toString() {
+        return "AIEditorScreen";
+    }
 }

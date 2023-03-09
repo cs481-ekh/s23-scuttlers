@@ -1,5 +1,8 @@
 package com.antscuttle.game.Buttons;
 
+import com.antscuttle.game.AntScuttleGame;
+import com.antscuttle.game.Util.GameData;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
 public class NewAIButton extends Button {
@@ -26,9 +29,11 @@ public class NewAIButton extends Button {
     public Texture inactive() {
         return INACTIVE;
     }
+   
     @Override
-    public String getButtonType() {
-        return ButtonType.newai.toString();
+    public void click(AntScuttleGame game, Screen screen, GameData data) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'click'");
     }
     
 }

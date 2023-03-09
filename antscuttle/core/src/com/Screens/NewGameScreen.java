@@ -64,70 +64,27 @@ public class NewGameScreen extends ScreenAdapter{
         game.batch.begin();
 
         /* Back Button */
-        drawButton(20, MAIN_MENU_HEIGHT - backButton.getHeight() - 20, backButton);
+        Button.draw(game, this, gameData, 20, MAIN_MENU_HEIGHT - backButton.getHeight() - 20, backButton, 1);
 
         /* Start Game Button */
         x = (MAIN_MENU_WIDTH / 2) - (startButton.getWidth() / 2);
-        drawButton(x, START_BUTTON_Y, startButton);
-
+        Button.draw(game, this, gameData, x, START_BUTTON_Y, startButton, 1);
       
         /* AI Editor Button */
         x = (MAIN_MENU_WIDTH / 2) - (aiButton.getWidth() / 2);
-        drawButton(x, AI_BUILDER_BUTTON_Y, aiButton);
-
+        Button.draw(game, this, gameData, x, AI_BUILDER_BUTTON_Y, aiButton, 1);
     
         /* Save Game Button */
         x = (MAIN_MENU_WIDTH / 2) - (charButton.getWidth() / 2);
-        drawButton(x, CHAR_BUTTON_Y, charButton);
-
+        Button.draw(game, this, gameData, x, CHAR_BUTTON_Y, charButton, 1);
 
         /* Settings Button */
         x = MAIN_MENU_WIDTH - settingsButton.getWidth() - 20;
-        drawButton(x, SETTINGS_BUTTON_Y, settingsButton);
+        Button.draw(game, this, gameData, x, SETTINGS_BUTTON_Y, settingsButton, 1);
 
         game.batch.end();
     }
 
-    /**
-     * Draw the Button
-     * @param x
-     * @param y
-     * @param button type of button
-     */
-    private void drawButton(int x, int y, Button button) {
-        int w = button.getWidth();
-        int h = button.getHeight();
-
-        /* if the cursor is inbounds of the button */
-        if (Gdx.input.getX() < x + w && Gdx.input.getX() > x &&
-            MAIN_MENU_HEIGHT - Gdx.input.getY() < y + h && MAIN_MENU_HEIGHT - Gdx.input.getY() > y) {
-
-            game.batch.draw(button.active(), x, y, w, h);
-
-            if (button.getButtonType() == "back" && Gdx.input.justTouched()) {
-                button.playButtonPressSound(game);
-                game.setScreen(new MainMenuScreen(game));
-            }
-            if (button.getButtonType() == "settings" && Gdx.input.justTouched()) {
-                button.playButtonPressSound(game);
-                game.setScreen(new SettingsMenuScreen(game, this));
-            }
-            if (button.getButtonType() == "ai" && Gdx.input.justTouched()) {
-                button.playButtonPressSound(game);
-                game.setScreen(new AIEditorScreen(game, gameData));
-            }
-            if (button.getButtonType() == "ant" && Gdx.input.justTouched()){
-                button.playButtonPressSound(game);
-                game.setScreen(new AntEditorScreen(game, gameData));
-            }
-            if (button.getButtonType() == "start" && Gdx.input.justTouched()){
-                button.playButtonPressSound(game);
-                game.setScreen(new GameplayScreen(game, gameData));
-            }
-        } else {
-            game.batch.draw(button.inactive(), x, y, w, h);
-        }
-    }
 
     @Override
     public void dispose() {
@@ -136,5 +93,8 @@ public class NewGameScreen extends ScreenAdapter{
         }
     }
 
-    
+    @Override
+    public String toString() {
+        return "NewGameScreen";
+    }
 }

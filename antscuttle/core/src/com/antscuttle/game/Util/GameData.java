@@ -41,6 +41,10 @@ public class GameData {
     private LinkedList<Object> lockedItems;
     private LinkedList<Class<? extends Level>> lockedLevels;
 
+    /* Keep track of current pane in Ant editor */
+	public enum panes {ant, ai, items}
+    public panes currPane;
+
     /* Constructor for new games */
     public GameData() {
         this.currentAnt = null;

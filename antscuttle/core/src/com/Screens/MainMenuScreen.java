@@ -1,6 +1,5 @@
 package com.Screens;
 
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
 import com.antscuttle.game.AntScuttleGame;
 import com.antscuttle.game.Buttons.Button;
@@ -9,12 +8,9 @@ import com.antscuttle.game.Buttons.LoadGameButton;
 import com.antscuttle.game.Buttons.NewGameButton;
 import com.antscuttle.game.Buttons.SaveGameButton;
 import com.antscuttle.game.Buttons.SettingsButton;
-import com.antscuttle.game.Util.GameData;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import java.awt.Point;
 
@@ -82,21 +78,20 @@ public class MainMenuScreen extends ScreenAdapter {
 
         drawLogo();
         /* New Game Button */
-        drawButton(NEW_GAME_BUTTON_LOC.x, NEW_GAME_BUTTON_LOC.y, newGameButton);
+        Button.draw(game, this, null, NEW_GAME_BUTTON_LOC.x, NEW_GAME_BUTTON_LOC.y, newGameButton, 1);
       
         /* Load Game Button */
-        drawButton(LOAD_BUTTON_LOC.x, LOAD_BUTTON_LOC.y, loadGameButton);
+        Button.draw(game, this, null, LOAD_BUTTON_LOC.x, LOAD_BUTTON_LOC.y, loadGameButton, 1);
     
         /* Save Game Button */
-        drawButton(SAVE_GAME_BUTTON_LOC.x, SAVE_GAME_BUTTON_LOC.y, saveGameButton);
+        Button.draw(game, this, null, SAVE_GAME_BUTTON_LOC.x, SAVE_GAME_BUTTON_LOC.y, saveGameButton, 1);
 
         /* Exit Button */
-        drawButton(EXIT_BUTTON_LOC.x, EXIT_BUTTON_LOC.y, exitButton);
+        Button.draw(game, this, null, EXIT_BUTTON_LOC.x, EXIT_BUTTON_LOC.y, exitButton, 1);
 
         /* Settings Button */
-        drawButton(SETTINGS_BUTTON_LOC.x, SETTINGS_BUTTON_LOC.y, settingsButton);
+        Button.draw(game, this, null, SETTINGS_BUTTON_LOC.x, SETTINGS_BUTTON_LOC.y, settingsButton, 1);
 
-        
         game.batch.end();
     }
 
@@ -109,37 +104,8 @@ public class MainMenuScreen extends ScreenAdapter {
         game.batch.draw(logo, LOGO_LOC.x, LOGO_LOC.y);
     }
     
-    /**
-     * Draw the Button
-     * @param x
-     * @param y
-     * @param button type of button
-     */
-    private void drawButton(int x, int y, Button button) {
-        int w = button.getWidth();
-        int h = button.getHeight();
-
-        /* if the cursor is inbounds of the button */
-        if (Gdx.input.getX() < x + w && Gdx.input.getX() > x &&
-            MAIN_MENU_HEIGHT - Gdx.input.getY() < y + h && MAIN_MENU_HEIGHT - Gdx.input.getY() > y) {
-
-            game.batch.draw(button.active(), x, y, w, h);
-
-            if (button.getButtonType() == "exit" && Gdx.input.justTouched()) {
-                button.playButtonPressSound(game);
-                Gdx.app.exit();
-            }
-            if (button.getButtonType() == "newgame" && Gdx.input.justTouched()){
-                this.dispose();
-                button.playButtonPressSound(game);
-                game.setScreen(new NewGameScreen(game, new GameData()));
-            }
-            if (button.getButtonType() == "settings" && Gdx.input.justTouched()) {
-                button.playButtonPressSound(game);
-                game.setScreen(new SettingsMenuScreen(game, this));
-            }
-        } else {
-            game.batch.draw(button.inactive(), x, y, w, h);
-        }
+    @Override 
+    public String toString() {
+        return "MainMenuScreen";
     }
 }
