@@ -1,5 +1,9 @@
 package com.antscuttle.game.Buttons;
 
+import com.Screens.AIEditorScreen;
+import com.antscuttle.game.AntScuttleGame;
+import com.antscuttle.game.Util.GameData;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
 public class AIButton extends Button {
@@ -26,9 +30,15 @@ public class AIButton extends Button {
     public Texture inactive() {
         return INACTIVE;
     }
+  
     @Override
-    public String getButtonType() {
-        return ButtonType.ai.toString();
+    public void click(AntScuttleGame game, Screen screen, GameData data) {
+        this.playButtonPressSound(game);
+        switch (screen.toString()){
+            case "NewGameScreen": game.setScreen(new AIEditorScreen(game, data)); break;
+            case "AntEditorScreen": data.currPane = GameData.panes.ai; break;
+        }      
+        
     }
     
 }

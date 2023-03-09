@@ -113,17 +113,17 @@ public class GameplayScreen extends ScreenAdapter{
         titleBatch.draw(titleImg, gameX + (gameView.getWorldWidth() * 1/12), gameY + (gameView.getWorldHeight() * 6/12), gameView.getWorldWidth() * 1/2, gameView.getWorldHeight()/3);
         titleBatch.end();
 
-        buttonBatch.begin();
+        game.batch.begin();
         /* Back Button */
-        drawButton(20, (int)(gameView.getWorldHeight() - back.getHeight() - 20),  back);
+        Button.draw(game, this, gameData, 20, gameView.getWorldHeight() - back.getHeight() - 20, back, 1);
 
         /* Start Game Button */
         startX = gameX + (gameView.getWorldWidth() * 3/12);
-        drawButton((int)startX, START_BUTTON_Y, start);
+        Button.draw(game, this, gameData, startX, START_BUTTON_Y, start, 1);
         
         /* Pause Game Button */
-        drawButton((int) startX + 80, START_BUTTON_Y - 150, pause);
-        buttonBatch.end();
+        Button.draw(game, this, gameData, startX + 80, START_BUTTON_Y - 150, pause, 1);
+        game.batch.end();
 
         characterBatch.begin();
         characterBatch.draw(frames[animation.getKeyFrameIndex(stateTime)], charX, charY);
@@ -131,72 +131,16 @@ public class GameplayScreen extends ScreenAdapter{
             stateTime = 0;
         }
         characterBatch.end();
-
-        
-    }
-
-    /**
-     * Draw the Button
-     * @param x
-     * @param y
-     * @param button type of button
-     */
-    private void drawButton(int x, int y, Button button) {
-        int w = button.getWidth();
-        int h = button.getHeight();
-
-        /* if the cursor is inbounds of the button */
-        if (Gdx.input.getX() < x + w && Gdx.input.getX() > x &&
-            gameView.getWorldHeight() - Gdx.input.getY() < y + h && gameView.getWorldWidth() - Gdx.input.getY() > y) {
-
-            buttonBatch.draw(button.active(), x, y, w, h);
-
-            if (button.getButtonType() == "back" && Gdx.input.justTouched()) {
-                button.playButtonPressSound(game);
-                game.setScreen(new NewGameScreen(game, gameData));
-            }
-            if (button.getButtonType() == "pause" && Gdx.input.justTouched()) {
-                button.playButtonPressSound(game);
-                //pause game
-            }
-            if (button.getButtonType() == "start" && Gdx.input.justTouched()){
-                button.playButtonPressSound(game);
-                //start game
-            }
-        } else {
-            buttonBatch.draw(button.inactive(), x, y, w, h);
-        }
     }
 
     @Override
     public void resize(int width, int height) {
         gameView.update(width, height);
-        // TODO Auto-generated method stub
-        
     }
 
-    @Override
-    public void pause() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void resume() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void hide() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void dispose() {
-        // TODO Auto-generated method stub
-        
+    @Override 
+    public String toString() {
+        return "GameplayScreen";
     }
     
 }

@@ -2,12 +2,9 @@ package com.Screens;
 
 import com.antscuttle.game.AntScuttleGame;
 import com.antscuttle.game.Buttons.Button;
-import com.antscuttle.game.Buttons.MainButton;
 import com.antscuttle.game.Buttons.NewAIButton;
 import com.antscuttle.game.Buttons.AIButton;
 import com.antscuttle.game.Buttons.BackButton;
-import com.antscuttle.game.Buttons.StartButton;
-import com.antscuttle.game.Buttons.AntButton;
 import com.antscuttle.game.Buttons.SettingsButton;
 import com.antscuttle.game.Util.GameData;
 import com.badlogic.gdx.Gdx;
@@ -43,7 +40,7 @@ public class AISelectScreen extends ScreenAdapter{
 
     public AISelectScreen(AntScuttleGame game, GameData gamedata) {
         this.game = game;
-        this.gameData = gameData;
+        this.gameData = gamedata;
         
         /* init buttons */
         // mainButton = new MainButton();
@@ -99,21 +96,7 @@ public class AISelectScreen extends ScreenAdapter{
 
             game.batch.draw(button.active(), x, y, w, h);
 
-            if (button.getButtonType() == "back" && Gdx.input.justTouched()) {
-                button.playButtonPressSound(game);
-                game.setScreen(new NewGameScreen(game, gameData));
-            }
-            if (button.getButtonType() == "settings" && Gdx.input.justTouched()) {
-                button.playButtonPressSound(game);
-                game.setScreen(new SettingsMenuScreen(game, this));
-            }
-            if (button.getButtonType() == "ai" && Gdx.input.justTouched()) {
-                button.playButtonPressSound(game);
-            }
-            if (button.getButtonType() == "newai" && Gdx.input.justTouched()){
-                button.playButtonPressSound(game);
-                game.setScreen(new AIEditorScreen(game, gameData));
-            }
+            
         } else {
             game.batch.draw(button.inactive(), x, y, w, h);
         }

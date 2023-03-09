@@ -9,7 +9,6 @@ import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.Ant.implementations.Human;
 import com.antscuttle.game.Ant.implementations.Zombie;
 import com.antscuttle.game.Armor.Armor;
-import com.antscuttle.game.Armor.implementations.Chestplate;
 import com.antscuttle.game.Buttons.AIButton;
 import com.antscuttle.game.Buttons.AddButton;
 import com.antscuttle.game.Buttons.AntButton;
@@ -19,15 +18,11 @@ import com.antscuttle.game.Buttons.ItemButton;
 import com.antscuttle.game.Buttons.ItemsButton;
 import com.antscuttle.game.Buttons.SettingsButton;
 import com.antscuttle.game.Util.GameData;
-import com.antscuttle.game.Weapon.MeleeWeapon;
 import com.antscuttle.game.Weapon.Weapon;
-import com.antscuttle.game.Weapon.implementations.Glock;
-import com.antscuttle.game.Weapon.implementations.SteelSword;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Cursor.SystemCursor;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -45,7 +40,7 @@ public class AntEditorScreen extends ScreenAdapter {
     Button antButton;
     Button itemsButton;
     Button addButton;
-    Button itemButton;
+    ItemButton itemButton;
 
     int x;
 
@@ -65,8 +60,7 @@ public class AntEditorScreen extends ScreenAdapter {
     LinkedList<Ant> ants;
     LinkedList<AI> ais;
 
-    enum panes {ant, ai, items}
-    panes currPane;
+    
 
     public AntEditorScreen(AntScuttleGame game, GameData gameData) {
         this.game = game;
@@ -100,7 +94,7 @@ public class AntEditorScreen extends ScreenAdapter {
         gameData.setCurrentAnt(human);
         
         i  = game.font.getCapHeight()+10;
-        currPane = panes.ant;
+        gameData.currPane = GameData.panes.ant;
     }
 
 
@@ -116,15 +110,15 @@ public class AntEditorScreen extends ScreenAdapter {
         game.batch.begin();
 
         /* Back Button */
-        drawButton(20, ANT_EDITOR_HEIGHT - backButton.getHeight() - 20, backButton, 1);
+        Button.draw(game, this, gameData, 20, ANT_EDITOR_HEIGHT - backButton.getHeight() - 20, backButton, 1);
 
         /* Button View */
-        drawButton(ANT_EDITOR_WIDTH/1.25f, ANT_EDITOR_HEIGHT/1.25f, AIButton, 0.75f);
-        drawButton(ANT_EDITOR_WIDTH/1.25f - antButton.getWidth()*2, ANT_EDITOR_HEIGHT/1.25f, antButton, 0.75f);
-        drawButton(ANT_EDITOR_WIDTH/1.25f - antButton.getWidth(), ANT_EDITOR_HEIGHT/1.25f, itemsButton, 0.75f);
+        Button.draw(game, this, gameData, ANT_EDITOR_WIDTH/1.25f, ANT_EDITOR_HEIGHT/1.25f, AIButton, 0.75f);
+        Button.draw(game, this, gameData, ANT_EDITOR_WIDTH/1.25f - antButton.getWidth()*2, ANT_EDITOR_HEIGHT/1.25f, antButton, 0.75f);
+        Button.draw(game, this, gameData, ANT_EDITOR_WIDTH/1.25f - antButton.getWidth(), ANT_EDITOR_HEIGHT/1.25f, itemsButton, 0.75f);
 
         /* Add Ant Button */
-        drawButton(ANT_EDITOR_WIDTH/1.25f - antButton.getWidth()*2, 30, addButton, 1);
+        Button.draw(game, this, gameData, ANT_EDITOR_WIDTH/1.25f - antButton.getWidth()*2, 30, addButton, 1);
 
         /* The view for whichever button is clicked */
         drawCurrentPane();
@@ -156,7 +150,7 @@ public class AntEditorScreen extends ScreenAdapter {
 
         /* Settings Button */
         x = ANT_EDITOR_WIDTH - settingsButton.getWidth() - 20;
-        drawButton(x, 20, settingsButton, 1);
+        Button.draw(game, this, gameData, x, 20, settingsButton, 1);
 
         game.batch.end();
     }
@@ -166,54 +160,10 @@ public class AntEditorScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(null);
     }
 
-    /**
-     * Draw the Button
-     * @param x
-     * @param y
-     * @param button type of button
-     */
-    private void drawButton(float x, float y, Button button, float scale) {
-        float w = button.getWidth()*scale;
-        float h = button.getHeight()*scale;
-
-        /* if the cursor is inbounds of the button dimensions */
-        if (cursorInBounds(x, y, w, h)) {
-            game.batch.draw(button.active(), x, y, w, h);
-
-            if (Gdx.input.justTouched()) { 
-                button.playButtonPressSound(game);
-
-                switch (button.getButtonType()) {
-                    case "settings": game.setScreen(new SettingsMenuScreen(game, this)); break;
-                    case "back": game.setScreen(new NewGameScreen(game, gameData)); break;
-                    case "ai": currPane = panes.ai; break;
-                    case "ant": currPane = panes.ant; break;
-                    case "items": currPane = panes.items; break;
-                    case "add": 
-                            Ant newguy = new Human("terry");
-                            newguy.equipMeleeWeapon(new SteelSword());
-                            newguy.equipRangedWeapon(new Glock());
-                            newguy.equipArmor(new Chestplate());
-                            gameData.addAnt(newguy);
-                            gameData.setCurrentAnt(newguy); 
-                        break;
-                }
-            }
-        } else {
-            game.batch.draw(button.inactive(), x, y, w, h);
-            Gdx.graphics.setSystemCursor(SystemCursor.Arrow);
-        }
-    }   
-
-    /* checks to see if  */
-    private boolean cursorInBounds(float x, float y, float w, float h) {
-        return (Gdx.input.getX() < x + w && Gdx.input.getX() > x && ANT_EDITOR_HEIGHT - Gdx.input.getY() < y + h && ANT_EDITOR_HEIGHT - Gdx.input.getY() > y);
-    }
-
     private void drawCurrentPane() {
         i = game.font.getCapHeight()+10;
 
-        switch(currPane) {
+        switch(gameData.currPane) {
             case ai:
                 game.font.draw(game.batch, "AIs: ", ANT_EDITOR_WIDTH/2.05f, ANT_EDITOR_HEIGHT/1.35f);
                 for (AI ai: ais) {
@@ -227,12 +177,9 @@ public class AntEditorScreen extends ScreenAdapter {
                 } else {
                     int j=0;
                     for (Ant a: ants) {
-                        drawButton(ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/2.05f, itemButton, 1);
+                        Button.drawAntButton(game, this, gameData, ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/2.05f, itemButton, 1, a);
                         game.font.draw(game.batch, a.getName(), ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/2.05f+itemButton.getHeight()+20);
 
-                        if (cursorInBounds(ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/2.05f, itemButton.getWidth(), itemButton.getHeight()) && Gdx.input.justTouched()){
-                            gameData.setCurrentAnt(a);
-                        }
                         j += itemButton.getWidth()+20;
                         i += game.font.getCapHeight()+20;
                     }
@@ -252,5 +199,10 @@ public class AntEditorScreen extends ScreenAdapter {
                 }
                 break;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "AntEditorScreen";
     }
 }

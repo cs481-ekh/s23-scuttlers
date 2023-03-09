@@ -1,5 +1,9 @@
 package com.antscuttle.game.Buttons;
 
+import com.antscuttle.game.AntScuttleGame;
+import com.antscuttle.game.Util.GameData;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
 public class ExitButton extends Button {
@@ -7,8 +11,8 @@ public class ExitButton extends Button {
     private final int WIDTH = 200;
     private final int HEIGHT = 100;
     
-    private final Texture INACTIVE = new Texture("buttons/Exit.png");
-    private final Texture ACTIVE = new Texture("buttons/Exit-Active.png");
+    private final Texture INACTIVE = new Texture("buttons/main-menu/Exit.png");
+    private final Texture ACTIVE = new Texture("buttons/main-menu/Exit-Active.png");
    
     @Override
     public int getWidth() {
@@ -26,8 +30,10 @@ public class ExitButton extends Button {
     public Texture inactive() {
         return INACTIVE;
     }		
-    @Override
-    public String getButtonType() {
-        return ButtonType.exit.toString();
-    }
+  
+	@Override
+	public void click(AntScuttleGame game, Screen screen, GameData data) {
+		this.playButtonPressSound(game);
+        Gdx.app.exit();
+	}
 }

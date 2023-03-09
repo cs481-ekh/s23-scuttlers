@@ -1,5 +1,9 @@
 package com.antscuttle.game.Buttons;
 
+import com.Screens.SettingsMenuScreen;
+import com.antscuttle.game.AntScuttleGame;
+import com.antscuttle.game.Util.GameData;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
 public class SettingsButton extends Button {
@@ -26,9 +30,11 @@ public class SettingsButton extends Button {
     public Texture inactive() {
         return INACTIVE;
     }
+   
     @Override
-    public String getButtonType() {
-        return ButtonType.settings.toString();
+    public void click(AntScuttleGame game, Screen screen, GameData data) {
+        this.playButtonPressSound(game);
+        game.setScreen(new SettingsMenuScreen(game, screen));
     }
 
 }
