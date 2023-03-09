@@ -172,7 +172,6 @@ public class AIEditorScreen extends ScreenAdapter{
 		moveImage.setBounds(MENU_MOVE_X, MENU_MOVE_Y, 150, 100);
 		stage.addActor(moveImage);
 
-
 		final Image attackImage = new Image(skin, "attack");
 		attackImage.setBounds(MENU_ATTACK_X, MENU_ATTACK_Y, 150, 100);
 		stage.addActor(attackImage);

@@ -32,7 +32,7 @@ public class NewGameScreen extends ScreenAdapter{
     private static final int AI_BUILDER_BUTTON_Y = 155;
     private static final int CHAR_BUTTON_Y = 300;
     private static final int START_BUTTON_Y = 445;
-    private static final int SETTINGS_BUTTON_Y = 10;
+    private static final int SETTINGS_BUTTON_Y = 20;
 
     private static int MAIN_MENU_HEIGHT;
     private static int MAIN_MENU_WIDTH;
@@ -41,7 +41,7 @@ public class NewGameScreen extends ScreenAdapter{
 
     public NewGameScreen(AntScuttleGame game, GameData gamedata) {
         this.game = game;
-        this.gameData = gameData;
+        this.gameData = gamedata;
         
         /* init buttons */
         // mainButton = new MainButton();
@@ -82,7 +82,7 @@ public class NewGameScreen extends ScreenAdapter{
 
 
         /* Settings Button */
-        x = MAIN_MENU_WIDTH - settingsButton.getWidth() - 10;
+        x = MAIN_MENU_WIDTH - settingsButton.getWidth() - 20;
         drawButton(x, SETTINGS_BUTTON_Y, settingsButton);
 
         game.batch.end();

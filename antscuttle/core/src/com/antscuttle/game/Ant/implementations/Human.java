@@ -15,7 +15,7 @@ import com.badlogic.gdx.graphics.Texture;
  */
 public class Human extends Ant{
     
-    private static Texture[] moveAnimationUnarmed = {
+    private  static Texture[] moveAnimationUnarmed = {
         new Texture("animations/human/human_unarmed_walk_up.png"),
         new Texture("animations/human/human_unarmed_walk_right.png"),
         new Texture("animations/human/human_unarmed_walk_down.png"),
