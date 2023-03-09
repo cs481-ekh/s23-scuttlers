@@ -7,8 +7,8 @@ public class NewAIButton extends Button {
     private final int WIDTH = 200;
     private final int HEIGHT = 100;
     
-    private final Texture INACTIVE = new Texture("buttons/New-AI.png");
-    private final Texture ACTIVE = new Texture("buttons/New-AI-Active.png");
+    private final Texture INACTIVE = new Texture("buttons/ai-editor/New-AI.png");
+    private final Texture ACTIVE = new Texture("buttons/ai-editor/New-AI-Active.png");
 
 	@Override
 	public int getWidth() {

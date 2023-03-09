@@ -7,8 +7,8 @@ public class RootButton extends Button {
     private final int WIDTH = 200;
     private final int HEIGHT = 100;
     
-    private final Texture INACTIVE = new Texture("buttons/Root.png");
-    private final Texture ACTIVE = new Texture("buttons/Root-Active.png");
+    private final Texture INACTIVE = new Texture("buttons/ai-editor/Root.png");
+    private final Texture ACTIVE = new Texture("buttons/ai-editor/Root-Active.png");
 
 	@Override
 	public int getWidth() {

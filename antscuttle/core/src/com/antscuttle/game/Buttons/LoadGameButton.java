@@ -7,8 +7,8 @@ public class LoadGameButton extends Button {
     private final int WIDTH = 200;
     private final int HEIGHT = 100;
     
-    private Texture INACTIVE = new Texture("buttons/Load-Game-Button.png");
-    private Texture ACTIVE = new Texture("buttons/Load-Game-Button-Active.png");
+    private Texture INACTIVE = new Texture("buttons/main-menu/Load-Game.png");
+    private Texture ACTIVE = new Texture("buttons/main-menu/Load-Game-Active.png");
     
     @Override
     public int getWidth() {

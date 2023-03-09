@@ -7,8 +7,8 @@ public class MoveButton extends Button {
     private final int WIDTH = 200;
     private final int HEIGHT = 100;
     
-    private final Texture INACTIVE = new Texture("buttons/Move.png");
-    private final Texture ACTIVE = new Texture("buttons/Move-Active.png");
+    private final Texture INACTIVE = new Texture("buttons/ai-editor/Move.png");
+    private final Texture ACTIVE = new Texture("buttons/ai-editor/Move-Active.png");
 
 	@Override
 	public int getWidth() {

@@ -8,8 +8,8 @@ public class NewGameButton extends Button {
     private final int HEIGHT = 100;
     // public SpriteBatch batch;
     
-    private final Texture INACTIVE = new Texture("buttons/New-Game-Button.png");
-    private final Texture ACTIVE = new Texture("buttons/New-Game-Button-Active.png");
+    private final Texture INACTIVE = new Texture("buttons/main-menu/New-Game.png");
+    private final Texture ACTIVE = new Texture("buttons/main-menu/New-Game-Active.png");
        
     @Override
     public int getWidth() {

@@ -7,8 +7,8 @@ public class AntButton extends Button{
     private final int WIDTH = 200;
     private final int HEIGHT = 100;
     
-    private final Texture INACTIVE = new Texture("buttons/Ant-Button.png");
-    private final Texture ACTIVE = new Texture("buttons/Ant-Button-Active.png");
+    private final Texture INACTIVE = new Texture("buttons/Ant.png");
+    private final Texture ACTIVE = new Texture("buttons/Ant-Active.png");
 
 	@Override
 	public int getWidth() {

@@ -114,10 +114,10 @@ public class AIEditorScreen extends ScreenAdapter{
 
 		final Skin skin = new Skin(Gdx.files.internal("skin/clean-crispy-ui.json"));
         // Register the style with the skin
-		skin.add("move", new Texture("buttons/Move.png"));
-		skin.add("attack", new Texture("buttons/Attack.png"));
-        skin.add("root", new Texture("buttons/Root.png"));
-        skin.add("save", new Texture("buttons/Save-AI.png"));
+		skin.add("move", new Texture("buttons/ai-editor/Move.png"));
+		skin.add("attack", new Texture("buttons/ai-editor/Attack.png"));
+        skin.add("root", new Texture("buttons/ai-editor/Root.png"));
+        skin.add("save", new Texture("buttons/ai-editor/Save-AI.png"));
 
         final Image saveImage = new Image(skin, "save");
         saveImage.setBounds((Gdx.graphics.getWidth() * 2/3)-150, 0, 150, 100);
@@ -169,15 +169,15 @@ public class AIEditorScreen extends ScreenAdapter{
         });
 
 		final Image moveImage = new Image(skin, "move");
-		moveImage.setBounds(MENU_MOVE_X, MENU_MOVE_Y, 150, 100);
+		moveImage.setBounds(MENU_MOVE_X, MENU_MOVE_Y, 200, 100);
 		stage.addActor(moveImage);
 
 		final Image attackImage = new Image(skin, "attack");
-		attackImage.setBounds(MENU_ATTACK_X, MENU_ATTACK_Y, 150, 100);
+		attackImage.setBounds(MENU_ATTACK_X, MENU_ATTACK_Y, 200, 100);
 		stage.addActor(attackImage);
 
 		final Image rootImage = new Image(skin, "root");
-		rootImage.setBounds(TREE_ROOT_X, TREE_ROOT_Y, 150, 100);
+		rootImage.setBounds(TREE_ROOT_X, TREE_ROOT_Y, 200, 100);
 		stage.addActor(rootImage);
 
 		DragAndDrop dragAndDrop = new DragAndDrop();

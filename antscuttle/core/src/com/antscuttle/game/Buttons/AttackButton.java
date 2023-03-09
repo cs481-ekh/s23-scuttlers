@@ -7,8 +7,8 @@ public class AttackButton extends Button {
     private final int WIDTH = 200;
     private final int HEIGHT = 100;
     
-    private final Texture INACTIVE = new Texture("buttons/Attack.png");
-    private final Texture ACTIVE = new Texture("buttons/Attack-Active.png");
+    private final Texture INACTIVE = new Texture("buttons/ai-editor/Attack.png");
+    private final Texture ACTIVE = new Texture("buttons/ai-editor/Attack-Active.png");
 
 	@Override
 	public int getWidth() {

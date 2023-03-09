@@ -6,8 +6,8 @@ public class ItemsButton extends Button {
     private final int WIDTH = 200;
     private final int HEIGHT = 100;
     
-    private final Texture INACTIVE = new Texture("buttons/Items.png");
-    private final Texture ACTIVE = new Texture("buttons/Items-Active.png");
+    private final Texture INACTIVE = new Texture("buttons/ant-editor/Items.png");
+    private final Texture ACTIVE = new Texture("buttons/ant-editor/Items-Active.png");
    
     @Override
     public int getWidth() {

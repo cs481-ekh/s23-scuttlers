@@ -6,8 +6,8 @@ public class AddButton extends Button {
     private final int WIDTH = 64;
     private final int HEIGHT = 64;
     
-    private final Texture INACTIVE = new Texture("buttons/Add.png");
-    private final Texture ACTIVE = new Texture("buttons/Add-Active.png");
+    private final Texture INACTIVE = new Texture("buttons/ant-editor/Add.png");
+    private final Texture ACTIVE = new Texture("buttons/ant-editor/Add-Active.png");
    
     @Override
     public int getWidth() {
