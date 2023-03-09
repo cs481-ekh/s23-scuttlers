@@ -50,7 +50,6 @@ public class GameData {
         this.unlockedLevels = new LinkedList<>();
         this.lockedItems = new LinkedList<>();
         this.lockedLevels = new LinkedList<>();
-
         this.userAnts = new LinkedList<>();
         this.userAIs = new LinkedList<>();
         
@@ -87,7 +86,10 @@ public class GameData {
     public LinkedList<AI> getAllAIs() {
         return userAIs;
     }
-
+    
+    public LinkedList<Class<? extends Ant>> getAntTypes(){
+        return allAntTypes;
+    }
     public LinkedList<Class<? extends Level>> getAllLevels() {
         return allLevels;
     }

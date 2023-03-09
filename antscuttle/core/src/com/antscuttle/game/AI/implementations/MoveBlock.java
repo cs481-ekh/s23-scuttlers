@@ -16,12 +16,14 @@ public class MoveBlock extends DecisionBlock{
     private final LevelObject target; 
     
     public MoveBlock(MoveDirection dir, int duration){
+        super();
         this.type = MoveType.DIRECTIONAL;
         this.target = null;
         this.dir = dir;
         this.duration = duration;
     }
     public MoveBlock(LevelObject target){
+        super();
         this.type = MoveType.TARGET;
         this.target = target;
         this.dir = null;

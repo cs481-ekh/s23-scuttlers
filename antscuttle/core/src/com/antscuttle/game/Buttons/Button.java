@@ -6,7 +6,7 @@ import com.antscuttle.game.AntScuttleGame;
 
 public abstract class Button{
 
-    enum ButtonType {exit, newgame, savegame, loadgame, settings, ant, ai, main, start, level, music, sfx, back, pause, add, items, item}
+    enum ButtonType {exit, newgame, savegame, loadgame, settings, ant, ai, main, start, level, music, sfx, back, pause, newai, root, move, attack, add, items, item}
 
     public Button() {
         super();      
