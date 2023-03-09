@@ -15,6 +15,7 @@ import com.antscuttle.game.Buttons.AddButton;
 import com.antscuttle.game.Buttons.AntButton;
 import com.antscuttle.game.Buttons.BackButton;
 import com.antscuttle.game.Buttons.Button;
+import com.antscuttle.game.Buttons.ItemButton;
 import com.antscuttle.game.Buttons.ItemsButton;
 import com.antscuttle.game.Buttons.SettingsButton;
 import com.antscuttle.game.Util.GameData;
@@ -44,6 +45,7 @@ public class AntEditorScreen extends ScreenAdapter {
     Button antButton;
     Button itemsButton;
     Button addButton;
+    Button itemButton;
 
     int x;
 
@@ -76,6 +78,7 @@ public class AntEditorScreen extends ScreenAdapter {
         antButton = new AntButton();
         itemsButton = new ItemsButton();
         addButton = new AddButton();
+        itemButton = new ItemButton();
 
         antBatch = new SpriteBatch();
 
@@ -222,12 +225,15 @@ public class AntEditorScreen extends ScreenAdapter {
                 if (ants.isEmpty()) {
                     game.font.draw(game.batch, "No Created Ants!", ANT_EDITOR_WIDTH/1.25f-antButton.getWidth(), ANT_EDITOR_HEIGHT/1.35f);
                 } else {
+                    int j=0;
                     for (Ant a: ants) {
-                        game.font.draw(game.batch, a.getName(), ANT_EDITOR_WIDTH/2.05f, ANT_EDITOR_HEIGHT/1.35f-i);
-                        bounds.setText(game.font, a.getName());
-                        if (cursorInBounds(ANT_EDITOR_WIDTH/2.05f, ANT_EDITOR_HEIGHT/1.35f-i, bounds.width, game.font.getCapHeight()) && Gdx.input.justTouched()){
+                        drawButton(ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/2.05f, itemButton, 1);
+                        game.font.draw(game.batch, a.getName(), ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/2.05f+itemButton.getHeight()+20);
+
+                        if (cursorInBounds(ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/2.05f, itemButton.getWidth(), itemButton.getHeight()) && Gdx.input.justTouched()){
                             gameData.setCurrentAnt(a);
                         }
+                        j += itemButton.getWidth()+20;
                         i += game.font.getCapHeight()+20;
                     }
                 }
