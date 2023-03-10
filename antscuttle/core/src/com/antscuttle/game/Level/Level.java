@@ -10,12 +10,14 @@ public abstract class Level {
     protected Music soundtrack;
     protected Stage stage;
     protected Texture backgroundTexture;
+    protected String name;
 
     // Constructor
-    public Level(Music soundtrack, Stage stage, Texture backgroundTexture) {
+    public Level(Music soundtrack, Stage stage, Texture backgroundTexture, String name) {
         this.soundtrack = soundtrack;
         this.stage = stage;
         this.backgroundTexture = backgroundTexture;
+        this.name = name;
     }
 
     // Methods
@@ -34,7 +36,9 @@ public abstract class Level {
         // Start playing the soundtrack
         soundtrack.play();
     }
-
+    public String getName(){
+        return name;
+    }
     protected abstract void loadResources();
     //protected abstract List<LevelObject> createLevelObjects();
 }
