@@ -23,7 +23,7 @@ public class AI_Tree_Test {
     }
     @Test
     public void Tree_Root_Only_HasNext(){
-        AI ai = new AI(new Node(new RootBlock()));
+        AI ai = new AI(new Node(new RootBlock()), "test");
         assertNotNull(ai.getRoot());
         Iterator it = ai.iterator();
         assertFalse(it.hasNext());
@@ -32,7 +32,7 @@ public class AI_Tree_Test {
     public void Tree_One_Child_HasNext(){
         Node root = new Node(new RootBlock());
         root.addChild(new Node(new MoveBlock(MoveDirection.DOWN, 10)));
-        AI ai = new AI(root);
+        AI ai = new AI(root, "test");
         Iterator it = ai.iterator();
         assertTrue(it.hasNext());
     }
@@ -45,7 +45,7 @@ public class AI_Tree_Test {
         a.addChild(b);
         root.addChild(a);
         root.addChild(c);
-        AI ai = new AI(root);
+        AI ai = new AI(root, "test");
         Iterator it = ai.iterator();
         
         String s[] = {"DOWN", "UP", "LEFT"};
@@ -73,7 +73,7 @@ public class AI_Tree_Test {
         d.addChild(e);
         root.addChild(d);
         root.addChild(f);
-        AI ai = new AI(root);
+        AI ai = new AI(root, "test");
         Iterator it = ai.iterator();
         
         String s[] = {"DOWN", "UP", "LEFT","RIGHT", "LEFT", "UP"};
@@ -93,7 +93,7 @@ public class AI_Tree_Test {
         root.addChild(a);
         root.addChild(c);
         root.removeChild(a);
-        AI ai = new AI(root);
+        AI ai = new AI(root, "test");
         Iterator it = ai.iterator();
         
         String s[] = {"LEFT"};
@@ -113,7 +113,7 @@ public class AI_Tree_Test {
         root.addChild(a);
         root.addChild(c);
         root.removeChild(c);
-        AI ai = new AI(root);
+        AI ai = new AI(root, "test");
         Iterator it = ai.iterator();
         
         String s[] = {"DOWN", "UP"};
@@ -140,7 +140,7 @@ public class AI_Tree_Test {
         root.addChild(d);
         root.addChild(f);
         root.removeChild(d);
-        AI ai = new AI(root);
+        AI ai = new AI(root, "test");
         Iterator it = ai.iterator();
         
         String s[] = {"DOWN", "UP", "LEFT", "UP"};

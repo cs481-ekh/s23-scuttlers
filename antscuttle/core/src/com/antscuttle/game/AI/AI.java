@@ -10,11 +10,19 @@ import java.util.Iterator;
 public class AI implements Iterable{
     
     private final Node root;
-    
-    public AI(Node root){
+    private String name;
+
+    public AI(Node root, String name){
         this.root = root;
+        this.name = name;
     }
     
+    public void setName(String name){
+        this.name = name;
+    }
+    public String getName(){
+        return this.name;
+    }
     public Node getRoot(){
         return root;
     }
@@ -32,7 +40,7 @@ public class AI implements Iterable{
         public AIIterator(Node root){
             this.currentNode = this.root = root;
         }
-        
+
         @Override
         public boolean hasNext() {
             

@@ -13,6 +13,7 @@ import com.antscuttle.game.Buttons.BackButton;
 import com.antscuttle.game.Buttons.Button;
 import com.antscuttle.game.Util.GameData;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -22,6 +23,7 @@ import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -30,6 +32,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
@@ -39,6 +43,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Target;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.Input.TextInputListener;
 
 public class AIEditorScreen extends ScreenAdapter{
 	public static final float SPEED = 100;
@@ -86,6 +91,7 @@ public class AIEditorScreen extends ScreenAdapter{
         this.aBlock = new AttackBlock(null, null);
         this.iBlock = new InteractBlock(null);
         rNode = new Node(rBlock);
+        System.out.println(gameData.getAllAIs());
     }
 
     @Override
@@ -126,7 +132,25 @@ public class AIEditorScreen extends ScreenAdapter{
         // Define active and inactive colors
         final Color inactiveColor = new Color(1f, 1f, 1f, 1f); // fully opaque white
         final Color activeColor = new Color(1f, 1f, 1f, 0.5f); // semi-transparent white
+        
+        final TextInputListener listener = new TextInputListener() {
+            @Override
+            public void input(String text) {
+                // The text argument is the user input from the dialog box
+                ai = new AI(rNode, text);
+                gameData.addAI(ai);
+                game.setScreen(new NewGameScreen(game, gameData));
+            }
 
+            @Override
+            public void canceled() {
+                // The user has canceled the input dialog
+                Dialog dialog = new Dialog("Input Canceled", skin);
+                dialog.text("You have canceled the input dialog.");
+                dialog.button("OK");
+                dialog.show(stage);
+            }
+        };
         // Add input listener to the saveImage actor
         saveImage.addListener(new InputListener() {
             @Override
@@ -145,18 +169,47 @@ public class AIEditorScreen extends ScreenAdapter{
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 long id = game.sfx.play(game.VOLUME);
                 if(!moveList.isEmpty()){
-                        for(DecisionBlock db:  moveList){
-                            rNode.addChild(new Node(db));
+                    for(DecisionBlock db:  moveList){
+                        rNode.addChild(new Node(db));
+                    }
+                    Dialog dialog = new Dialog("Enter AI name", skin);
+                    final TextField inputField = new TextField("", skin);
+                    TextButton saveButton = new TextButton("Save", skin);
+                    saveButton.addListener(new InputListener() {
+                        @Override
+                        public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                            String aiName = inputField.getText();
+                            ai = new AI(rNode, aiName);
+                            gameData.addAI(ai);
+                            game.setScreen(new NewGameScreen(game, gameData));
+                            return true;
                         }
-                    ai = new AI(rNode);
-                    gameData.addAI(ai);
-                    // Show a dialog box to inform the user that an AI was created and is now ready to be saved.
-                    Dialog dialog = new Dialog("AI Created", skin);
-                    dialog.text("An AI has been created and is ready to be saved.");
-                    dialog.button("OK");
-                    LinkedList<AI> test = gameData.getAllAIs();
-                    game.setScreen(new NewGameScreen(game, gameData));
-
+                    });
+                    dialog.getContentTable().add(inputField);
+                    dialog.button(saveButton);
+                    dialog.show(stage);
+                   
+                    // inputField.addListener(new ChangeListener() {
+                    //     @Override
+                    //     public void changed(ChangeEvent event, Actor actor) {
+                    //         inputText[0] = inputField.getText(); // update the current text variable
+                    //     }
+                    // });
+                    // dialog.getContentTable().add(inputField).pad(10);
+                    // dialog.button("Save", new Runnable() {
+                    //     @Override
+                    //     public void run() {
+                    //         String aiName = inputText[0]; // get the current value of inputText
+                    //         ai = new AI(rNode, aiName);
+                    //         gameData.addAI(ai);
+                    //         game.setScreen(new NewGameScreen(game, gameData));
+                    //     }
+                    // }).button("Cancel", false).key(Input.Keys.ENTER, true).key(Input.Keys.ESCAPE, false);                    
+                    // dialog.show(stage);
+                    
+                    
+                   // Gdx.input.getTextInput(listener, "Enter AI Name", "placeholder", "hi",Input.OnscreenKeyboardType.Password);
+                    
                 } else {
                     // Show a dialog box to inform the user that they need to create an AI before saving.
                     Dialog dialog = new Dialog("Create AI", skin);
