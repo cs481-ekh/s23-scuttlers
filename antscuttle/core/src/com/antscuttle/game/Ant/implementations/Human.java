@@ -59,7 +59,7 @@ public class Human extends Ant{
             8, 
             4,
             40, 
-            new DefaultHumanAI(new Node(new RootBlock())), 
+            new DefaultHumanAI(new Node(new RootBlock()), "default"), 
             moveAnimationUnarmed, 
             moveAnimationSword, 
             moveAnimationPistol, 

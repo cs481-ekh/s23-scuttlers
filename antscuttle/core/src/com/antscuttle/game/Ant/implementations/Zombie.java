@@ -28,7 +28,7 @@ public class Zombie extends Ant{
     private Armor armor = null;
     private int speed = 20;
     private AI ai = null;
-    private AI defaultAI = new DefaultZombieAI(new Node(new RootBlock()));
+    private AI defaultAI = new DefaultZombieAI(new Node(new RootBlock()), "default");
     
     private static Texture[] moveAnimationUnarmed = {
         new Texture("animations/zombie/zombie_walk_up.png"),
@@ -45,12 +45,12 @@ public class Zombie extends Ant{
     
     public Zombie(String name){
         super(name, 
-            30, 
-            30, 
-            6, 
-            2,
-            20, 
-            new DefaultZombieAI(new Node(new RootBlock())), 
+            100, 
+            100, 
+            8, 
+            4,
+            40, 
+            new DefaultZombieAI(new Node(new RootBlock()), "default"), 
             moveAnimationUnarmed, 
             null, 
             null, 
