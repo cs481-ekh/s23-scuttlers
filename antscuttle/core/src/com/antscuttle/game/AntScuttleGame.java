@@ -33,7 +33,7 @@ public class AntScuttleGame extends Game {
 		music.setVolume(1f);
 		music.setLooping(true);
 		music.play();
-
+                
 		setScreen(new MainMenuScreen(this));
 	}
 	

@@ -18,7 +18,8 @@ import java.util.Set;
  * @author antho
  */
 public class ClassDetector {
-    private static final String basePath = "../core/src/com/antscuttle/game/";
+    private static final String userDir = System.getProperty("user.dir");
+    private static final String basePath = userDir + "/antscuttle/core/src/com/antscuttle/game/";
     private static final String basePackage = "com.antscuttle.game.";
     
     public Set<Armor> findArmors() {
