@@ -41,6 +41,10 @@ public class GameData {
     private LinkedList<Object> lockedItems;
     private LinkedList<Class<? extends Level>> lockedLevels;
 
+    /* Keep track of current pane in Ant editor */
+	public enum panes {ant, ai, items}
+    public panes currPane;
+
     /* Constructor for new games */
     public GameData() {
         this.currentAnt = null;
@@ -50,6 +54,7 @@ public class GameData {
         this.unlockedLevels = new LinkedList<>();
         this.lockedItems = new LinkedList<>();
         this.lockedLevels = new LinkedList<>();
+        this.userAnts = new LinkedList<>();
         this.userAIs = new LinkedList<>();
         
         /* Need to read available implemented objs */
@@ -76,6 +81,10 @@ public class GameData {
     /* Getters */
     public LinkedList<Ant> getAllAnts() {
         return userAnts;
+    }
+
+    public LinkedList<Class<? extends Ant>> getAllAntTypes() {
+        return allAntTypes;
     }
 
     public LinkedList<AI> getAllAIs() {

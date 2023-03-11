@@ -7,11 +7,15 @@ import com.antscuttle.game.Buttons.AIButton;
 import com.antscuttle.game.Buttons.BackButton;
 import com.antscuttle.game.Buttons.StartButton;
 import com.antscuttle.game.Buttons.AntButton;
+import com.antscuttle.game.Buttons.SelectionButtonNext;
+import com.antscuttle.game.Buttons.SelectionButtonPrev;
 import com.antscuttle.game.Buttons.SettingsButton;
 import com.antscuttle.game.Util.GameData;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.utils.ScreenUtils;
+import java.awt.Point;
 
 public class NewGameScreen extends ScreenAdapter{
     AntScuttleGame game;
@@ -25,23 +29,30 @@ public class NewGameScreen extends ScreenAdapter{
     // private Button mainButton;
     private Button settingsButton;
     private Button backButton;
+    private Button prevLevelButton;
+    private Button nextLevelButton;
     
 
 
     /* y-axis for buttons */
-    private static final int AI_BUILDER_BUTTON_Y = 155;
-    private static final int CHAR_BUTTON_Y = 300;
-    private static final int START_BUTTON_Y = 445;
-    private static final int SETTINGS_BUTTON_Y = 10;
+    private static final int AI_BUILDER_BUTTON_Y = 125;
+    private static final int CHAR_BUTTON_Y = 280;
+    private static final int LEVEL_DISPLAY_Y = 440;
+    private static final int START_BUTTON_Y = 480;
+    private static final int SETTINGS_BUTTON_Y = 20;
 
     private static int MAIN_MENU_HEIGHT;
     private static int MAIN_MENU_WIDTH;
+    
+    private static Point PREV_LVL_BTN_LOC;
+    private static Point NEXT_LVL_BTN_LOC;
+    private static GlyphLayout levelGlyph;
 
     int x;
 
     public NewGameScreen(AntScuttleGame game, GameData gameData) {
         this.game = game;
-        this.gameData = gameData;
+        this.gameData = gamedata;
         
         /* init buttons */
         // mainButton = new MainButton();
@@ -50,10 +61,17 @@ public class NewGameScreen extends ScreenAdapter{
         aiButton = new AIButton();
         charButton = new AntButton();
         settingsButton = new SettingsButton();
+        prevLevelButton = new SelectionButtonPrev();
+        nextLevelButton = new SelectionButtonNext();
+        PREV_LVL_BTN_LOC = new Point();
+        NEXT_LVL_BTN_LOC = new Point();
 
         /* Grab the menu size (1280x720) */
         MAIN_MENU_HEIGHT = Gdx.graphics.getHeight();
         MAIN_MENU_WIDTH = Gdx.graphics.getWidth();
+        
+        // TEMPORARY TO SHOW LEVEL SELECTION WORKS
+        gameData.unlockNewLevel();
     }
 
     @Override
@@ -62,72 +80,42 @@ public class NewGameScreen extends ScreenAdapter{
         ScreenUtils.clear(0, 38/255f, 66/255f, 1);
 
         game.batch.begin();
-
+        x = (MAIN_MENU_WIDTH / 2) - (startButton.getWidth() / 2);
         /* Back Button */
-        drawButton(20, MAIN_MENU_HEIGHT - backButton.getHeight() - 20, backButton);
+        Button.draw(game, this, gameData, 20, MAIN_MENU_HEIGHT - backButton.getHeight() - 20, backButton, 1);
 
         /* Start Game Button */
-        x = (MAIN_MENU_WIDTH / 2) - (startButton.getWidth() / 2);
-        drawButton(x, START_BUTTON_Y, startButton);
-
-      
+        Button.draw(game, this, gameData, x, START_BUTTON_Y, startButton, 1);
+        
+        /* Level selection */
+        String levelName = gameData.getCurrentLevel().getName();
+        levelGlyph = new GlyphLayout(game.font, levelName);
+        
+        int levelX = x + (int)(startButton.getWidth()-levelGlyph.width)/2;
+        PREV_LVL_BTN_LOC.x = MAIN_MENU_WIDTH/2 - (int)levelGlyph.width - prevLevelButton.getWidth()/2;
+        PREV_LVL_BTN_LOC.y = LEVEL_DISPLAY_Y - (int)levelGlyph.height/2-prevLevelButton.getHeight()/2;
+        NEXT_LVL_BTN_LOC.x = MAIN_MENU_WIDTH/2 + (int)levelGlyph.width-nextLevelButton.getWidth()/2;
+        NEXT_LVL_BTN_LOC.y = PREV_LVL_BTN_LOC.y;
+        
+        game.font.draw(game.batch, levelName, levelX, LEVEL_DISPLAY_Y);
+        Button.draw(game, this, gameData, PREV_LVL_BTN_LOC.x, PREV_LVL_BTN_LOC.y, prevLevelButton, 1);
+        Button.draw(game, this, gameData, NEXT_LVL_BTN_LOC.x, NEXT_LVL_BTN_LOC.y, nextLevelButton, 1);
+        
         /* AI Editor Button */
         x = (MAIN_MENU_WIDTH / 2) - (aiButton.getWidth() / 2);
-        drawButton(x, AI_BUILDER_BUTTON_Y, aiButton);
-
+        Button.draw(game, this, gameData, x, AI_BUILDER_BUTTON_Y, aiButton, 1);
     
         /* Save Game Button */
         x = (MAIN_MENU_WIDTH / 2) - (charButton.getWidth() / 2);
-        drawButton(x, CHAR_BUTTON_Y, charButton);
-
+        Button.draw(game, this, gameData, x, CHAR_BUTTON_Y, charButton, 1);
 
         /* Settings Button */
-        x = MAIN_MENU_WIDTH - settingsButton.getWidth() - 10;
-        drawButton(x, SETTINGS_BUTTON_Y, settingsButton);
+        x = MAIN_MENU_WIDTH - settingsButton.getWidth() - 20;
+        Button.draw(game, this, gameData, x, SETTINGS_BUTTON_Y, settingsButton, 1);
 
         game.batch.end();
     }
 
-    /**
-     * Draw the Button
-     * @param x
-     * @param y
-     * @param button type of button
-     */
-    private void drawButton(int x, int y, Button button) {
-        int w = button.getWidth();
-        int h = button.getHeight();
-
-        /* if the cursor is inbounds of the button */
-        if (Gdx.input.getX() < x + w && Gdx.input.getX() > x &&
-            MAIN_MENU_HEIGHT - Gdx.input.getY() < y + h && MAIN_MENU_HEIGHT - Gdx.input.getY() > y) {
-
-            game.batch.draw(button.active(), x, y, w, h);
-
-            if (button.getButtonType() == "back" && Gdx.input.justTouched()) {
-                button.playButtonPressSound(game);
-                game.setScreen(new MainMenuScreen(game));
-            }
-            if (button.getButtonType() == "settings" && Gdx.input.justTouched()) {
-                button.playButtonPressSound(game);
-                game.setScreen(new SettingsMenuScreen(game, this));
-            }
-            if (button.getButtonType() == "ai" && Gdx.input.justTouched()) {
-                button.playButtonPressSound(game);
-                game.setScreen(new AIEditorScreen(game, gameData));
-            }
-            if (button.getButtonType() == "ant" && Gdx.input.justTouched()){
-                button.playButtonPressSound(game);
-                game.setScreen(new AntEditorScreen(game, gameData));
-            }
-            if (button.getButtonType() == "start" && Gdx.input.justTouched()){
-                button.playButtonPressSound(game);
-                game.setScreen(new GameplayScreen(game, gameData));
-            }
-        } else {
-            game.batch.draw(button.inactive(), x, y, w, h);
-        }
-    }
 
     @Override
     public void dispose() {
@@ -136,5 +124,8 @@ public class NewGameScreen extends ScreenAdapter{
         }
     }
 
-    
+    @Override
+    public String toString() {
+        return "NewGameScreen";
+    }
 }

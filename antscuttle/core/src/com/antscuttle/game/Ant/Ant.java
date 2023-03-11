@@ -73,7 +73,10 @@ public abstract class Ant {
         this.ai = this.defaultAI;
     }
 
-    
+    public Texture[] getAntPreviewAnimation() {
+        return moveAnimationUnarmed;
+    }
+
     public Texture getAnimation(AnimationType type, AnimationDirection dir){
         switch(type){
             case MeleeAttack: 

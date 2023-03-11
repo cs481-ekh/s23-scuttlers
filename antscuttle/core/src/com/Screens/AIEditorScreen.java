@@ -120,10 +120,10 @@ public class AIEditorScreen extends ScreenAdapter{
 
 		final Skin skin = new Skin(Gdx.files.internal("skin/clean-crispy-ui.json"));
         // Register the style with the skin
-		skin.add("move", new Texture("buttons/Move.png"));
-		skin.add("attack", new Texture("buttons/Attack.png"));
-        skin.add("root", new Texture("buttons/Root.png"));
-        skin.add("save", new Texture("buttons/Save-AI.png"));
+		skin.add("move", new Texture("buttons/ai-editor/Move.png"));
+		skin.add("attack", new Texture("buttons/ai-editor/Attack.png"));
+        skin.add("root", new Texture("buttons/ai-editor/Root.png"));
+        skin.add("save", new Texture("buttons/ai-editor/Save-AI.png"));
 
         final Image saveImage = new Image(skin, "save");
         saveImage.setBounds((Gdx.graphics.getWidth() * 2/3)-150, 0, 150, 100);
@@ -222,16 +222,15 @@ public class AIEditorScreen extends ScreenAdapter{
         });
 
 		final Image moveImage = new Image(skin, "move");
-		moveImage.setBounds(MENU_MOVE_X, MENU_MOVE_Y, 150, 100);
+		moveImage.setBounds(MENU_MOVE_X, MENU_MOVE_Y, 200, 100);
 		stage.addActor(moveImage);
 
-
 		final Image attackImage = new Image(skin, "attack");
-		attackImage.setBounds(MENU_ATTACK_X, MENU_ATTACK_Y, 150, 100);
+		attackImage.setBounds(MENU_ATTACK_X, MENU_ATTACK_Y, 200, 100);
 		stage.addActor(attackImage);
 
 		final Image rootImage = new Image(skin, "root");
-		rootImage.setBounds(TREE_ROOT_X, TREE_ROOT_Y, 150, 100);
+		rootImage.setBounds(TREE_ROOT_X, TREE_ROOT_Y, 200, 100);
 		stage.addActor(rootImage);
 
 		DragAndDrop dragAndDrop = new DragAndDrop();
@@ -404,31 +403,30 @@ public class AIEditorScreen extends ScreenAdapter{
 
             game.batch.draw(button.active(), x, y, w, h);
 
-            if (button.getButtonType() == "back" && Gdx.input.justTouched()) {
-                button.playButtonPressSound(game);
-                game.setScreen(new NewGameScreen(game, gameData));
-            }
+            if (Gdx.input.justTouched()) 
+                button.click(game, this, gameData);
+            
         }else {
             game.batch.draw(button.inactive(), x, y, w, h);
         }
         game.batch.end();
     }
     @Override
-    public void render(float delta) {
-        
-
-        
+    public void render(float delta) {        
         /* Back Button */
-        drawButton(20, MAIN_MENU_HEIGHT - backButton.getHeight() - 20, backButton);
-
+        
         menuBatch.begin();
         menuBatch.draw(menuImg, gameX + (gameView.getWorldWidth() * 2/3), gameY, gameView.getWorldWidth() * 1/3,gameView.getWorldHeight());
         menuBatch.end();
-
+        
         gameBatch.begin();
         gameBatch.draw(img, gameX, gameY, gameView.getWorldWidth()*2/3,gameView.getWorldHeight());
         gameBatch.end();
-        drawButton(20, MAIN_MENU_HEIGHT - backButton.getHeight() - 20, backButton);
+
+        game.batch.begin();
+        Button.draw(game, this, gameData, 20, MAIN_MENU_HEIGHT - backButton.getHeight() - 20, backButton, 1);
+        game.batch.end();
+        
         // a stage has its own batch so don't put it within batch.begin() and batch.end()
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f)); //you are likely missing THIS LINE :D
         stage.draw();
@@ -436,34 +434,16 @@ public class AIEditorScreen extends ScreenAdapter{
     }
     @Override
     public void resize(int width, int height) {
-        gameView.update(width, height);
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void pause() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void resume() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void hide() {
-        // TODO Auto-generated method stub
-        
+        gameView.update(width, height);        
     }
 
     @Override
     public void dispose() {
         stage.dispose();
-        // TODO Auto-generated method stub
-        
     }
     
+    @Override
+    public String toString() {
+        return "AIEditorScreen";
+    }
 }

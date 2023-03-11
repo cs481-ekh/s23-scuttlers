@@ -13,4 +13,9 @@ public class DefaultZombieAI extends AI{
         super(root, name);
         // TODO: Build default Zombie AI tree here
     }
+
+    @Override
+    public String toString() {
+        return "Default Zombie AI";
+    }
 }

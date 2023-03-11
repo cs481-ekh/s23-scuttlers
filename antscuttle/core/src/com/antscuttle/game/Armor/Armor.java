@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
  * @author antho
  */
 public abstract class Armor {
-    private String name;
+    public String name;
     private int defense;
     private Texture img;
     

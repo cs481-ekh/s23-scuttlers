@@ -1,6 +1,8 @@
 package com.antscuttle.game.Buttons;
 
 import com.antscuttle.game.AntScuttleGame;
+import com.antscuttle.game.Util.GameData;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
 public class MusicButton extends Button {
@@ -40,12 +42,10 @@ public class MusicButton extends Button {
         return (game.musicActive) ? UNMUTE_INACTIVE : MUTE_INACTIVE;
     }
 
-    @Override
-    public String getButtonType() {
-        return ButtonType.music.toString();
-    }
 
-    public void toggleMusic () {
+    @Override
+    public void click(AntScuttleGame game, Screen screen, GameData data) {
+        this.playButtonPressSound(game);
         if (game.musicActive) {
             game.music.pause();
             game.musicActive = false;

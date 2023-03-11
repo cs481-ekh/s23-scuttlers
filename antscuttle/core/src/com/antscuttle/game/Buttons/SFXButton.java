@@ -1,6 +1,8 @@
 package com.antscuttle.game.Buttons;
 
 import com.antscuttle.game.AntScuttleGame;
+import com.antscuttle.game.Util.GameData;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
 public class SFXButton extends Button {
@@ -41,11 +43,8 @@ public class SFXButton extends Button {
     }
 
     @Override
-    public String getButtonType() {
-        return ButtonType.sfx.toString();
-    }
-
-    public void toggleSFX () {
+    public void click(AntScuttleGame game, Screen screen, GameData data) {
+        this.playButtonPressSound(game);
         if (game.sfxActive) {
             game.VOLUME = 0f;
             game.sfxActive = false;

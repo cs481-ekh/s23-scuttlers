@@ -1,17 +1,17 @@
 package com.antscuttle.game.Buttons;
 
 import com.antscuttle.game.AntScuttleGame;
+import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.Util.GameData;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
-public class AttackButton extends Button {
-
-    private final int WIDTH = 200;
+public class ItemButton extends Button {
+    private final int WIDTH = 100;
     private final int HEIGHT = 100;
     
-    private final Texture INACTIVE = new Texture("buttons/ai-editor/Attack.png");
-    private final Texture ACTIVE = new Texture("buttons/ai-editor/Attack-Active.png");
+    private final Texture INACTIVE = new Texture("buttons/ant-editor/Item.png");
+    private final Texture ACTIVE = new Texture("buttons/ant-editor/Item-Active.png");
 
 	@Override
 	public int getWidth() {
@@ -31,9 +31,10 @@ public class AttackButton extends Button {
     }
   
     @Override
-    public void click(AntScuttleGame game, Screen screen, GameData data) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'click'");
+    public void click(AntScuttleGame game, Screen screen, GameData data) {}
+
+    public void click(AntScuttleGame game, GameData data, Ant ant) {
+        this.playButtonPressSound(game);
+        data.setCurrentAnt(ant);
     }
-    
 }

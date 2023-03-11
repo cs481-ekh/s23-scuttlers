@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 public class SettingsMenuScreen extends ScreenAdapter {
     AntScuttleGame game;
-    Screen previousScreen;
+    public static Screen previousScreen;
     
     private static int SETTINGS_MENU_HEIGHT;
     private static int SETTINGS_MENU_WIDTH;
@@ -33,7 +33,7 @@ public class SettingsMenuScreen extends ScreenAdapter {
 
     public SettingsMenuScreen (AntScuttleGame game, Screen prevScreen) {
         this.game = game;
-        this.previousScreen = prevScreen;
+        previousScreen = prevScreen;
 
         SETTINGS_MENU_HEIGHT = Gdx.graphics.getHeight();
         SETTINGS_MENU_WIDTH = Gdx.graphics.getWidth();
@@ -59,52 +59,28 @@ public class SettingsMenuScreen extends ScreenAdapter {
         game.batch.begin();
 
         /* Back button */
-        drawButton(20, SETTINGS_MENU_HEIGHT - backButton.getHeight() - 20, backButton);
+        Button.draw(game, this, null, 20, SETTINGS_MENU_HEIGHT - backButton.getHeight() - 20, backButton, 1);
 
         /* Sound buttons */
         x = (SETTINGS_MENU_WIDTH/2) - 80;
-        // game.font.getData().setScale(0.75f);
         game.font.draw(game.batch, musicTxt, x, SETTINGS_MENU_HEIGHT/2+musicButton.getHeight() + bounds.height+10);
-        drawButton(x, SETTINGS_MENU_HEIGHT/2, musicButton);
+        Button.draw(game, this, null, x, SETTINGS_MENU_HEIGHT/2, musicButton, 1);
 
         x += 160;
         game.font.draw(game.batch, sfxTxt, x, SETTINGS_MENU_HEIGHT/2+sfxButton.getHeight() + bounds.height+10);
-        drawButton(x, SETTINGS_MENU_HEIGHT/2, sfxButton);
+        Button.draw(game, this, null, x, SETTINGS_MENU_HEIGHT/2, sfxButton, 1);
 
-       
         game.batch.end();
     }
 
-    private void drawButton(int x, int y, Button button) {
-        int w = button.getWidth();
-        int h = button.getHeight();
-
-        /* if the cursor is inbounds of the button */
-        if (Gdx.input.getX() < x + w && Gdx.input.getX() > x &&
-            SETTINGS_MENU_HEIGHT - Gdx.input.getY() < y + h && SETTINGS_MENU_HEIGHT - Gdx.input.getY() > y) {
-
-            game.batch.draw(button.active(), x, y, w, h);
-
-            if (button.getButtonType() == "back" && Gdx.input.justTouched()) {
-                button.playButtonPressSound(game);
-                game.setScreen(previousScreen);
-            } else if (Gdx.input.justTouched() && button.getButtonType() == "music") {
-                button.playButtonPressSound(game);
-                musicButton.toggleMusic();
-                
-            } else if (Gdx.input.justTouched() && button.getButtonType() == "sfx") {
-                button.playButtonPressSound(game);
-                sfxButton.toggleSFX();
-            }
-
-        } else {
-            game.batch.draw(button.inactive(), x, y, w, h);
-        }
-    }
 
     @Override
     public void hide() {
         Gdx.input.setInputProcessor(null);
     }
 
+    @Override
+    public String toString() {
+        return "SettingsMenuScreen";
+    }
 }
