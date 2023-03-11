@@ -2,7 +2,7 @@
 
 # Find all implemented Ants, Weapons, Armor, DecisionBlocks
 # Optional printing commented out
-
+echo "Detecting implemented Armors, Weapons, Ants, DecisionBlocks, and Levels..."
 for i in Ant Weapon Armor AI
 	do 
 		#echo "Finding ${i}s..."
