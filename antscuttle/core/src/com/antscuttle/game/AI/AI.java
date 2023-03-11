@@ -87,7 +87,20 @@ public class AI implements Iterable{
             currentBlock = currentNode.getBlock();
             return currentNode.equals(startingNode) ? null : currentNode.getBlock();
         }
-       
-        
     }
+    /**
+         * 
+         * @return the highest amount of direct descendants of any node in the tree
+         */
+        public int mostChildren(Node root){
+            int max = 0;
+            if(root.hasChildren()){
+                max = root.getChildren().size();
+                for(Node child: root.getChildren()){
+                    int childMax = mostChildren(child);
+                    max = Integer.max(max, childMax);
+                }
+            }
+            return max;
+        }
 }

@@ -52,7 +52,7 @@ public class NewGameScreen extends ScreenAdapter{
 
     public NewGameScreen(AntScuttleGame game, GameData gameData) {
         this.game = game;
-        this.gameData = gamedata;
+        this.gameData = gameData;
         
         /* init buttons */
         // mainButton = new MainButton();
@@ -88,6 +88,10 @@ public class NewGameScreen extends ScreenAdapter{
         Button.draw(game, this, gameData, x, START_BUTTON_Y, startButton, 1);
         
         /* Level selection */
+        if(gameData.getCurrentLevel() == null){
+            System.err.println("Error loading levels");
+            System.exit(1);
+        }
         String levelName = gameData.getCurrentLevel().getName();
         levelGlyph = new GlyphLayout(game.font, levelName);
         

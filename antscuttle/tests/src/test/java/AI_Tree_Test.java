@@ -150,7 +150,54 @@ public class AI_Tree_Test {
             assertEquals(s[i], ((MoveBlock)tblock).getDirection());
         }
     }
+    @Test
+    public void Tree_Max_Child_Count_Is_Three_v1(){
+        Node root = new Node(new RootBlock());
+        Node a = new Node(new MoveBlock(MoveDirection.DOWN, 10));
+        Node b = new Node(new MoveBlock(MoveDirection.UP, 10));
+        Node c = new Node(new MoveBlock(MoveDirection.LEFT, 10));
+        Node d = new Node(new MoveBlock(MoveDirection.RIGHT, 10));
+        Node e = new Node(new MoveBlock(MoveDirection.LEFT, 10));
+        Node f = new Node(new MoveBlock(MoveDirection.UP, 10));
+        
+        a.addChild(b);
+        a.addChild(c);
+        root.addChild(a);
+        d.addChild(e);
+        root.addChild(d);
+        root.addChild(f);
+        AI ai = new AI(root, "test");
+        int max = ai.mostChildren(ai.getRoot());
+        System.out.println(max);
+        assertEquals(max, 3);
+    }
     
+    @Test
+    public void Tree_Max_Child_Count_Is_Two(){
+        Node root = new Node(new RootBlock());
+        Node a = new Node(new MoveBlock(MoveDirection.DOWN, 10));
+        Node b = new Node(new MoveBlock(MoveDirection.UP, 10));
+        Node c = new Node(new MoveBlock(MoveDirection.LEFT, 10));
+        Node d = new Node(new MoveBlock(MoveDirection.RIGHT, 10));
+        Node e = new Node(new MoveBlock(MoveDirection.LEFT, 10));
+        Node f = new Node(new MoveBlock(MoveDirection.UP, 10));
+        
+        a.addChild(b);
+        a.addChild(c);
+        root.addChild(a);
+        d.addChild(e);
+        root.addChild(d);
+        d.addChild(f);
+        AI ai = new AI(root, "test");
+        int max = ai.mostChildren(ai.getRoot());
+        System.out.println(max);
+        assertEquals(max, 2);
+    }
     
+    @Test
+    public void Tree_Max_child_Count_Is_Zero_v1(){
+        AI ai = new AI(new Node(new RootBlock()), "test");
+        assertEquals(ai.mostChildren(ai.getRoot()), 0);
+    }
     
 }
