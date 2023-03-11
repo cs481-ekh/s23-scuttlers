@@ -18,6 +18,7 @@ import com.antscuttle.game.Buttons.ItemButton;
 import com.antscuttle.game.Buttons.ItemsButton;
 import com.antscuttle.game.Buttons.SettingsButton;
 import com.antscuttle.game.Util.GameData;
+import com.antscuttle.game.Weapon.MeleeWeapon;
 import com.antscuttle.game.Weapon.Weapon;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
@@ -55,8 +56,8 @@ public class AntEditorScreen extends ScreenAdapter {
     float stateTime = 0;
     float i;
     
-    Set<Weapon> weapons;
-    Set<Armor> armors;
+    LinkedList<Weapon> weapons;
+    LinkedList<Armor> armors;
     LinkedList<Ant> ants;
     LinkedList<AI> ais;
 
@@ -81,17 +82,19 @@ public class AntEditorScreen extends ScreenAdapter {
 
         bounds = new GlyphLayout();
         
-        weapons = gameData.getAllWeapons();
-        armors = gameData.getAllArmors();
+        weapons = gameData.getUnlockedWeapons();
+        armors = gameData.getUnlockedArmors();
         ants = gameData.getAllAnts();
         ais = gameData.getAllAIs();
 
         human = new Human("Jerry");
         zombie = new Zombie("Timmy");
 
-        gameData.addAnt(human);
-        gameData.addAnt(zombie);
-        gameData.setCurrentAnt(human);
+        if (gameData.getAllAnts().isEmpty()) {
+            gameData.addAnt(human);
+            gameData.addAnt(zombie);
+            gameData.setCurrentAnt(human);
+        }
         
         i  = game.font.getCapHeight()+10;
         gameData.currPane = GameData.panes.ant;
@@ -162,22 +165,26 @@ public class AntEditorScreen extends ScreenAdapter {
 
     private void drawCurrentPane() {
         i = game.font.getCapHeight()+10;
+        int j=0;
 
         switch(gameData.currPane) {
             case ai:
                 game.font.draw(game.batch, "AIs: ", ANT_EDITOR_WIDTH/2.05f, ANT_EDITOR_HEIGHT/1.35f);
                 for (AI ai: ais) {
-                    game.font.draw(game.batch, ai.toString(), ANT_EDITOR_WIDTH/2.05f, ANT_EDITOR_HEIGHT/2-i);
+                    Button.drawGeneric(game, gameData, ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/2.05f, itemButton, null, null, null, ai);
+
+                    game.font.draw(game.batch, ai.toString(), ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/2.05f);
                     i += game.font.getCapHeight()+10;
+                    j += itemButton.getWidth()+20;
                 }
                 break;
             case ant:
                 if (ants.isEmpty()) {
                     game.font.draw(game.batch, "No Created Ants!", ANT_EDITOR_WIDTH/1.25f-antButton.getWidth(), ANT_EDITOR_HEIGHT/1.35f);
                 } else {
-                    int j=0;
+                    
                     for (Ant a: ants) {
-                        Button.drawAntButton(game, this, gameData, ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/2.05f, itemButton, 1, a);
+                        Button.drawGeneric(game, gameData, ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/2.05f, itemButton, a, null, null, null);
                         game.font.draw(game.batch, a.getName(), ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/2.05f+itemButton.getHeight()+20);
 
                         j += itemButton.getWidth()+20;
@@ -188,13 +195,18 @@ public class AntEditorScreen extends ScreenAdapter {
             case items:
                 game.font.draw(game.batch, "Weapons: ", ANT_EDITOR_WIDTH/2.05f, ANT_EDITOR_HEIGHT/1.35f);
                 for (Weapon weap: weapons) {
-                    game.font.draw(game.batch, weap.getName(), ANT_EDITOR_WIDTH/2.05f, ANT_EDITOR_HEIGHT/1.35f-i);
+                    Button.drawGeneric(game, gameData, ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/2.05f, itemButton, null, weap, null, null);
+                    game.font.draw(game.batch, weap.getName(), ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/2.05f+itemButton.getHeight()+20);
                     i += game.font.getCapHeight()+10;
+                    j += itemButton.getWidth()+20;
                 }
                 game.font.draw(game.batch, "Armors: ", ANT_EDITOR_WIDTH/1.25f, ANT_EDITOR_HEIGHT/1.35f);
                 i = game.font.getCapHeight()+10;
+                j = 0;
                 for (Armor armr: armors) {
-                    game.font.draw(game.batch, armr.getName(), ANT_EDITOR_WIDTH/1.25f, ANT_EDITOR_HEIGHT/1.35f-i);
+                    Button.drawGeneric(game, gameData, ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/3.35f, itemButton, null, null, armr, null);
+
+                    game.font.draw(game.batch, armr.getName(), ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/3.35f-i);
                     i += game.font.getCapHeight()+10;
                 }
                 break;

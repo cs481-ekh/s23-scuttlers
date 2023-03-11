@@ -333,31 +333,7 @@ public class AIEditorScreen extends ScreenAdapter{
         // TODO Auto-generated method stub
         
     }
-    /**
-     * Draw the Button
-     * @param x
-     * @param y
-     * @param button type of button
-     */
-    private void drawButton(int x, int y, Button button) {
-        game.batch.begin();
-        int w = button.getWidth();
-        int h = button.getHeight();
-
-        /* if the cursor is inbounds of the button */
-        if (Gdx.input.getX() < x + w && Gdx.input.getX() > x &&
-            MAIN_MENU_HEIGHT - Gdx.input.getY() < y + h && MAIN_MENU_HEIGHT - Gdx.input.getY() > y) {
-
-            game.batch.draw(button.active(), x, y, w, h);
-
-            if (Gdx.input.justTouched()) 
-                button.click(game, this, gameData);
-            
-        }else {
-            game.batch.draw(button.inactive(), x, y, w, h);
-        }
-        game.batch.end();
-    }
+    
     @Override
     public void render(float delta) {        
         /* Back Button */

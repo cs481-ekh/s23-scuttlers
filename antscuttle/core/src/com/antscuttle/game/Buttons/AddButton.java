@@ -9,6 +9,7 @@ import com.antscuttle.game.Weapon.implementations.Glock;
 import com.antscuttle.game.Weapon.implementations.SteelSword;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 
 public class AddButton extends Button {
     private final int WIDTH = 64;
@@ -36,10 +37,14 @@ public class AddButton extends Button {
   
     @Override
     public void click(AntScuttleGame game, Screen screen, GameData data) {
+        // Dialog dialog = new Dialog("Enter AI name");
+        // final TextField inputField = new TextField("", skin);
+
         Ant newguy = new Human("terry");
-        newguy.equipMeleeWeapon(new SteelSword());
-        newguy.equipRangedWeapon(new Glock());
-        newguy.equipArmor(new Chestplate());
+        // ask for user input
+        // newguy.equipMeleeWeapon(new SteelSword());
+        // newguy.equipRangedWeapon(new Glock());
+        // newguy.equipArmor(new Chestplate());
         data.addAnt(newguy);
         data.setCurrentAnt(newguy);
     }
