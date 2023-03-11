@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Scan for implemented classes
+./scan.sh
+
 # Run the gradle task to build the fat JAR file
 cd antscuttle
 
