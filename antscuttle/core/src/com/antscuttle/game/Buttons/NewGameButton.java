@@ -34,6 +34,7 @@ public class NewGameButton extends Button {
     @Override
     public void click(AntScuttleGame game, Screen screen, GameData data) {
         this.playButtonPressSound(game);
-        game.setScreen(new NewGameScreen(game, new GameData()));
+        data = new GameData();
+        game.setScreen(new NewGameScreen(game, data));
     }	
 }
