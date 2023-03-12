@@ -41,13 +41,9 @@ public class ContinueButton extends Button {
    
     @Override
     public void click(AntScuttleGame game, Screen screen, GameData data) {
-        if(gameData != data)
-            System.out.println("GAME DATA IS WRONG IN CONTINUE BUTTON");
         if(data != null){
             this.playButtonPressSound(game);
             game.setScreen(new NewGameScreen(game, data));
-        } else {
-            System.out.println("data is NULL!!!");
-        }
+        } 
     }
 }
