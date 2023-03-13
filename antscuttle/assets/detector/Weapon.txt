@@ -1,5 +1,0 @@
-FireSword.java
-Glock.java
-LightningSword.java
-SteelSword.java
-WaterSword.java
