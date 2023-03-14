@@ -153,7 +153,7 @@ public class AntEditorScreen extends ScreenAdapter {
 
 
                 dialog.getContentTable().add(inputField);
-                dialog.button(addButton);
+                dialog.button(addButton, true).button("X", false);
                 dialog.show(stage);
                 
                 return true;
@@ -197,10 +197,15 @@ public class AntEditorScreen extends ScreenAdapter {
 
         /* Chosen Ant Stats */
         Ant ant = gameData.getCurrentAnt();
-        game.font.draw(game.batch, "AI:" + ant.getAI().toString(), 20, ANT_EDITOR_HEIGHT/1.25f + bounds.height);
-        game.font.draw(game.batch, "Melee:" + ant.getMeleeWeapon(), 10, ANT_EDITOR_HEIGHT/2 + 50);
-        game.font.draw(game.batch, "Armor:" + ant.getArmor(), 10, ANT_EDITOR_HEIGHT/2 + 70);
-        game.font.draw(game.batch, "Ranged:" + ant.getRangedWeapon(), 10, ANT_EDITOR_HEIGHT/2 + 90);
+        String str = (ant.getAI() != null) ? ant.getAI().getName() : "None";
+
+        game.font.draw(game.batch, "AI: " + str, 20, ANT_EDITOR_HEIGHT/1.25f + bounds.height);        
+        str = (ant.getMeleeWeapon() != null) ? ant.getMeleeWeapon().getName() : "None";
+        game.font.draw(game.batch, "Melee: " + str, 10, ANT_EDITOR_HEIGHT/2 + 50);
+        str = (ant.getArmor() != null) ? ant.getArmor().getName() : "None";
+        game.font.draw(game.batch, "Armor: " + str, 10, ANT_EDITOR_HEIGHT/2 + 70);
+        str = (ant.getRangedWeapon() != null) ? ant.getRangedWeapon().getName() : "None";
+        game.font.draw(game.batch, "Ranged: " + str, 10, ANT_EDITOR_HEIGHT/2 + 90);
 
         game.font.draw(game.batch, "Name:" + ant.getName(), 10, ANT_EDITOR_HEIGHT/2 + bounds.height);
         game.font.draw(game.batch, "HP:" + ant.getHealth(), 10, ANT_EDITOR_HEIGHT/2 + bounds.height - 20);
@@ -231,7 +236,7 @@ public class AntEditorScreen extends ScreenAdapter {
                 for (AI ai: ais) {
                     Button.drawGeneric(game, gameData, ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/2.05f, itemButton, null, null, null, ai);
 
-                    game.font.draw(game.batch, ai.toString(), ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/2.05f);
+                    game.font.draw(game.batch, ai.getName(), ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/2.05f);
                     i += game.font.getCapHeight()+10;
                     j += itemButton.getWidth()+20;
                 }

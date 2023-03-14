@@ -55,4 +55,9 @@ public abstract class Weapon {
     public DamageType getDamageType(){
         return damageType;
     }
+    
+    @Override
+    public String toString() {
+        return getClass().getSimpleName();
+    }
 }
