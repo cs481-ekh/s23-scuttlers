@@ -13,4 +13,5 @@ public class Chestplate extends Armor{
     public Chestplate(){
         super("Chestplate", 10, new Texture("armor/chestplate.png"));
     }
+
 }
