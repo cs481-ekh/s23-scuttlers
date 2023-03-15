@@ -12,6 +12,7 @@ import com.antscuttle.game.Armor.Armor;
 import com.antscuttle.game.Weapon.MeleeWeapon;
 import com.antscuttle.game.Weapon.RangedWeapon;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 /**
  *
@@ -28,7 +29,7 @@ public class Zombie extends Ant{
     private Armor armor = null;
     private int speed = 20;
     private AI ai = null;
-    private AI defaultAI = new DefaultZombieAI(new Node(new RootBlock()), "default");
+    private AI defaultAI = new DefaultZombieAI(new Node(new RootBlock(), new Image()), "default");
     
     private static Texture[] moveAnimationUnarmed = {
         new Texture("animations/zombie/zombie_walk_up.png"),
@@ -50,7 +51,7 @@ public class Zombie extends Ant{
             8, 
             4,
             40, 
-            new DefaultZombieAI(new Node(new RootBlock()), "default"), 
+            new DefaultZombieAI(new Node(new RootBlock(), new Image()), "default"), 
             moveAnimationUnarmed, 
             null, 
             null, 

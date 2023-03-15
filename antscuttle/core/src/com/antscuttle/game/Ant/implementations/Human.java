@@ -8,6 +8,7 @@ import com.antscuttle.game.AI.Node;
 import com.antscuttle.game.AI.implementations.RootBlock;
 import com.antscuttle.game.Ant.Ant;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 /**
  *
@@ -59,7 +60,7 @@ public class Human extends Ant{
             8, 
             4,
             40, 
-            new DefaultHumanAI(new Node(new RootBlock()), "default"), 
+            new DefaultHumanAI(new Node(new RootBlock(), new Image()), "default"), 
             moveAnimationUnarmed, 
             moveAnimationSword, 
             moveAnimationPistol, 
