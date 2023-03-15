@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Scan for implemented classes
+chmod +x scan.sh
 ./scan.sh
 
 # Run the gradle task to build the fat JAR file
