@@ -18,25 +18,20 @@ import com.badlogic.gdx.graphics.Texture;
  * @author antho
  */
 public class Zombie extends Ant{
-    private String name;
-    private int health = 30;
-    private final int maxHealth = 30;
-    private int baseDamage = 6;
-    private int baseDefense = 2;
-    private MeleeWeapon meleeWeapon = null;
-    private RangedWeapon rangedWeapon = null;
-    private Armor armor = null;
-    private int speed = 20;
-    private AI ai = null;
-    private AI defaultAI = new DefaultZombieAI(new Node(new RootBlock()), "default");
+    private static final int health = 30;
+    private static final int maxHealth = 30;
+    private static final int baseDamage = 6;
+    private static final int baseDefense = 2;
+    private static final int intelligence = 1;
+    private static final int speed = 20;
     
-    private static Texture[] moveAnimationUnarmed = {
+    private static final Texture[] moveAnimationUnarmed = {
         new Texture("animations/zombie/zombie_walk_up.png"),
         new Texture("animations/zombie/zombie_walk_right.png"),
         new Texture("animations/zombie/zombie_walk_down.png"),
         new Texture("animations/zombie/zombie_walk_left.png"),
     };
-    private static Texture[] attackAnimationUnarmed = {
+    private static final Texture[] attackAnimationUnarmed = {
         new Texture("animations/zombie/zombie_attack_up.png"),
         new Texture("animations/zombie/zombie_attack_right.png"),
         new Texture("animations/zombie/zombie_attack_down.png"),
@@ -45,11 +40,12 @@ public class Zombie extends Ant{
     
     public Zombie(String name){
         super(name, 
-            100, 
-            100, 
-            8, 
-            4,
-            40, 
+            health, 
+            maxHealth, 
+            baseDamage, 
+            baseDefense,
+            intelligence,
+            speed, 
             new DefaultZombieAI(new Node(new RootBlock()), "default"), 
             moveAnimationUnarmed, 
             null, 

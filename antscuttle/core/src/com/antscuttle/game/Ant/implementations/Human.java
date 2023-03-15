@@ -15,6 +15,13 @@ import com.badlogic.gdx.graphics.Texture;
  */
 public class Human extends Ant{
     
+    private static int health = 100;
+    private static int maxHealth = 100;
+    private static int baseDamage = 8;
+    private static int baseDefense = 4;
+    private static int intelligence = 10;
+    private static int speed = 40;
+    
     private  static Texture[] moveAnimationUnarmed = {
         new Texture("animations/human/human_unarmed_walk_up.png"),
         new Texture("animations/human/human_unarmed_walk_right.png"),
@@ -54,11 +61,12 @@ public class Human extends Ant{
     
     public Human(String name){
         super(name, 
-            100, 
-            100, 
-            8, 
-            4,
-            40, 
+            health, 
+            maxHealth, 
+            baseDamage, 
+            baseDefense,
+            intelligence,
+            speed, 
             new DefaultHumanAI(new Node(new RootBlock()), "default"), 
             moveAnimationUnarmed, 
             moveAnimationSword, 
