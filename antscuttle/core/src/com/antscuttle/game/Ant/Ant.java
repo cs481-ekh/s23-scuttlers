@@ -22,6 +22,7 @@ public abstract class Ant {
     private int maxHealth;
     private int baseDamage;
     private int baseDefense;
+    private int intelligence;
     private MeleeWeapon meleeWeapon;
     private RangedWeapon rangedWeapon;
     private Armor armor;
@@ -46,6 +47,7 @@ public abstract class Ant {
             int maxHealth, 
             int baseDamage, 
             int baseDefense,
+            int intelligence,
             int speed, 
             AI defaultAI, 
             Texture[] moveAnimationUnarmed, 
@@ -59,6 +61,7 @@ public abstract class Ant {
         this.maxHealth = maxHealth;
         this.baseDamage = baseDamage;
         this.baseDefense = baseDefense;
+        this.intelligence = intelligence;
         this.meleeWeapon = null;
         this.rangedWeapon = null;
         this.armor = null;
@@ -199,6 +202,10 @@ public abstract class Ant {
     
     public MeleeWeapon getMeleeWeapon(){
         return meleeWeapon;
+    }
+    
+    public int getIntelligence(){
+        return intelligence;
     }
     
     public AI getAI(){
