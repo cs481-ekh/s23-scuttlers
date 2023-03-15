@@ -17,7 +17,8 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: AntScuttle
-        path: /antscuttle/desktop/bin/default/build/libs/antscuttle-1.0-all.jar
+        path: /antscuttle/desktop/build/libs/antscuttle-1.0-all.jar
+
 
   test:
     runs-on: ubuntu-latest
