@@ -5,16 +5,19 @@ package com.antscuttle.game.Util;
 
 import com.antscuttle.game.AI.DecisionBlock;
 import com.antscuttle.game.AI.implementations.AttackBlock;
+import com.antscuttle.game.Damage.DamageType;
 import com.antscuttle.game.AI.implementations.InteractBlock;
 import com.antscuttle.game.AI.implementations.MoveBlock;
 import com.antscuttle.game.AI.implementations.RootBlock;
 import com.antscuttle.game.Ant.Ant;
+import com.antscuttle.game.Ant.AntDecorator;
 import com.antscuttle.game.Armor.Armor;
 import com.antscuttle.game.Level.Level;
 import com.antscuttle.game.Level.LevelObject;
 import com.antscuttle.game.Weapon.Weapon;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Set;
 
 /**
  *
@@ -50,6 +53,30 @@ public class ClassFactory {
             System.err.println("Error instantiating class " + c.getName());
             return null;
         }
+    }
+    /**
+     * 
+     * @param c
+     * @param name
+     * @param damageType A singular bonus damage type
+     * @return 
+     */
+    public Ant newAntInstance(Class<? extends Ant> c, String name, DamageType damageType){
+        Ant ant = newAntInstance(c, name);
+        return new AntDecorator(ant, damageType);
+    }
+    /**
+     * 
+     * @param c
+     * @param name
+     * @param damageTypes A set of bonus damage types
+     * @return 
+     */
+    public Ant newAntInstance(Class<? extends Ant> c, String name, Set<DamageType> damageTypes){
+        Ant ant = newAntInstance(c, name);
+        for(DamageType type : damageTypes)
+            ant = new AntDecorator(ant, type);
+        return ant;
     }
     /**
      * 
