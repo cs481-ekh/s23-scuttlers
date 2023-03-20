@@ -3,6 +3,8 @@ package com.antscuttle.game.AI;
 
 import java.util.LinkedList;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+
 /**
  *
  * @author antho
@@ -10,13 +12,19 @@ import java.util.LinkedList;
 public class Node {
     // The current block
     private final DecisionBlock block;
+    //Image of the block
+    private final Image image;
+    //Block Coordinates
+    public int pos;
     // Children of this block
     private LinkedList<Node> children;
     private Node next;
     private Node prev;
     private Node parent;
     
-    public Node(DecisionBlock block){
+    public Node(DecisionBlock block, Image image){
+        this.pos = 0;
+        this.image = image;
         this.block = block;
         children = new LinkedList<>();
         this.next = this.prev = this.parent = null;
@@ -31,7 +39,18 @@ public class Node {
         child.parent = this;
         children.add(child);
     }
-    
+    public void setPos(int pos){
+        this.pos  = pos;
+    }
+
+    public DecisionBlock getBlock(Node node){
+        return node.block;
+    }
+
+    public Image getImage(){
+        return this.image;
+    }
+
     public boolean addChildAt(int index, Node child){
         try{
             if(index > 0){
@@ -80,7 +99,17 @@ public class Node {
         if(child.next != null)
             child.next.prev = child.prev;
         
-        return children.remove(child);
+        if (children.remove(child)) {
+            return true;
+        } else {
+            // If the node was not found in this level, recursively search the children
+            for (Node node : children) {
+                if (node.removeChild(child)) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
     
     public void setChildren(LinkedList<Node> children){

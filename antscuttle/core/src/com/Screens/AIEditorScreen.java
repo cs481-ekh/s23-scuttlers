@@ -1,5 +1,7 @@
 package com.Screens;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 import com.antscuttle.game.AntScuttleGame;
 import com.antscuttle.game.AI.AI;
@@ -13,7 +15,6 @@ import com.antscuttle.game.Buttons.BackButton;
 import com.antscuttle.game.Buttons.Button;
 import com.antscuttle.game.Util.GameData;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -23,7 +24,6 @@ import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -35,7 +35,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Payload;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Source;
@@ -43,20 +42,29 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Target;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.Input.TextInputListener;
 
 public class AIEditorScreen extends ScreenAdapter{
 	public static final float SPEED = 100;
     public static final float MENU_MOVE_X = Gdx.graphics.getWidth() * 9/12;
     public static final float MENU_MOVE_Y = Gdx.graphics.getHeight() * 8/12;
-    public static final float TREE_POS_1X = Gdx.graphics.getWidth() * 1/12;
-    public static final float TREE_POS_1Y = Gdx.graphics.getHeight() * 7/12;
     public static final float MENU_ATTACK_X = Gdx.graphics.getWidth() * 9/12;
     public static final float MENU_ATTACK_Y = Gdx.graphics.getHeight() * 6/12;
-    public static final float TREE_POS_2X = Gdx.graphics.getWidth() * 5/12;
-    public static final float TREE_POS_2Y = Gdx.graphics.getHeight() * 7/12;
-    public static final float TREE_ROOT_X = Gdx.graphics.getWidth() * 3/12;
-    public static final float TREE_ROOT_Y = Gdx.graphics.getHeight() * 9/12;
+    public static final float MENU_INTERACT_X = Gdx.graphics.getWidth() * 9/12;
+    public static final float MENU_INTERACT_Y = Gdx.graphics.getHeight() * 4/12;
+    public static final float TREE_ROOT_X = Gdx.graphics.getWidth() *1/3;
+    public static final float TREE_ROOT_Y = Gdx.graphics.getHeight() -60;
+    public float targetNodeX;
+    public float targetNodeY;
+    public int dropped;
+    public String aiName;
+    public Actor target;
+    public HashMap<Node, Vector2> nodeMap;
+    public Vector2 parentPosition;
+    public Vector2 currentPosition;
+    public boolean isLeftNode = true;
+    // Define active and inactive colors
+    final Color INACTIVE = new Color(1f, 1f, 1f, 1f); // fully opaque white
+    final Color ACTIVE = new Color(1f, 1f, 1f, 0.5f); // semi-transparent white
 
     private static int MAIN_MENU_HEIGHT= Gdx.graphics.getHeight();;
     SpriteBatch gameBatch;
@@ -80,8 +88,15 @@ public class AIEditorScreen extends ScreenAdapter{
     public LinkedList<DecisionBlock> moveList;
     AntScuttleGame game;
     GameData gameData;
+    DragAndDrop dragAndDrop;
+    final Skin skin;
+    public final Image moveImage;
+    public final Image attackImage;
+    public final Image rootImage;
+    public final Image saveImage;
 
     public AIEditorScreen(AntScuttleGame game, GameData gameData){
+        stage = new Stage();
         backButton = new BackButton();
         this.moveList = new LinkedList<>();
         this.game = game;
@@ -90,8 +105,28 @@ public class AIEditorScreen extends ScreenAdapter{
         this.mBlock = new MoveBlock(null, 0);
         this.aBlock = new AttackBlock(null, null);
         this.iBlock = new InteractBlock(null);
-        rNode = new Node(rBlock);
         System.out.println(gameData.getAllAIs());
+        dragAndDrop = new DragAndDrop();
+        skin = new Skin(Gdx.files.internal("skin/clean-crispy-ui.json"));
+        skin.add("move", new Texture("buttons/ai-editor/Move.png"));
+		skin.add("attack", new Texture("buttons/ai-editor/Attack.png"));
+        skin.add("root", new Texture("buttons/ai-editor/Root.png"));
+        skin.add("save", new Texture("buttons/ai-editor/Save-AI.png"));
+        saveImage = new Image(skin, "save");
+        saveImage.setBounds((Gdx.graphics.getWidth() * 2/3)-150, 0, 100, 50);
+        moveImage = new Image(skin, "move");
+		moveImage.setBounds(MENU_MOVE_X, MENU_MOVE_Y, 100, 50);
+		attackImage = new Image(skin, "attack");
+		attackImage.setBounds(MENU_ATTACK_X, MENU_ATTACK_Y, 100, 50);
+		rootImage = new Image(skin, "root");
+		rootImage.setBounds(TREE_ROOT_X, TREE_ROOT_Y, 100, 50);
+        this.targetNodeX = TREE_ROOT_X -150;
+        this.targetNodeY = TREE_ROOT_Y -150;
+        this.dropped = 0;
+        rNode = new Node(rBlock, rootImage);
+        nodeMap = new HashMap<>();
+        parentPosition = new Vector2(TREE_ROOT_X, TREE_ROOT_Y);
+        nodeMap.put(rNode,parentPosition);
     }
 
     @Override
@@ -111,105 +146,49 @@ public class AIEditorScreen extends ScreenAdapter{
         playMap.fill();
         menuImg = new Texture(treeMap);
         img = new Texture(playMap);
-
-        stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
-
-
-        
-
-		final Skin skin = new Skin(Gdx.files.internal("skin/clean-crispy-ui.json"));
-        // Register the style with the skin
-		skin.add("move", new Texture("buttons/ai-editor/Move.png"));
-		skin.add("attack", new Texture("buttons/ai-editor/Attack.png"));
-        skin.add("root", new Texture("buttons/ai-editor/Root.png"));
-        skin.add("save", new Texture("buttons/ai-editor/Save-AI.png"));
-
-        final Image saveImage = new Image(skin, "save");
-        saveImage.setBounds((Gdx.graphics.getWidth() * 2/3)-150, 0, 150, 100);
+        addNewSource(moveImage);
+        addNewSource(attackImage);
+        addNewTarget(rootImage);      
         stage.addActor(saveImage);
 
-        // Define active and inactive colors
-        final Color inactiveColor = new Color(1f, 1f, 1f, 1f); // fully opaque white
-        final Color activeColor = new Color(1f, 1f, 1f, 0.5f); // semi-transparent white
-        
-        final TextInputListener listener = new TextInputListener() {
+        //Create new dialog for AI name
+        Dialog dialog = new Dialog("Enter AI name", skin);
+        final TextField inputField = new TextField("", skin);
+        TextButton saveButton = new TextButton("Save", skin);
+        //Add listener so that on AI name save, the correct data is added to gameData, and the user moves back to the new game screen
+        saveButton.addListener(new InputListener() {
             @Override
-            public void input(String text) {
-                // The text argument is the user input from the dialog box
-                ai = new AI(rNode, text);
-                gameData.addAI(ai);
-                game.setScreen(new NewGameScreen(game, gameData));
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                String aiName = inputField.getText();
+                ai = new AI(rNode, aiName);
+                return true;
             }
+        });
+        dialog.getContentTable().add(inputField);
+        dialog.button(saveButton);
+        dialog.show(stage);
 
-            @Override
-            public void canceled() {
-                // The user has canceled the input dialog
-                Dialog dialog = new Dialog("Input Canceled", skin);
-                dialog.text("You have canceled the input dialog.");
-                dialog.button("OK");
-                dialog.show(stage);
-            }
-        };
         // Add input listener to the saveImage actor
         saveImage.addListener(new InputListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 // Highlight the saveImage actor on mouse enter
-                saveImage.setColor(activeColor);
+                saveImage.setColor(INACTIVE);
             }
 
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
                 // Unhighlight the saveImage actor on mouse exit
-                saveImage.setColor(inactiveColor);
+                saveImage.setColor(ACTIVE);
             }
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 long id = game.sfx.play(game.VOLUME);
-                if(!moveList.isEmpty()){
-                    for(DecisionBlock db:  moveList){
-                        rNode.addChild(new Node(db));
-                    }
-                    Dialog dialog = new Dialog("Enter AI name", skin);
-                    final TextField inputField = new TextField("", skin);
-                    TextButton saveButton = new TextButton("Save", skin);
-                    saveButton.addListener(new InputListener() {
-                        @Override
-                        public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
-                            String aiName = inputField.getText();
-                            ai = new AI(rNode, aiName);
-                            gameData.addAI(ai);
-                            game.setScreen(new NewGameScreen(game, gameData));
-                            return true;
-                        }
-                    });
-                    dialog.getContentTable().add(inputField);
-                    dialog.button(saveButton);
-                    dialog.show(stage);
-                   
-                    // inputField.addListener(new ChangeListener() {
-                    //     @Override
-                    //     public void changed(ChangeEvent event, Actor actor) {
-                    //         inputText[0] = inputField.getText(); // update the current text variable
-                    //     }
-                    // });
-                    // dialog.getContentTable().add(inputField).pad(10);
-                    // dialog.button("Save", new Runnable() {
-                    //     @Override
-                    //     public void run() {
-                    //         String aiName = inputText[0]; // get the current value of inputText
-                    //         ai = new AI(rNode, aiName);
-                    //         gameData.addAI(ai);
-                    //         game.setScreen(new NewGameScreen(game, gameData));
-                    //     }
-                    // }).button("Cancel", false).key(Input.Keys.ENTER, true).key(Input.Keys.ESCAPE, false);                    
-                    // dialog.show(stage);
-                    
-                    
-                   // Gdx.input.getTextInput(listener, "Enter AI Name", "placeholder", "hi",Input.OnscreenKeyboardType.Password);
-                    
+                if(rNode.hasChildren()){
+                    gameData.addAI(ai);
+                    game.setScreen(new NewGameScreen(game, gameData));
                 } else {
                     // Show a dialog box to inform the user that they need to create an AI before saving.
                     Dialog dialog = new Dialog("Create AI", skin);
@@ -220,141 +199,12 @@ public class AIEditorScreen extends ScreenAdapter{
                 return true;
             }
         });
+    }
 
-		final Image moveImage = new Image(skin, "move");
-		moveImage.setBounds(MENU_MOVE_X, MENU_MOVE_Y, 200, 100);
-		stage.addActor(moveImage);
-
-		final Image attackImage = new Image(skin, "attack");
-		attackImage.setBounds(MENU_ATTACK_X, MENU_ATTACK_Y, 200, 100);
-		stage.addActor(attackImage);
-
-		final Image rootImage = new Image(skin, "root");
-		rootImage.setBounds(TREE_ROOT_X, TREE_ROOT_Y, 200, 100);
-		stage.addActor(rootImage);
-
-		DragAndDrop dragAndDrop = new DragAndDrop();
-		dragAndDrop.addSource(new Source(moveImage) {
-			@Override
-			public Payload dragStart (InputEvent event, float x, float y, int pointer) {
-				Payload payload = new Payload();
-				payload.setObject("move");
-
-				payload.setDragActor(getActor());
-
-				Label validLabel = new Label("", skin);
-				validLabel.setColor(0, 1, 0, 1);
-				payload.setValidDragActor(validLabel);
-
-				return payload;
-			}
-            @Override
-            public void dragStop(InputEvent event, float x, float y, int pointer, Payload payload, Target target){
-                if(target == null){
-                    moveImage.setBounds(MENU_MOVE_X, MENU_MOVE_Y, 150, 100);
-                    if(moveList.contains(mBlock))
-                        moveList.remove(mBlock);
-                }
-                else{
-                    Vector2 moveImagePos = moveImage.localToStageCoordinates(new Vector2(0, 0));
-                    if((moveImagePos.x == TREE_POS_1X || moveImagePos.x == TREE_POS_2X)  && (moveImagePos.y == TREE_POS_1Y || moveImagePos.y == TREE_POS_2Y)){
-                        final SelectBox<String> selectBox;
-                        // Skin skin = new Skin(Gdx.files.internal("skin/clean-crispy-ui.json"));
-                        selectBox = new SelectBox<String>(skin);
-                        selectBox.setName("Direction");
-                        selectBox.setItems("Left", "Right", "Up", "Down");
-                        selectBox.setWidth(100f);
-                        selectBox.setHeight(50f);
-                        stage.addActor(selectBox);
-                        selectBox.setVisible(true);
-        
-                        float moveImageX = moveImagePos.x;
-                        float moveImageY = moveImagePos.y;
-                        selectBox.setPosition(moveImageX, moveImageY);
-                        selectBox.toFront();
-            
-                        selectBox.addListener(new ChangeListener() {
-                            public void changed(ChangeEvent event, Actor actor) {
-                                String selected = selectBox.getSelected();
-                                System.out.println(selected);
-                                mBlock = new MoveBlock(MoveBlock.MoveDirection.valueOf(selected.toUpperCase()), 10);
-                                moveList.add(mBlock);
-                                selectBox.setVisible(false);
-                            }
-                        });
-                    }
-                }    
-            }
-		});
-        dragAndDrop.addSource(new Source(attackImage) {
-			@Override
-			public Payload dragStart (InputEvent event, float x, float y, int pointer) {
-				Payload payload = new Payload();
-				payload.setObject("attack");
-
-				payload.setDragActor(getActor());
-
-				Label validLabel = new Label("", skin);
-				validLabel.setColor(0, 1, 0, 1);
-				payload.setValidDragActor(validLabel);
-
-				return payload;
-			}
-            @Override
-            public void dragStop(InputEvent event, float x, float y, int pointer, Payload payload, Target target){
-                if(target == null){
-                    attackImage.setBounds(MENU_ATTACK_X, MENU_ATTACK_Y, 150, 100);
-                    if(moveList.contains(aBlock))
-                        moveList.remove(aBlock);
-                }
-                else{
-                    Vector2 atckImagePos = attackImage.localToStageCoordinates(new Vector2(0, 0));
-                    if((atckImagePos.x == TREE_POS_1X || atckImagePos.x == TREE_POS_2X)  && (atckImagePos.y == TREE_POS_1Y || atckImagePos.y == TREE_POS_2Y)){
-                        final SelectBox<String> targetBox = new SelectBox<String>(skin);
-                        // Skin skin = new Skin(Gdx.files.internal("skin/clean-crispy-ui.json"));
-                        targetBox.setItems("Obstacle", "Ant");
-                        targetBox.setWidth(100f);
-                        targetBox.setHeight(50f);
-                        stage.addActor(targetBox);
-                            
-                        targetBox.setVisible(true);
-                        float atckImageX = atckImagePos.x;
-                        float atckImageY = atckImagePos.y;
-                        targetBox.setPosition(atckImageX, atckImageY);
-                        targetBox.toFront();
-    
-                        targetBox.addListener(new ChangeListener() {
-                            final SelectBox<String> attackBox = new SelectBox<String>(skin);
-                            public void changed(ChangeEvent event, Actor actor) {
-                                final String selected = targetBox.getSelected();
-                                targetBox.setVisible(false);
-                                attackBox.setItems("Melee", "Ranged");
-                                attackBox.setWidth(100f);
-                                attackBox.setHeight(50f);
-                                stage.addActor(attackBox);
-                                
-                                attackBox.setVisible(true);
-                                Vector2 atckImagePos = attackImage.localToStageCoordinates(new Vector2(0, 0));
-                                float atckImageX = atckImagePos.x;
-                                float atckImageY = atckImagePos.y;
-                                attackBox.setPosition(atckImageX, atckImageY);
-                                attackBox.toFront();
-                                attackBox.addListener(new ChangeListener(){
-                                    public void changed(ChangeEvent event, Actor actor){
-                                        targetBox.remove();
-                                        String attackString = attackBox.getSelected();
-                                        aBlock = new AttackBlock(AttackBlock.ObjectType.valueOf(selected.toUpperCase()),AttackBlock.AttackType.valueOf(attackString.toUpperCase()));
-                                        moveList.add(aBlock);
-                                        attackBox.setVisible(false);
-                                    }
-                                });
-                            }
-                        }); 
-                    }        
-                }
-            }
-		});
-		dragAndDrop.addTarget(new Target(rootImage) {
+    private void addNewTarget(Image image){
+        final Image newImage = image;
+        stage.addActor(newImage);
+		dragAndDrop.addTarget(new Target(newImage) {
 			public boolean drag (Source source, Payload payload, float x, float y, int pointer) {
 				getActor().setColor(Color.GREEN);
 				return true;
@@ -365,28 +215,286 @@ public class AIEditorScreen extends ScreenAdapter{
 			}
 
 			public void drop (Source source, Payload payload, float x, float y, int pointer) {
-                Vector2 atckImagePos = attackImage.localToStageCoordinates(new Vector2(0, 0));
-                Vector2 moveImagePos = moveImage.localToStageCoordinates(new Vector2(0, 0));
+                parentPosition = getActor().localToStageCoordinates(new Vector2(0,0));
+                getNextPosition(parentPosition);
+                // iterate over the HashMap to find node to add to
+                Node parentNode = null;
+                for (Map.Entry<Node, Vector2> entry : nodeMap.entrySet()) {
+                    Node key = entry.getKey();
+                    Vector2 value = entry.getValue();
+                    System.out.println(key + " is at position x= " + value.x +", y= " + value.y);
+                    if(value.equals(parentPosition)){
+                        parentNode = key;
+                        break;
+                    }
+                }
+                if (payload.getObject().toString() == "move") {
+                    Node temp = new Node(mBlock, moveImage);
+                    payload.getDragActor().setPosition(currentPosition.x, currentPosition.y);
+                    if(isLeftNode){
+                        parentNode.addChildAt(0,temp);
+                    }else{
+                        parentNode.addChildAt(1,temp);
+                    }
+                    nodeMap.put(temp, currentPosition);
+                  //  getNextPosition(parentPosition);
+                    addNewSource(moveImage);
+                } else if (payload.getObject().toString() == "attack") {
+                    payload.getDragActor().setPosition(currentPosition.x, currentPosition.y);
+                    Node temp = new Node(aBlock, attackImage);
+                    if(isLeftNode){
+                        parentNode.addChildAt(0,temp);
+                    }else{
+                        parentNode.addChildAt(1,temp);
+                    }
+                    nodeMap.put(temp, currentPosition);
+                    // getNextPosition(parentPosition);
+                    addNewSource(attackImage);
+                }else{
 
-                if (payload.getObject().equals("move")) {
-                    if(atckImagePos.x == MENU_ATTACK_X && atckImagePos.y == MENU_ATTACK_Y)
-                        moveImage.setBounds(TREE_POS_1X, TREE_POS_1Y, 150, 100);
-                    else
-                        moveImage.setBounds(TREE_POS_2X, TREE_POS_2Y, 150, 100);
-                } else if (payload.getObject().equals("attack")) {
-                    if(moveImagePos.x == MENU_MOVE_X && moveImagePos.y == MENU_MOVE_Y)
-                        attackImage.setBounds(TREE_POS_1X, TREE_POS_1Y, 150, 100);
-                    else
-                        attackImage.setBounds(TREE_POS_2X, TREE_POS_2Y, 150, 100);
                 }
                 
-			}
-		});
+                //update the ai
+                ai = new AI(rNode, aiName);
+       
+			}});
+    }
+
+    public Vector2 getNextPosition(Vector2 vector){ 
+        //If vector isn't in map, set vector to that parent
+        boolean vectorExists = false;
+        for (Map.Entry<Node, Vector2> entry : nodeMap.entrySet()) {
+            Node key = entry.getKey();
+            Vector2 value = entry.getValue();
+            System.out.println(key + " is at position x= " + value.x +", y= " + value.y);
+            if(value.equals(vector)){
+                vectorExists = true;
+                break;
+            }
+        }
+        //Child/parent variables
+        Vector2 leftChild;   
+        Vector2 rightChild;
+        Vector2 parentFromLeftChild;
+        Vector2 parentFromRightChild;
+        //Next position variables
+        float nextX;
+        float nextY;
+        int level = 1;
+        for(float i = vector.y; i < TREE_ROOT_Y; i += 175){
+            level++;
+        }
+        if(level == 1){
+            //Child positions
+            leftChild = new Vector2(vector.x - 200,vector.y -175);
+            rightChild = new Vector2(vector.x + 200,vector.y -175);    
+            //Parent position
+            parentFromLeftChild = new Vector2(vector.x + 200,vector.y +175);
+            parentFromRightChild = new Vector2(vector.x - 200,vector.y +175);
+        }else if (level == 2){
+            //Child positions
+             leftChild = new Vector2(vector.x - 100,vector.y -175);
+             rightChild = new Vector2(vector.x + 100,vector.y -175);    
+            //Parent position
+             parentFromLeftChild = new Vector2(vector.x + 100,vector.y +175);
+             parentFromRightChild = new Vector2(vector.x - 100,vector.y +175);
+        }else if(level == 3 ){
+            //Child positions
+             leftChild = new Vector2(vector.x - 50,vector.y -175);
+             rightChild = new Vector2(vector.x + 50,vector.y -175);    
+            //Parent position
+             parentFromLeftChild = new Vector2(vector.x + 50,vector.y +175);
+             parentFromRightChild = new Vector2(vector.x - 50,vector.y +175);
+        }else{
+            // Show a dialog box to inform the user that they can only create that many nodes
+            Dialog dialog = new Dialog("Error", skin);
+            dialog.text("You have reached the maximum number of nodes.");
+            dialog.button("OK");
+            dialog.show(stage);
+            return null;
+        }
+
+        if(!vectorExists){
+            if(nodeMap.containsValue(parentFromLeftChild)){
+                vector = parentFromLeftChild;
+            }else{
+                vector = parentFromRightChild;
+            }
+        }
+
+        if(nodeMap.containsValue(leftChild) && nodeMap.containsValue(rightChild)){
+            Dialog dialog = new Dialog("Error", skin);
+            dialog.text("This node is full, please proceed to the next available node.");
+            dialog.button("OK");
+            dialog.show(stage);
+            return currentPosition;
+        }
+
+        if(!nodeMap.containsValue(leftChild)){
+            nextX = leftChild.x;
+            nextY = leftChild.y;
+            isLeftNode = true;
+        }else{
+            nextX = rightChild.x;
+            nextY = rightChild.y;
+            isLeftNode = false;
+        }
         
-        // TODO Auto-generated method stub
-        
+
+        //Set the current position
+        currentPosition = new Vector2(nextX, nextY);        
+        //TODO Shrink nodes as more get added (after node addition/deletion works)
+
+        //Return Coordinates
+        return currentPosition;
     }
     
+
+    private void addNewSource(Image image) {
+        final SelectBox<String> selectBox;
+        final String imageName = image.getDrawable().toString();
+        final Image newImage = new Image(skin, imageName);
+        if(imageName.equals("move")){
+            newImage.setBounds(MENU_MOVE_X, MENU_MOVE_Y, 100, 50);
+            stage.addActor(newImage);
+            selectBox = new SelectBox<String>(skin);
+            selectBox.setName("Direction");
+            selectBox.setItems("Left", "Right", "Up", "Down");
+            selectBox.setWidth(100f);
+            selectBox.setHeight(50f);
+            stage.addActor(selectBox);
+            selectBox.setVisible(true);
+            selectBox.setPosition(MENU_MOVE_X, MENU_MOVE_Y);
+            selectBox.toFront();
+
+            selectBox.addListener(new ChangeListener() {
+                public void changed(ChangeEvent event, Actor actor) {
+                    String selected = selectBox.getSelected();
+                    System.out.println(selected);
+                    mBlock = new MoveBlock(MoveBlock.MoveDirection.valueOf(selected.toUpperCase()), 10);
+                   // moveList.add(mBlock);
+                    selectBox.setVisible(false);
+                }
+            });
+        }else{
+            newImage.setBounds(MENU_ATTACK_X, MENU_ATTACK_Y, 100, 50);
+            stage.addActor(newImage);
+            selectBox = new SelectBox<String>(skin);
+            selectBox.setItems("Obstacle", "Ant");
+            selectBox.setWidth(100f);
+            selectBox.setHeight(50f);
+            stage.addActor(selectBox);
+                
+            selectBox.setVisible(true);
+            selectBox.setPosition(MENU_ATTACK_X, MENU_ATTACK_Y);
+            selectBox.toFront();
+
+            selectBox.addListener(new ChangeListener() {
+                final SelectBox<String> attackBox = new SelectBox<String>(skin);
+                public void changed(ChangeEvent event, Actor actor) {
+                    final String selected = selectBox.getSelected();
+                    selectBox.setVisible(false);
+                    attackBox.setItems("Melee", "Ranged");
+                    attackBox.setWidth(100f);
+                    attackBox.setHeight(50f);
+                    stage.addActor(attackBox);
+                    
+                    attackBox.setVisible(true);
+                    Vector2 atckImagePos = attackImage.localToStageCoordinates(new Vector2(0, 0));
+                    float atckImageX = atckImagePos.x;
+                    float atckImageY = atckImagePos.y;
+                    attackBox.setPosition(atckImageX, atckImageY);
+                    attackBox.toFront();
+                    attackBox.addListener(new ChangeListener(){
+                        public void changed(ChangeEvent event, Actor actor){
+                            selectBox.remove();
+                            String attackString = attackBox.getSelected();
+                            aBlock = new AttackBlock(AttackBlock.ObjectType.valueOf(selected.toUpperCase()),AttackBlock.AttackType.valueOf(attackString.toUpperCase()));
+                            // moveList.add(aBlock);
+                            attackBox.setVisible(false);
+                        }
+                    });
+                }
+            }); 
+        }
+       
+        dragAndDrop.addSource(new Source(newImage) {
+            boolean newMove;
+            boolean newAttack;
+            boolean newInteraction;
+            Vector2 coordinates = newImage.localToStageCoordinates(new Vector2(0,0));
+
+            @Override
+            public Payload dragStart (InputEvent event, float x, float y, int pointer) {
+                if(selectBox.isVisible()){
+                    Dialog dialog = new Dialog("Select", skin);
+                    dialog.text("Please select an option first.");
+                    dialog.button("OK");
+                    dialog.show(stage);
+                }
+                Payload payload = new Payload();
+                payload.setObject(newImage.getDrawable());
+
+                payload.setDragActor(getActor());
+                coordinates = new Vector2(getActor().getX(), getActor().getY());
+                Label validLabel = new Label("", skin);
+                validLabel.setColor(0, 1, 0, 1);
+                payload.setValidDragActor(validLabel);
+                newMove = ((coordinates.x == MENU_MOVE_X) && (coordinates.y == MENU_MOVE_Y)) ? true : false;
+                newAttack = ((coordinates.x == MENU_ATTACK_X) && (coordinates.y == MENU_ATTACK_Y)) ? true : false;
+                return payload;
+            }
+            @Override
+            public void dragStop(InputEvent event, float x, float y, int pointer, Payload payload, Target target) {
+                if (target == null) {
+                    if (newMove || newAttack) {
+                        newImage.remove();
+                        addNewSource(newImage);
+                        return;
+                    }
+                    newImage.remove();
+                    Node nodeToRemove = null;
+                    for (Map.Entry<Node, Vector2> entry : nodeMap.entrySet()) {
+                        Node key = entry.getKey();
+                        Vector2 value = entry.getValue();
+                        if (value.equals(coordinates)) {
+                            nodeToRemove = key;
+                            break;
+                        }
+                    }
+                    if (nodeToRemove != null) {
+                        LinkedList<Node> children = nodeToRemove.getChildren();
+                        removeChildrenRecursive(children);
+                        nodeMap.remove(nodeToRemove);
+                        rNode.removeChild(nodeToRemove);
+                        ai = new AI(rNode, aiName);
+                    }
+                } else {
+                    try {
+                        addNewTarget(newImage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            
+            private void removeChildrenRecursive(LinkedList<Node> children) {
+                LinkedList<Node> kids = new LinkedList<>();
+                for(Node node:children){
+                    kids.add(node);
+                }
+                for (Node node : kids) {
+                    Actor actor = stage.hit(nodeMap.get(node).x, nodeMap.get(node).y, true);
+                    nodeMap.remove(node);
+                    rNode.removeChild(node);
+                    actor.remove();
+                    removeChildrenRecursive(node.getChildren());
+                }
+            }
+            
+        });
+    }
+
     @Override
     public void render(float delta) {        
         /* Back Button */
