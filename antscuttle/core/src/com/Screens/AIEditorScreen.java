@@ -51,8 +51,8 @@ public class AIEditorScreen extends ScreenAdapter{
     public static final float MENU_ATTACK_Y = Gdx.graphics.getHeight() * 6/12;
     public static final float MENU_INTERACT_X = Gdx.graphics.getWidth() * 9/12;
     public static final float MENU_INTERACT_Y = Gdx.graphics.getHeight() * 4/12;
-    public static final float TREE_ROOT_X = Gdx.graphics.getWidth() * 3/12;
-    public static final float TREE_ROOT_Y = Gdx.graphics.getHeight() * 9/12;
+    public static final float TREE_ROOT_X = Gdx.graphics.getWidth() *1/3;
+    public static final float TREE_ROOT_Y = Gdx.graphics.getHeight() -60;
     public float targetNodeX;
     public float targetNodeY;
     public int dropped;
@@ -61,6 +61,7 @@ public class AIEditorScreen extends ScreenAdapter{
     public HashMap<Node, Vector2> nodeMap;
     public Vector2 parentPosition;
     public Vector2 currentPosition;
+    public boolean isLeftNode = true;
     // Define active and inactive colors
     final Color INACTIVE = new Color(1f, 1f, 1f, 1f); // fully opaque white
     final Color ACTIVE = new Color(1f, 1f, 1f, 0.5f); // semi-transparent white
@@ -214,14 +215,6 @@ public class AIEditorScreen extends ScreenAdapter{
 			}
 
 			public void drop (Source source, Payload payload, float x, float y, int pointer) {
-                if(nodeMap.size() == 15){
-                    // Show a dialog box to inform the user that they can only create that many nodes
-                    Dialog dialog = new Dialog("Error", skin);
-                    dialog.text("You have reached the maximum number of nodes.");
-                    dialog.button("OK");
-                    dialog.show(stage);
-                    return;
-                }
                 parentPosition = getActor().localToStageCoordinates(new Vector2(0,0));
                 getNextPosition(parentPosition);
                 // iterate over the HashMap to find node to add to
@@ -238,14 +231,22 @@ public class AIEditorScreen extends ScreenAdapter{
                 if (payload.getObject().toString() == "move") {
                     Node temp = new Node(mBlock, moveImage);
                     payload.getDragActor().setPosition(currentPosition.x, currentPosition.y);
-                    parentNode.addChild(temp);
+                    if(isLeftNode){
+                        parentNode.addChildAt(0,temp);
+                    }else{
+                        parentNode.addChildAt(1,temp);
+                    }
                     nodeMap.put(temp, currentPosition);
                   //  getNextPosition(parentPosition);
                     addNewSource(moveImage);
                 } else if (payload.getObject().toString() == "attack") {
                     payload.getDragActor().setPosition(currentPosition.x, currentPosition.y);
                     Node temp = new Node(aBlock, attackImage);
-                    parentNode.addChild(temp);
+                    if(isLeftNode){
+                        parentNode.addChildAt(0,temp);
+                    }else{
+                        parentNode.addChildAt(1,temp);
+                    }
                     nodeMap.put(temp, currentPosition);
                     // getNextPosition(parentPosition);
                     addNewSource(attackImage);
@@ -260,10 +261,6 @@ public class AIEditorScreen extends ScreenAdapter{
     }
 
     public Vector2 getNextPosition(Vector2 vector){ 
-        //Next position variables
-        float nextX;
-        float nextY;
-
         //If vector isn't in map, set vector to that parent
         boolean vectorExists = false;
         for (Map.Entry<Node, Vector2> entry : nodeMap.entrySet()) {
@@ -275,24 +272,55 @@ public class AIEditorScreen extends ScreenAdapter{
                 break;
             }
         }
-        if(!vectorExists){
+        //Child/parent variables
+        Vector2 leftChild;   
+        Vector2 rightChild;
+        Vector2 parentFromLeftChild;
+        Vector2 parentFromRightChild;
+        //Next position variables
+        float nextX;
+        float nextY;
+        int level = 1;
+        for(float i = vector.y; i < TREE_ROOT_Y; i += 175){
+            level++;
+        }
+        if(level == 1){
+            //Child positions
+            leftChild = new Vector2(vector.x - 200,vector.y -175);
+            rightChild = new Vector2(vector.x + 200,vector.y -175);    
             //Parent position
-            Vector2 parentFromLeftChild = new Vector2(vector.x + 75,vector.y +75);
-            Vector2 parentFromRightChild = new Vector2(vector.x - 75,vector.y +75);
+            parentFromLeftChild = new Vector2(vector.x + 200,vector.y +175);
+            parentFromRightChild = new Vector2(vector.x - 200,vector.y +175);
+        }else if (level == 2){
+            //Child positions
+             leftChild = new Vector2(vector.x - 100,vector.y -175);
+             rightChild = new Vector2(vector.x + 100,vector.y -175);    
+            //Parent position
+             parentFromLeftChild = new Vector2(vector.x + 100,vector.y +175);
+             parentFromRightChild = new Vector2(vector.x - 100,vector.y +175);
+        }else if(level == 3 ){
+            //Child positions
+             leftChild = new Vector2(vector.x - 50,vector.y -175);
+             rightChild = new Vector2(vector.x + 50,vector.y -175);    
+            //Parent position
+             parentFromLeftChild = new Vector2(vector.x + 50,vector.y +175);
+             parentFromRightChild = new Vector2(vector.x - 50,vector.y +175);
+        }else{
+            // Show a dialog box to inform the user that they can only create that many nodes
+            Dialog dialog = new Dialog("Error", skin);
+            dialog.text("You have reached the maximum number of nodes.");
+            dialog.button("OK");
+            dialog.show(stage);
+            return null;
+        }
 
+        if(!vectorExists){
             if(nodeMap.containsValue(parentFromLeftChild)){
                 vector = parentFromLeftChild;
             }else{
                 vector = parentFromRightChild;
             }
         }
-
-        //Child positions
-        Vector2 leftChild = new Vector2(vector.x - 75,vector.y -75);
-        Vector2 rightChild = new Vector2(vector.x + 75,vector.y -75);
-
-        
-
 
         if(nodeMap.containsValue(leftChild) && nodeMap.containsValue(rightChild)){
             Dialog dialog = new Dialog("Error", skin);
@@ -305,16 +333,17 @@ public class AIEditorScreen extends ScreenAdapter{
         if(!nodeMap.containsValue(leftChild)){
             nextX = leftChild.x;
             nextY = leftChild.y;
+            isLeftNode = true;
         }else{
             nextX = rightChild.x;
             nextY = rightChild.y;
+            isLeftNode = false;
         }
         
 
         //Set the current position
         currentPosition = new Vector2(nextX, nextY);        
         //TODO Shrink nodes as more get added (after node addition/deletion works)
-
 
         //Return Coordinates
         return currentPosition;
@@ -416,75 +445,49 @@ public class AIEditorScreen extends ScreenAdapter{
                 return payload;
             }
             @Override
-            public void dragStop(InputEvent event, float x, float y, int pointer, Payload payload, Target target){
-                System.out.println(rNode);
-                System.out.println("test");
-                if(target == null){
-                    if(newMove || newAttack){
+            public void dragStop(InputEvent event, float x, float y, int pointer, Payload payload, Target target) {
+                if (target == null) {
+                    if (newMove || newAttack) {
                         newImage.remove();
                         addNewSource(newImage);
                         return;
                     }
                     newImage.remove();
-                    // iterate over the HashMap to find node to be deleted
                     Node nodeToRemove = null;
                     for (Map.Entry<Node, Vector2> entry : nodeMap.entrySet()) {
                         Node key = entry.getKey();
                         Vector2 value = entry.getValue();
-                        System.out.println(key + " is at position x= " + value.x +", y= " + value.y);
-                        if(value.equals(coordinates)){
+                        if (value.equals(coordinates)) {
                             nodeToRemove = key;
                             break;
                         }
                     }
-                    if(nodeToRemove != null){
+                    if (nodeToRemove != null) {
                         LinkedList<Node> children = nodeToRemove.getChildren();
-                        for(Node node: children){
-                            Actor actor = stage.hit(nodeMap.get(node).x, nodeMap.get(node).y, true);
-                            actor.remove();
-                            nodeMap.remove(node);
-                            rNode.removeChild(node);
-                        }
+                        removeChildrenRecursive(children);
                         nodeMap.remove(nodeToRemove);
                         rNode.removeChild(nodeToRemove);
                         ai = new AI(rNode, aiName);
                     }
-
-                    // addNewSource(newImage);
-                    // if(imageName.equals("move")){
-                    //     LinkedList<Node> children = rNode.getChildren();
-                    //     for(Node node: children){
-                    //         DecisionBlock block = node.getBlock();
-                    //         if(block instanceof MoveBlock){
-                    //             targetNodeX = posx;
-                    //             targetNodeY = posy;
-                    //             rNode.removeChild(node);
-                    //             ai = new AI(rNode, aiName);
-                    //         }
-                    //     }
-                    // }else if(imageName.equals("attack")){
-                    //     LinkedList<Node> children = rNode.getChildren();
-                    //     for(Node node: children){
-                    //         DecisionBlock block = node.getBlock();
-                    //         if(block instanceof AttackBlock){
-                    //             targetNodeX = posx;
-                    //             targetNodeY = posy;
-                    //             rNode.removeChild(node);
-                    //             ai = new AI(rNode, aiName);
-                    //         }
-                    //     }
-                    // }else{
-                    //     //TODO Interact Block
-                    // }
-                }else{
+                } else {
                     try {
                         addNewTarget(newImage);
                     } catch (Exception e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
                 }
             }
+            
+            private void removeChildrenRecursive(LinkedList<Node> children) {
+                for (Node node : children) {
+                    Actor actor = stage.hit(nodeMap.get(node).x, nodeMap.get(node).y, true);
+                    nodeMap.remove(node);
+                    rNode.removeChild(node);
+                    actor.remove();
+                    removeChildrenRecursive(node.getChildren());
+                }
+            }
+            
         });
     }
 

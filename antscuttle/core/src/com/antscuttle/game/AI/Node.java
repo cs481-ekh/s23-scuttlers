@@ -94,12 +94,22 @@ public class Node {
     }
     
     public boolean removeChild(Node child){
-        // if(child.prev != null)
-        //     child.prev.next = child.next;
-        // if(child.next != null)
-        //     child.next.prev = child.prev;
+        if(child.prev != null)
+            child.prev.next = child.next;
+        if(child.next != null)
+            child.next.prev = child.prev;
         
-        return children.remove(child);
+        if (children.remove(child)) {
+            return true;
+        } else {
+            // If the node was not found in this level, recursively search the children
+            for (Node node : children) {
+                if (node.removeChild(child)) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
     
     public void setChildren(LinkedList<Node> children){
