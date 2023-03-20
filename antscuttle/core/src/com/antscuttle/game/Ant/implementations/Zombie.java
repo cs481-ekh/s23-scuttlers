@@ -3,12 +3,10 @@
  */
 package com.antscuttle.game.Ant.implementations;
 
-import com.antscuttle.game.AI.AI;
 import com.antscuttle.game.AI.DefaultZombieAI;
 import com.antscuttle.game.AI.Node;
 import com.antscuttle.game.AI.implementations.RootBlock;
-import com.antscuttle.game.Ant.Ant;
-import com.antscuttle.game.Armor.Armor;
+import com.antscuttle.game.Ant.BaseAnt;
 import com.antscuttle.game.Weapon.MeleeWeapon;
 import com.antscuttle.game.Weapon.RangedWeapon;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,7 +15,7 @@ import com.badlogic.gdx.graphics.Texture;
  *
  * @author antho
  */
-public class Zombie extends Ant{
+public class Zombie extends BaseAnt{
     private static final int health = 30;
     private static final int maxHealth = 30;
     private static final int baseDamage = 6;

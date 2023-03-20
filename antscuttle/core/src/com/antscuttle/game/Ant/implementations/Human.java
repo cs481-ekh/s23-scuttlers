@@ -6,14 +6,14 @@ package com.antscuttle.game.Ant.implementations;
 import com.antscuttle.game.AI.DefaultHumanAI;
 import com.antscuttle.game.AI.Node;
 import com.antscuttle.game.AI.implementations.RootBlock;
-import com.antscuttle.game.Ant.Ant;
+import com.antscuttle.game.Ant.BaseAnt;
 import com.badlogic.gdx.graphics.Texture;
 
 /**
  *
  * @author antho
  */
-public class Human extends Ant{
+public class Human extends BaseAnt{
     
     private static int health = 100;
     private static int maxHealth = 100;
