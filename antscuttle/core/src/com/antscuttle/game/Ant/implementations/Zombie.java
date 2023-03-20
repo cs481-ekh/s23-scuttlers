@@ -3,6 +3,7 @@
  */
 package com.antscuttle.game.Ant.implementations;
 
+import com.antscuttle.game.AI.AI;
 import com.antscuttle.game.AI.DefaultZombieAI;
 import com.antscuttle.game.AI.Node;
 import com.antscuttle.game.AI.implementations.RootBlock;
@@ -24,6 +25,7 @@ public class Zombie extends BaseAnt{
     private static final int baseDefense = 2;
     private static final int intelligence = 1;
     private static final int speed = 20;
+    private static AI defaultAI = new DefaultZombieAI(new Node(new RootBlock(), new Image()), "default");
     
     private static final Texture[] moveAnimationUnarmed = {
         new Texture("animations/zombie/zombie_walk_up.png"),
@@ -46,7 +48,7 @@ public class Zombie extends BaseAnt{
             baseDefense,
             intelligence,
             speed, 
-            new DefaultZombieAI(new Node(new RootBlock(), new Image()), "default"), 
+            defaultAI, 
             moveAnimationUnarmed, 
             null, 
             null, 
