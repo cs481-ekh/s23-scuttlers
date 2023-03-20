@@ -16,18 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  *
  * @author antho
  */
-public class Zombie extends Ant{
-    private String name;
-    private int health = 30;
-    private final int maxHealth = 30;
-    private int baseDamage = 6;
-    private int baseDefense = 2;
-    private MeleeWeapon meleeWeapon = null;
-    private RangedWeapon rangedWeapon = null;
-    private Armor armor = null;
-    private int speed = 20;
-    private AI ai = null;
-    private AI defaultAI = new DefaultZombieAI(new Node(new RootBlock(), new Image()), "default");
+
 public class Zombie extends BaseAnt{
     private static final int health = 30;
     private static final int maxHealth = 30;
