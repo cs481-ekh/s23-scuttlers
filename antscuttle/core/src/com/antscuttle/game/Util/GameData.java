@@ -4,8 +4,12 @@ package com.antscuttle.game.Util;
 import com.antscuttle.game.AI.*;
 import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.Armor.Armor;
+import com.antscuttle.game.Armor.implementations.Chestplate;
 import com.antscuttle.game.Level.Level;
 import com.antscuttle.game.Weapon.Weapon;
+import com.antscuttle.game.Weapon.implementations.Glock;
+import com.antscuttle.game.Weapon.implementations.SteelSword;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
@@ -75,7 +79,10 @@ public class GameData {
     
         /* unlock first level */
         unlockNewLevel();
-        
+
+        unlockedArmors.add(new Chestplate());
+        unlockedWeapons.add(new Glock());
+        unlockedWeapons.add(new SteelSword());
     }
 
     /* Getters */

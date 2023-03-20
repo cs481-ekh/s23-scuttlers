@@ -12,6 +12,13 @@ jobs:
 
     - name: Run build script
       run: ./build.sh
+      
+    - name: Upload production build
+      uses: actions/upload-artifact@v3
+      with:
+        name: AntScuttle
+        path: antscuttle-1.0-all.jar
+
 
   test:
     runs-on: ubuntu-latest

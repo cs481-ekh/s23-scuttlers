@@ -6,7 +6,7 @@ package com.antscuttle.game.Ant.implementations;
 import com.antscuttle.game.AI.DefaultHumanAI;
 import com.antscuttle.game.AI.Node;
 import com.antscuttle.game.AI.implementations.RootBlock;
-import com.antscuttle.game.Ant.Ant;
+import com.antscuttle.game.Ant.BaseAnt;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
@@ -14,7 +14,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  *
  * @author antho
  */
-public class Human extends Ant{
+public class Human extends BaseAnt{
+    
+    private static int health = 100;
+    private static int maxHealth = 100;
+    private static int baseDamage = 8;
+    private static int baseDefense = 4;
+    private static int intelligence = 10;
+    private static int speed = 40;
     
     private  static Texture[] moveAnimationUnarmed = {
         new Texture("animations/human/human_unarmed_walk_up.png"),
@@ -55,11 +62,12 @@ public class Human extends Ant{
     
     public Human(String name){
         super(name, 
-            100, 
-            100, 
-            8, 
-            4,
-            40, 
+            health, 
+            maxHealth, 
+            baseDamage, 
+            baseDefense,
+            intelligence,
+            speed, 
             new DefaultHumanAI(new Node(new RootBlock(), new Image()), "default"), 
             moveAnimationUnarmed, 
             moveAnimationSword, 

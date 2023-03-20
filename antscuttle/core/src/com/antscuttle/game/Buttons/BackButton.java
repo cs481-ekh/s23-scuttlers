@@ -43,7 +43,7 @@ public class BackButton extends Button {
         this.playButtonPressSound(game);
         switch (screen.toString()) {
             case "SettingsMenuScreen": game.setScreen(SettingsMenuScreen.previousScreen); break;
-            case "NewGameScreen": game.setScreen(new MainMenuScreen(game)); break;
+            case "NewGameScreen": game.setScreen(new MainMenuScreen(game, data)); break;
 
             case "GameplayScreen": 
             case "AIEditorScreen":

@@ -34,7 +34,7 @@ public class AntScuttleGame extends Game {
 		music.setLooping(true);
 		music.play();
                 
-		setScreen(new MainMenuScreen(this));
+		setScreen(new MainMenuScreen(this, null));
 	}
 	
 	@Override

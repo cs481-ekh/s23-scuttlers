@@ -1,4 +1,0 @@
-AttackBlock.java
-InteractBlock.java
-MoveBlock.java
-RootBlock.java

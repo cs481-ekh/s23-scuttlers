@@ -65,6 +65,7 @@ com_crashlytics_export_strings.xml
 /html/build/
 /ios/build/
 /tests/build/
+/assets/detector/
 
 /nbbuild/
 /android/nbbuild/
@@ -113,3 +114,6 @@ Thumbs.db
 /ios/xcode/native/
 /ios/IOSLauncher.app
 /ios/IOSLauncher.app.dSYM
+
+## Detector files
+/assets/detector/*

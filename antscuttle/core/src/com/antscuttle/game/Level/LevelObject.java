@@ -17,7 +17,7 @@ public abstract class LevelObject extends Actor {
     }
 
     // Methods
-    public abstract int attack(int damage, DamageType damageType);
+    public abstract int receiveAttack(int damage, DamageType damageType);
 
     protected abstract void init();
     protected abstract void update(float delta);
