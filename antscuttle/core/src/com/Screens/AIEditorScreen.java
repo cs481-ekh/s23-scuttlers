@@ -479,7 +479,11 @@ public class AIEditorScreen extends ScreenAdapter{
             }
             
             private void removeChildrenRecursive(LinkedList<Node> children) {
-                for (Node node : children) {
+                LinkedList<Node> kids = new LinkedList<>();
+                for(Node node:children){
+                    kids.add(node);
+                }
+                for (Node node : kids) {
                     Actor actor = stage.hit(nodeMap.get(node).x, nodeMap.get(node).y, true);
                     nodeMap.remove(node);
                     rNode.removeChild(node);
