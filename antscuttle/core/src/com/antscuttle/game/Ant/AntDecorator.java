@@ -5,6 +5,7 @@ import com.antscuttle.game.AI.implementations.AttackBlock.AttackType;
 import com.antscuttle.game.Armor.Armor;
 import com.antscuttle.game.Damage.DamageType;
 import com.antscuttle.game.Level.LevelObject;
+import com.antscuttle.game.LevelObject.InteractableLevelObject;
 import com.antscuttle.game.Weapon.MeleeWeapon;
 import com.antscuttle.game.Weapon.RangedWeapon;
 import com.badlogic.gdx.graphics.Texture;
@@ -27,7 +28,7 @@ public class AntDecorator implements Ant{
     @Override
     public int attack(Object target, AttackType type){
         int damageDone = 0;
-        damageDone = ((LevelObject)target).receiveAttack(damage, damageType);
+        damageDone = ((InteractableLevelObject)target).receiveAttack(damage, damageType);
         damageDone += wrappedAnt.attack(target, type);
         return damageDone;
     }

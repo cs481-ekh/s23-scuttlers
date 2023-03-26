@@ -8,6 +8,7 @@ import com.antscuttle.game.AI.implementations.AttackBlock.AttackType;
 import com.antscuttle.game.Armor.Armor;
 import com.antscuttle.game.Damage.DamageType;
 import com.antscuttle.game.Level.LevelObject;
+import com.antscuttle.game.LevelObject.InteractableLevelObject;
 import com.antscuttle.game.Weapon.MeleeWeapon;
 import com.antscuttle.game.Weapon.RangedWeapon;
 import com.antscuttle.game.Weapon.Pistol;
@@ -304,7 +305,7 @@ public abstract class BaseAnt implements Ant{
                 break;
         }
         if(target instanceof LevelObject){
-            damageDone = ((LevelObject) target).receiveAttack(damage, damageType);
+            damageDone = ((InteractableLevelObject) target).receiveAttack(damage, damageType);
         } else if(target instanceof Ant){
             damageDone = ((Ant) target).receiveAttack(damage, damageType);
         }
