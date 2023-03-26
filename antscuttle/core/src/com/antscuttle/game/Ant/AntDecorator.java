@@ -8,6 +8,7 @@ import com.antscuttle.game.Level.LevelObject;
 import com.antscuttle.game.Weapon.MeleeWeapon;
 import com.antscuttle.game.Weapon.RangedWeapon;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 
 /**
  *
@@ -143,5 +144,10 @@ public class AntDecorator implements Ant{
     @Override
     public int receiveAttack(int damage, DamageType damageType) {
         return wrappedAnt.receiveAttack(damage, damageType);
+    }
+
+    @Override
+    public Rectangle getArea() {
+        return wrappedAnt.getArea();
     }
 }

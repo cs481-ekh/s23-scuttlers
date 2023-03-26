@@ -6,9 +6,11 @@ import com.antscuttle.game.AI.implementations.AttackBlock.AttackType;
 import com.antscuttle.game.Ant.BaseAnt.AnimationType;
 import com.antscuttle.game.Armor.Armor;
 import com.antscuttle.game.Damage.DamageType;
+import com.antscuttle.game.Level.LevelObject;
 import com.antscuttle.game.Weapon.MeleeWeapon;
 import com.antscuttle.game.Weapon.RangedWeapon;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 
 /**
  *
@@ -40,4 +42,6 @@ public interface Ant {
     public DamageType getRangedDamageType();
     public int receiveAttack(int damage, DamageType damageType);
     public int attack(Object target, AttackType type);
+    public Rectangle getArea();
+    
 }
