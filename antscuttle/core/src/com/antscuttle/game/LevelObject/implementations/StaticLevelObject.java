@@ -5,7 +5,7 @@
 package com.antscuttle.game.LevelObject.implementations;
 
 import com.antscuttle.game.Damage.DamageType;
-import com.antscuttle.game.Level.LevelObject;
+import com.antscuttle.game.LevelObject.LevelObject;
 import com.badlogic.gdx.graphics.Texture;
 
 /**

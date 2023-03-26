@@ -1,4 +1,4 @@
-package com.antscuttle.game.Level;
+package com.antscuttle.game.LevelObject;
 import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.Damage.DamageType;
 import com.badlogic.gdx.graphics.Texture;
@@ -27,7 +27,7 @@ public abstract class LevelObject extends Actor {
     }
     
     // Methods
-    public abstract int receiveAttack(int damage, DamageType damageType);
+    
     public boolean collides(LevelObject o){
         Rectangle r1 = getArea();
         Rectangle r2 = o.getArea();

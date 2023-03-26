@@ -6,7 +6,6 @@ package com.antscuttle.game.LevelObject;
 
 import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.Damage.DamageType;
-import com.antscuttle.game.Level.LevelObject;
 import com.badlogic.gdx.graphics.Texture;
 
 /**

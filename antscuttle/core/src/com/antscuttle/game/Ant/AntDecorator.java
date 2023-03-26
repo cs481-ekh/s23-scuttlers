@@ -4,7 +4,7 @@ import com.antscuttle.game.AI.AI;
 import com.antscuttle.game.AI.implementations.AttackBlock.AttackType;
 import com.antscuttle.game.Armor.Armor;
 import com.antscuttle.game.Damage.DamageType;
-import com.antscuttle.game.Level.LevelObject;
+import com.antscuttle.game.LevelObject.LevelObject;
 import com.antscuttle.game.LevelObject.InteractableLevelObject;
 import com.antscuttle.game.Weapon.MeleeWeapon;
 import com.antscuttle.game.Weapon.RangedWeapon;

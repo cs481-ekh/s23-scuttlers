@@ -2,7 +2,7 @@ package com.antscuttle.game.AI.implementations;
 
 import com.antscuttle.game.AI.DecisionBlock;
 import com.antscuttle.game.Ant.Ant;
-import com.antscuttle.game.Level.LevelObject;
+import com.antscuttle.game.LevelObject.LevelObject;
 
 /**
  *
