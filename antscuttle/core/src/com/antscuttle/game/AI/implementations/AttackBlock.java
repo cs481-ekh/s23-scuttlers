@@ -5,7 +5,7 @@ import com.antscuttle.game.AI.DecisionBlock;
 import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.Damage.DamageType;
 import com.antscuttle.game.Level.Level;
-import com.antscuttle.game.Level.LevelObject;
+import com.antscuttle.game.LevelObject.LevelObject;
 
 /**
  *

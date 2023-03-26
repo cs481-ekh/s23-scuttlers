@@ -7,12 +7,15 @@ import com.antscuttle.game.AI.AI;
 import com.antscuttle.game.AI.implementations.AttackBlock.AttackType;
 import com.antscuttle.game.Armor.Armor;
 import com.antscuttle.game.Damage.DamageType;
-import com.antscuttle.game.Level.LevelObject;
+import com.antscuttle.game.LevelObject.LevelObject;
+import com.antscuttle.game.LevelObject.InteractableLevelObject;
 import com.antscuttle.game.Weapon.MeleeWeapon;
 import com.antscuttle.game.Weapon.RangedWeapon;
 import com.antscuttle.game.Weapon.Pistol;
 import com.antscuttle.game.Weapon.Sword;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
+import java.awt.Point;
 
 /**
  *
@@ -40,6 +43,8 @@ public abstract class BaseAnt implements Ant{
     private Texture[] attackAnimationUnarmed;
     private Texture[] attackAnimationSword;
     private Texture[] attackAnimationPistol;
+    
+    private Point pos, dim;
 
     public enum AnimationType { Move, MeleeAttack, RangedAttack }
     public enum AnimationDirection { Up, Right, Down, Left }
@@ -76,8 +81,15 @@ public abstract class BaseAnt implements Ant{
         this.attackAnimationSword = attackAnimationSword;
         this.attackAnimationPistol = attackAnimationPistol;
         this.ai = this.defaultAI;
+        this.pos.x = 0;
+        this.pos.y = 0;
+        this.dim.x = 40;
+        this.dim.y = 40;
     }
 
+    public Rectangle getArea(){
+        return new Rectangle(pos.x, pos.y, dim.x, dim.y);
+    }
     @Override
     public Texture[] getAntPreviewAnimation() {
         return moveAnimationUnarmed;
@@ -293,7 +305,7 @@ public abstract class BaseAnt implements Ant{
                 break;
         }
         if(target instanceof LevelObject){
-            damageDone = ((LevelObject) target).receiveAttack(damage, damageType);
+            damageDone = ((InteractableLevelObject) target).receiveAttack(damage, damageType);
         } else if(target instanceof Ant){
             damageDone = ((Ant) target).receiveAttack(damage, damageType);
         }
