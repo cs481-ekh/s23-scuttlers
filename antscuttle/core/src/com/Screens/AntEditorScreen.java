@@ -1,7 +1,7 @@
 package com.Screens;
 
+import java.lang.reflect.Constructor;
 import java.util.LinkedList;
-import java.util.Set;
 
 import com.antscuttle.game.AntScuttleGame;
 import com.antscuttle.game.AI.AI;
@@ -17,20 +17,15 @@ import com.antscuttle.game.Buttons.Button;
 import com.antscuttle.game.Buttons.ItemButton;
 import com.antscuttle.game.Buttons.ItemsButton;
 import com.antscuttle.game.Buttons.SettingsButton;
+import com.antscuttle.game.Util.ClassFactory;
 import com.antscuttle.game.Util.GameData;
-import com.antscuttle.game.Weapon.MeleeWeapon;
 import com.antscuttle.game.Weapon.Weapon;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.Input.TextInputListener;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -40,8 +35,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class AntEditorScreen extends ScreenAdapter {
     AntScuttleGame game;
@@ -76,8 +69,6 @@ public class AntEditorScreen extends ScreenAdapter {
     LinkedList<AI> ais;
 
     Stage stage;
-    // Camera camera;
-    // private Viewport gameView;
 
     public AntEditorScreen(AntScuttleGame game, GameData gameData) {
         this.game = game;
@@ -120,42 +111,55 @@ public class AntEditorScreen extends ScreenAdapter {
     @Override
     public void show() {
         stage = new Stage();
-        
         Gdx.input.setInputProcessor(stage);
+
 		final Skin skin = new Skin(Gdx.files.internal("skin/clean-crispy-ui.json"));
+
         skin.add("add", new Texture("buttons/ant-editor/Add.png"));
-        final Image addImage = new Image(skin, "add");
-        addImage.setBounds(ANT_EDITOR_WIDTH/1.25f - antButton.getWidth()*2, 30, 64, 64);
-        stage.addActor(addImage);
+        final Image addButton = new Image(skin, "add");
+
+        addButton.setBounds(ANT_EDITOR_WIDTH/1.25f - antButton.getWidth()*2, 30, 64, 64);
+        stage.addActor(addButton);
         
-        addImage.addListener(new InputListener() {
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                // Highlight the saveImage actor on mouse enter
-            }
+        addButton.addListener(new InputListener() {
 
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                Dialog dialog = new Dialog("Enter Ant Name", skin);
                 final TextField inputField = new TextField("", skin);
+                final TextButton add = new TextButton("Add", skin);
 
-                TextButton addButton = new TextButton("Add", skin);
-                addButton.addListener(new InputListener() {
-                    @Override
-                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
-                        String name = inputField.getText();
-                        // check whether human or zomble
-                        Ant newguy = new Human(name);
-                        gameData.addAnt(newguy);
-                        return true;
+                new Dialog("Enter Ant Name", skin) {
+                    {
+                        getContentTable().add(inputField);
+                        button(add, true);
+                        button("X", false);
                     }
-                });
 
+                    @Override
+                    protected void result(Object obj) {
+                        if (obj.equals(false)) return;
 
-                dialog.getContentTable().add(inputField);
-                dialog.button(addButton, true).button("X", false);
-                dialog.show(stage);
-                
+                        new Dialog("Choose Ant Type", skin) {
+                            {
+                                for (Class<? extends Ant> ant: gameData.getAllAntTypes()) {
+                                    button(ant.getSimpleName(), ant.getName());
+                                }
+                            }
+
+                            @Override
+                            protected void result(Object obj) {
+                                try {
+                                    ClassFactory cFactory = new ClassFactory();
+                                    @SuppressWarnings("unchecked") Ant ant = cFactory.newAntInstance((Class<? extends Ant>) Class.forName(obj.toString()), inputField.getText());
+                                    gameData.addAnt(ant);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }.show(stage);
+                    }
+                }.show(stage);
+
                 return true;
             }
         });
@@ -179,8 +183,6 @@ public class AntEditorScreen extends ScreenAdapter {
         Button.draw(game, this, gameData, ANT_EDITOR_WIDTH/1.25f - antButton.getWidth()*2, ANT_EDITOR_HEIGHT/1.25f, antButton, 0.75f);
         Button.draw(game, this, gameData, ANT_EDITOR_WIDTH/1.25f - antButton.getWidth(), ANT_EDITOR_HEIGHT/1.25f, itemsButton, 0.75f);
 
-        /* Add Ant Button */
-        // Button.draw(game, this, gameData, ANT_EDITOR_WIDTH/1.25f - antButton.getWidth()*2, 30, addButton, 1);
         /* The view for whichever button is clicked */
         drawCurrentPane();
         
