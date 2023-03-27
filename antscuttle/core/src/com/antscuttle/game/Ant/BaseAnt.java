@@ -81,6 +81,7 @@ public abstract class BaseAnt implements Ant{
         this.attackAnimationSword = attackAnimationSword;
         this.attackAnimationPistol = attackAnimationPistol;
         this.ai = this.defaultAI;
+        this.pos = this.dim = new Point();
         this.pos.x = 0;
         this.pos.y = 0;
         this.dim.x = 40;
