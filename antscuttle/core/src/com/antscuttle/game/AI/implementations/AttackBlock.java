@@ -39,5 +39,10 @@ public class AttackBlock extends DecisionBlock{
         if(damageDone > 0)
             super.execute(ant);
     }
+    
+    public static Class<? extends BlockOptions> getOptionsClass(){
+        return AttackOptions.class;
+    }
+    
 
 }

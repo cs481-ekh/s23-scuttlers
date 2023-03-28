@@ -1,6 +1,7 @@
 
 package com.antscuttle.game.AI.implementations;
 
+import com.antscuttle.game.AI.BlockOptions;
 import com.antscuttle.game.AI.DecisionBlock;
 import com.antscuttle.game.AI.options.InteractOptions;
 import com.antscuttle.game.Ant.Ant;
@@ -22,5 +23,7 @@ public class InteractBlock extends DecisionBlock{
         super.execute(ant);
         // target.interact()?
     }
-
+    public static Class<? extends BlockOptions> getOptionsClass(){
+        return InteractOptions.class;
+    }
 }

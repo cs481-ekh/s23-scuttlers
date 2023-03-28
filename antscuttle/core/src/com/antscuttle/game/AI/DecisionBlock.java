@@ -42,4 +42,7 @@ public abstract class DecisionBlock {
         // Temp code
         executionResult = true;
     }
+    public static Class<? extends BlockOptions> getOptionsClass(){
+        return null;
+    }
 }
