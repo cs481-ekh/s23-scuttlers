@@ -1,10 +1,8 @@
 package com.antscuttle.game.Ant;
 
 import com.antscuttle.game.AI.AI;
-import com.antscuttle.game.AI.implementations.AttackBlock.AttackType;
 import com.antscuttle.game.Armor.Armor;
 import com.antscuttle.game.Damage.DamageType;
-import com.antscuttle.game.LevelObject.LevelObject;
 import com.antscuttle.game.LevelObject.InteractableLevelObject;
 import com.antscuttle.game.Weapon.MeleeWeapon;
 import com.antscuttle.game.Weapon.RangedWeapon;
@@ -26,10 +24,10 @@ public class AntDecorator implements Ant{
     }
     
     @Override
-    public int attack(Object target, AttackType type){
+    public int attack(Object target, String attackType){
         int damageDone = 0;
         damageDone = ((InteractableLevelObject)target).receiveAttack(damage, damageType);
-        damageDone += wrappedAnt.attack(target, type);
+        damageDone += wrappedAnt.attack(target, attackType);
         return damageDone;
     }
     

@@ -1,13 +1,11 @@
 import com.antscuttle.game.AI.*;
 import com.antscuttle.game.AI.implementations.*;
-import com.antscuttle.game.AI.implementations.MoveBlock.MoveDirection;
-import com.antscuttle.game.AI.implementations.MoveBlock.MoveType;
+import com.antscuttle.game.AI.options.MoveOptions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import java.util.Iterator;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
-import java.lang.NullPointerException;
 
 
 /**
@@ -33,7 +31,7 @@ public class AI_Tree_Test {
     @Test
     public void Tree_One_Child_HasNext(){
         Node root = new Node(new RootBlock(), new Image());
-        root.addChild(new Node(new MoveBlock(MoveDirection.DOWN, 10), new Image()));
+        root.addChild(new Node(new MoveBlock(new MoveOptions("Random")), new Image()));
         AI ai = new AI(root, "test");
         Iterator it = ai.iterator();
         assertTrue(it.hasNext());
@@ -41,20 +39,20 @@ public class AI_Tree_Test {
     @Test
     public void Tree_Order_Three_Nodes(){
         Node root = new Node(new RootBlock(), new Image());
-        Node a = new Node(new MoveBlock(MoveDirection.DOWN, 10), new Image());
-        Node b = new Node(new MoveBlock(MoveDirection.UP, 10), new Image());
-        Node c = new Node(new MoveBlock(MoveDirection.LEFT, 10), new Image());
+        Node a = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
+        Node b = new Node(new MoveBlock(new MoveOptions("Door")), new Image());
+        Node c = new Node(new MoveBlock(new MoveOptions("Ant")), new Image());
         a.addChild(b);
         root.addChild(a);
         root.addChild(c);
         AI ai = new AI(root, "test");
         Iterator it = ai.iterator();
         
-        String s[] = {"DOWN", "UP", "LEFT"};
+        String s[] = {"Random", "Door", "Ant"};
         for(int i=0; i<s.length; i++){
             DecisionBlock tblock = (DecisionBlock)it.next();
             tblock.execute(null);
-            assertEquals(s[i], ((MoveBlock)tblock).getDirection());
+            assertEquals(s[i], ((MoveBlock)tblock).getChosenOptions().getFirstOptionChoice());
             
         }
     }
@@ -62,12 +60,12 @@ public class AI_Tree_Test {
     @Test
     public void Tree_Order_Six_Nodes(){
         Node root = new Node(new RootBlock(), new Image());
-        Node a = new Node(new MoveBlock(MoveDirection.DOWN, 10), new Image());
-        Node b = new Node(new MoveBlock(MoveDirection.UP, 10), new Image());
-        Node c = new Node(new MoveBlock(MoveDirection.LEFT, 10), new Image());
-        Node d = new Node(new MoveBlock(MoveDirection.RIGHT, 10), new Image());
-        Node e = new Node(new MoveBlock(MoveDirection.LEFT, 10), new Image());
-        Node f = new Node(new MoveBlock(MoveDirection.UP, 10), new Image());
+        Node a = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
+        Node b = new Node(new MoveBlock(new MoveOptions("Ant")), new Image());
+        Node c = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
+        Node d = new Node(new MoveBlock(new MoveOptions("Door")), new Image());
+        Node e = new Node(new MoveBlock(new MoveOptions("Pressure Plate")), new Image());
+        Node f = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
         
         a.addChild(b);
         a.addChild(c);
@@ -78,19 +76,19 @@ public class AI_Tree_Test {
         AI ai = new AI(root, "test");
         Iterator it = ai.iterator();
         
-        String s[] = {"DOWN", "UP", "LEFT","RIGHT", "LEFT", "UP"};
+        String s[] = {"Random", "Ant", "Random","Door", "Pressure Plate", "Random"};
         for(int i=0; i<s.length; i++){
             DecisionBlock tblock = (DecisionBlock)it.next();
                 tblock.execute(null);
-                assertEquals(s[i], ((MoveBlock)tblock).getDirection());
+                assertEquals(s[i], ((MoveBlock)tblock).getChosenOptions().getFirstOptionChoice());
         }
     }
     @Test
     public void Tree_Order_Three_Nodes_Remove_First(){
         Node root = new Node(new RootBlock(), new Image());
-        Node a = new Node(new MoveBlock(MoveDirection.DOWN, 10), new Image());
-        Node b = new Node(new MoveBlock(MoveDirection.UP, 10), new Image());
-        Node c = new Node(new MoveBlock(MoveDirection.LEFT, 10), new Image());
+        Node a = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
+        Node b = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
+        Node c = new Node(new MoveBlock(new MoveOptions("Ant")), new Image());
         a.addChild(b);
         root.addChild(a);
         root.addChild(c);
@@ -98,19 +96,19 @@ public class AI_Tree_Test {
         AI ai = new AI(root, "test");
         Iterator it = ai.iterator();
         
-        String s[] = {"LEFT"};
+        String s[] = {"Ant"};
         for(int i=0; i<s.length; i++){
             DecisionBlock tblock = (DecisionBlock)it.next();
             tblock.execute(null);
-            assertEquals(s[i], ((MoveBlock)tblock).getDirection());
+            assertEquals(s[i], ((MoveBlock)tblock).getChosenOptions().getFirstOptionChoice());
         }
     }
     @Test
     public void Tree_Order_Three_Nodes_Remove_Last(){
         Node root = new Node(new RootBlock(), new Image());
-        Node a = new Node(new MoveBlock(MoveDirection.DOWN, 10), new Image());
-        Node b = new Node(new MoveBlock(MoveDirection.UP, 10), new Image());
-        Node c = new Node(new MoveBlock(MoveDirection.LEFT, 10), new Image());
+        Node a = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
+        Node b = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
+        Node c = new Node(new MoveBlock(new MoveOptions("Ant")), new Image());
         a.addChild(b);
         root.addChild(a);
         root.addChild(c);
@@ -118,22 +116,22 @@ public class AI_Tree_Test {
         AI ai = new AI(root, "test");
         Iterator it = ai.iterator();
         
-        String s[] = {"DOWN", "UP"};
+        String s[] = {"Random", "Random"};
         for(int i=0; i<s.length; i++){
             DecisionBlock tblock = (DecisionBlock)it.next();
             tblock.execute(null);
-            assertEquals(s[i], ((MoveBlock)tblock).getDirection());
+            assertEquals(s[i], ((MoveBlock)tblock).getChosenOptions().getFirstOptionChoice());
         }
     }
     @Test
     public void Tree_Order_Six_Nodes_Remove_Middle(){
         Node root = new Node(new RootBlock(), new Image());
-        Node a = new Node(new MoveBlock(MoveDirection.DOWN, 10), new Image());
-        Node b = new Node(new MoveBlock(MoveDirection.UP, 10), new Image());
-        Node c = new Node(new MoveBlock(MoveDirection.LEFT, 10), new Image());
-        Node d = new Node(new MoveBlock(MoveDirection.RIGHT, 10), new Image());
-        Node e = new Node(new MoveBlock(MoveDirection.LEFT, 10), new Image());
-        Node f = new Node(new MoveBlock(MoveDirection.UP, 10), new Image());
+        Node a = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
+        Node b = new Node(new MoveBlock(new MoveOptions("Ant")), new Image());
+        Node c = new Node(new MoveBlock(new MoveOptions("Door")), new Image());
+        Node d = new Node(new MoveBlock(new MoveOptions("Door")), new Image());
+        Node e = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
+        Node f = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
         
         a.addChild(b);
         a.addChild(c);
@@ -145,22 +143,22 @@ public class AI_Tree_Test {
         AI ai = new AI(root, "test");
         Iterator it = ai.iterator();
         
-        String s[] = {"DOWN", "UP", "LEFT", "UP"};
+        String s[] = {"Random", "Ant", "Door", "Random"};
         for(int i=0; i<s.length; i++){
             DecisionBlock tblock = (DecisionBlock)it.next();
             tblock.execute(null);
-            assertEquals(s[i], ((MoveBlock)tblock).getDirection());
+            assertEquals(s[i], ((MoveBlock)tblock).getChosenOptions().getFirstOptionChoice());
         }
     }
     @Test
     public void Tree_Max_Child_Count_Is_Three_v1(){
         Node root = new Node(new RootBlock(), new Image());
-        Node a = new Node(new MoveBlock(MoveDirection.DOWN, 10), new Image());
-        Node b = new Node(new MoveBlock(MoveDirection.UP, 10), new Image());
-        Node c = new Node(new MoveBlock(MoveDirection.LEFT, 10), new Image());
-        Node d = new Node(new MoveBlock(MoveDirection.RIGHT, 10), new Image());
-        Node e = new Node(new MoveBlock(MoveDirection.LEFT, 10), new Image());
-        Node f = new Node(new MoveBlock(MoveDirection.UP, 10), new Image());
+        Node a = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
+        Node b = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
+        Node c = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
+        Node d = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
+        Node e = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
+        Node f = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
         
         a.addChild(b);
         a.addChild(c);
@@ -177,12 +175,12 @@ public class AI_Tree_Test {
     @Test
     public void Tree_Max_Child_Count_Is_Two(){
         Node root = new Node(new RootBlock(), new Image());
-        Node a = new Node(new MoveBlock(MoveDirection.DOWN, 10), new Image());
-        Node b = new Node(new MoveBlock(MoveDirection.UP, 10), new Image());
-        Node c = new Node(new MoveBlock(MoveDirection.LEFT, 10), new Image());
-        Node d = new Node(new MoveBlock(MoveDirection.RIGHT, 10), new Image());
-        Node e = new Node(new MoveBlock(MoveDirection.LEFT, 10), new Image());
-        Node f = new Node(new MoveBlock(MoveDirection.UP, 10), new Image());
+        Node a = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
+        Node b = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
+        Node c = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
+        Node d = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
+        Node e = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
+        Node f = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
         
         a.addChild(b);
         a.addChild(c);

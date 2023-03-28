@@ -4,7 +4,6 @@
 package com.antscuttle.game.Ant;
 
 import com.antscuttle.game.AI.AI;
-import com.antscuttle.game.AI.implementations.AttackBlock.AttackType;
 import com.antscuttle.game.Armor.Armor;
 import com.antscuttle.game.Damage.DamageType;
 import com.antscuttle.game.LevelObject.LevelObject;
@@ -81,6 +80,8 @@ public abstract class BaseAnt implements Ant{
         this.attackAnimationSword = attackAnimationSword;
         this.attackAnimationPistol = attackAnimationPistol;
         this.ai = this.defaultAI;
+        this.pos = new Point();
+        this.dim = new Point();
         this.pos.x = 0;
         this.pos.y = 0;
         this.dim.x = 40;
@@ -290,16 +291,16 @@ public abstract class BaseAnt implements Ant{
         return damageTaken;
     }
     @Override
-    public int attack(Object target, AttackType type){
+    public int attack(Object target, String attackType){
         int damageDone = 0;
         int damage = 0;
         DamageType damageType = DamageType.PHYSICAL;
-        switch(type){
-            case MELEE: 
+        switch(attackType){
+            case "Melee": 
                 damage = getMeleeDamage();
                 damageType = getMeleeDamageType();
                 break;
-            case RANGED:
+            case "Ranged":
                 damage = getRangedDamage();
                 damageType = getRangedDamageType();
                 break;

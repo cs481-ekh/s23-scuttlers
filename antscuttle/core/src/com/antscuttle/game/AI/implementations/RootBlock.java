@@ -1,8 +1,9 @@
 
 package com.antscuttle.game.AI.implementations;
 
+import com.antscuttle.game.AI.BlockOptions;
 import com.antscuttle.game.AI.DecisionBlock;
-import com.antscuttle.game.Ant.implementations.Human;
+import com.antscuttle.game.AI.options.RootOptions;
 
 /**
  *
@@ -10,7 +11,8 @@ import com.antscuttle.game.Ant.implementations.Human;
  */
 public class RootBlock extends DecisionBlock {
     public RootBlock(){
-        super();
+        super(new RootOptions());
         execute(null);
     }
+
 }

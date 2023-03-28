@@ -2,20 +2,19 @@
 package com.antscuttle.game.AI.implementations;
 
 import com.antscuttle.game.AI.DecisionBlock;
+import com.antscuttle.game.AI.options.InteractOptions;
 import com.antscuttle.game.Ant.Ant;
-import com.antscuttle.game.LevelObject.LevelObject;
 
 /**
  *
  * @author antho
  */
 public class InteractBlock extends DecisionBlock{
-    private LevelObject target;
     
-    public InteractBlock(LevelObject target){
-        super();
-        this.target = target;
-        this.duration = 1;
+    
+    public InteractBlock(InteractOptions options){
+        super(options);
+        this.duration = 1; // I don't know if we even need duration
     }
     
     @Override
@@ -23,4 +22,5 @@ public class InteractBlock extends DecisionBlock{
         super.execute(ant);
         // target.interact()?
     }
+
 }
