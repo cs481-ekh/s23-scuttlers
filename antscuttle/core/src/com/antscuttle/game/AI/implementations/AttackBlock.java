@@ -1,45 +1,43 @@
 
 package com.antscuttle.game.AI.implementations;
 
+import com.antscuttle.game.AI.BlockOptions;
 import com.antscuttle.game.AI.DecisionBlock;
+import com.antscuttle.game.AI.options.AttackOptions;
 import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.Damage.DamageType;
-import com.antscuttle.game.Level.Level;
-import com.antscuttle.game.LevelObject.LevelObject;
 
 /**
  *
  * @author antho
  */
 public class AttackBlock extends DecisionBlock{
-    private ObjectType target;
-    private AttackType attackType;
-    //private int duration = Integer.MAX_VALUE; // Attack as long as you can
-    public enum AttackType { RANGED, MELEE }
-    public enum ObjectType { OBSTACLE, ANT}
     
-    
-    public AttackBlock(ObjectType targetType, AttackType type){
-        super();
-        this.target = targetType;
-        this.attackType = type;
+    public AttackBlock(AttackOptions options){
+        super(options);
         this.duration = Integer.MAX_VALUE;
     }
     
     
     @Override
     public void execute(Ant ant){
+        String attackType = options.getFirstOptionChoice();
         int damageDone = 0;
-        int damage = (attackType == AttackType.MELEE) ? ant.getMeleeDamage() : ant.getRangedDamage();
-        DamageType damageType = (attackType == AttackType.MELEE) ? ant.getMeleeDamageType() : ant.getRangedDamageType();
+        int damage = (attackType.equals("Melee")) ? ant.getMeleeDamage() : ant.getRangedDamage();
+        DamageType damageType = (attackType.equals("Melee")) ? ant.getMeleeDamageType() : ant.getRangedDamageType();
         if(damageType == null)
             return;
         // if(target instanceof LevelObject)
         //     damageDone = ((LevelObject)target).attack(damage, damageType);
         // else if(target instanceof Ant)
         //     damageDone = ((Ant)target).attack(damage, damageType);
-        // If damage is done, set executionResult to true in order to signal that we should still be attacking in a while loop
+        
+        // Set Excecution result:
+        // We may need 3 indicators: false for not done, true for done, null for 
+        // damage was taken but we're not done attacking (in which case we
+        // should use 'Boolean' instead of 'boolean'
         if(damageDone > 0)
             super.execute(ant);
     }
+
 }

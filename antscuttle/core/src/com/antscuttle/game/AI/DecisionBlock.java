@@ -10,10 +10,29 @@ import com.antscuttle.game.Ant.Ant;
 public abstract class DecisionBlock {
     private Boolean executionResult = null;
     protected int duration;
+    protected BlockOptions options;
+    
+    
+    public DecisionBlock(BlockOptions blockOptions){
+        this.options = blockOptions;
+    }
+    public boolean hasOptionOne(){
+        return options.hasOptionOne();
+    };
+    public boolean hasOptionTwo(){
+        return options.hasOptionTwo();
+    };
+    public String[] getAllOptionOnes(){
+        return options.getAllOptionOnes();
+    };
+    public String[] getAllOptionTwos(){
+        return options.getAllOptionTwos();
+    };
+    public BlockOptions getChosenOptions(){
+        return options;
+    }
     
     public boolean getExecutionResult(){
-        if(executionResult == null)
-            throw new NullPointerException("You must execute the current block before calling next");
         return executionResult;
     }
     public int getDuration(){

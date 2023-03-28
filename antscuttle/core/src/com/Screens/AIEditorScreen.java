@@ -11,6 +11,8 @@ import com.antscuttle.game.AI.implementations.AttackBlock;
 import com.antscuttle.game.AI.implementations.InteractBlock;
 import com.antscuttle.game.AI.implementations.MoveBlock;
 import com.antscuttle.game.AI.implementations.RootBlock;
+import com.antscuttle.game.AI.options.AttackOptions;
+import com.antscuttle.game.AI.options.MoveOptions;
 import com.antscuttle.game.Buttons.BackButton;
 import com.antscuttle.game.Buttons.Button;
 import com.antscuttle.game.Util.GameData;
@@ -102,8 +104,8 @@ public class AIEditorScreen extends ScreenAdapter{
         this.game = game;
         this.gameData = gameData;
         this.rBlock = new RootBlock();
-        this.mBlock = new MoveBlock(null, 0);
-        this.aBlock = new AttackBlock(null, null);
+        this.mBlock = new MoveBlock(new MoveOptions(null));
+        this.aBlock = new AttackBlock(new AttackOptions(null, null));
         this.iBlock = new InteractBlock(null);
         System.out.println(gameData.getAllAIs());
         dragAndDrop = new DragAndDrop();
@@ -358,8 +360,8 @@ public class AIEditorScreen extends ScreenAdapter{
             newImage.setBounds(MENU_MOVE_X, MENU_MOVE_Y, 100, 50);
             stage.addActor(newImage);
             selectBox = new SelectBox<String>(skin);
-            selectBox.setName("Direction");
-            selectBox.setItems("Left", "Right", "Up", "Down");
+            selectBox.setName("Target");
+            selectBox.setItems(mBlock.getAllOptionOnes());
             selectBox.setWidth(100f);
             selectBox.setHeight(50f);
             stage.addActor(selectBox);
@@ -371,7 +373,7 @@ public class AIEditorScreen extends ScreenAdapter{
                 public void changed(ChangeEvent event, Actor actor) {
                     String selected = selectBox.getSelected();
                     System.out.println(selected);
-                    mBlock = new MoveBlock(MoveBlock.MoveDirection.valueOf(selected.toUpperCase()), 10);
+                    mBlock = new MoveBlock(new MoveOptions(selected));
                    // moveList.add(mBlock);
                     selectBox.setVisible(false);
                 }
@@ -380,7 +382,7 @@ public class AIEditorScreen extends ScreenAdapter{
             newImage.setBounds(MENU_ATTACK_X, MENU_ATTACK_Y, 100, 50);
             stage.addActor(newImage);
             selectBox = new SelectBox<String>(skin);
-            selectBox.setItems("Obstacle", "Ant");
+            selectBox.setItems(aBlock.getAllOptionOnes());
             selectBox.setWidth(100f);
             selectBox.setHeight(50f);
             stage.addActor(selectBox);
@@ -394,7 +396,7 @@ public class AIEditorScreen extends ScreenAdapter{
                 public void changed(ChangeEvent event, Actor actor) {
                     final String selected = selectBox.getSelected();
                     selectBox.setVisible(false);
-                    attackBox.setItems("Melee", "Ranged");
+                    attackBox.setItems(aBlock.getAllOptionTwos());
                     attackBox.setWidth(100f);
                     attackBox.setHeight(50f);
                     stage.addActor(attackBox);
@@ -409,7 +411,7 @@ public class AIEditorScreen extends ScreenAdapter{
                         public void changed(ChangeEvent event, Actor actor){
                             selectBox.remove();
                             String attackString = attackBox.getSelected();
-                            aBlock = new AttackBlock(AttackBlock.ObjectType.valueOf(selected.toUpperCase()),AttackBlock.AttackType.valueOf(attackString.toUpperCase()));
+                            aBlock = new AttackBlock(new AttackOptions(selected,attackString));
                             // moveList.add(aBlock);
                             attackBox.setVisible(false);
                         }
