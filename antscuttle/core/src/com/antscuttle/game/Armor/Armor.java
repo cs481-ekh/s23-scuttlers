@@ -30,4 +30,9 @@ public abstract class Armor {
     public String getName(){
         return name;
     }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName();
+    }
 }

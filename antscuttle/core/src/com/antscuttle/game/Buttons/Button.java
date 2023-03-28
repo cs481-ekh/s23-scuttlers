@@ -17,7 +17,7 @@ public abstract class Button{
         super();      
     }
 
-    public void playButtonPressSound(AntScuttleGame game) {
+    public static void playButtonPressSound(AntScuttleGame game) {
         long id = game.sfx.play(game.VOLUME);
     }
 

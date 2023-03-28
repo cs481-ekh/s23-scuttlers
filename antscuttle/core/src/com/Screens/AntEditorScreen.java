@@ -1,7 +1,7 @@
 package com.Screens;
 
+import java.lang.reflect.Constructor;
 import java.util.LinkedList;
-import java.util.Set;
 
 import com.antscuttle.game.AntScuttleGame;
 import com.antscuttle.game.AI.AI;
@@ -17,13 +17,13 @@ import com.antscuttle.game.Buttons.Button;
 import com.antscuttle.game.Buttons.ItemButton;
 import com.antscuttle.game.Buttons.ItemsButton;
 import com.antscuttle.game.Buttons.SettingsButton;
+import com.antscuttle.game.Util.ClassFactory;
 import com.antscuttle.game.Util.GameData;
 import com.antscuttle.game.Weapon.MeleeWeapon;
+import com.antscuttle.game.Weapon.RangedWeapon;
 import com.antscuttle.game.Weapon.Weapon;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -31,6 +31,8 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -76,8 +78,9 @@ public class AntEditorScreen extends ScreenAdapter {
     LinkedList<AI> ais;
 
     Stage stage;
-    // Camera camera;
-    // private Viewport gameView;
+    final Skin skin = new Skin(Gdx.files.internal("skin/clean-crispy-ui.json"));
+    private Viewport gameView;
+    private Camera camera;
 
     public AntEditorScreen(AntScuttleGame game, GameData gameData) {
         this.game = game;
@@ -103,64 +106,170 @@ public class AntEditorScreen extends ScreenAdapter {
         ants = gameData.getAllAnts();
         ais = gameData.getAllAIs();
 
-        
-        if (gameData.getAllAnts().isEmpty()) {
-            human = new Human("Jerry");
-            zombie = new Zombie("Timmy");
-            gameData.addAnt(human);
-            gameData.addAnt(zombie);
-            gameData.setCurrentAnt(human);
-        }
-        
+    
         i  = game.font.getCapHeight()+10;
-        gameData.currPane = GameData.panes.ant;
+        gameData.currPane = GameData.panes.ant;        
     }
     
     
     @Override
     public void show() {
+        camera = new OrthographicCamera();
+        gameView = new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        gameView.setCamera(camera);
         stage = new Stage();
-        
         Gdx.input.setInputProcessor(stage);
-		final Skin skin = new Skin(Gdx.files.internal("skin/clean-crispy-ui.json"));
-        skin.add("add", new Texture("buttons/ant-editor/Add.png"));
-        final Image addImage = new Image(skin, "add");
-        addImage.setBounds(ANT_EDITOR_WIDTH/1.25f - antButton.getWidth()*2, 30, 64, 64);
-        stage.addActor(addImage);
-        
-        addImage.addListener(new InputListener() {
+
+        skin.add("item", new Texture("buttons/ant-editor/Item.png"));
+        skin.add("item-active", new Texture("buttons/ant-editor/Item-Active.png"));
+
+        skin.add("items", new Texture("buttons/ant-editor/Items.png"));
+        skin.add("items-active", new Texture("buttons/ant-editor/Items-Active.png"));
+        final Image itemsBtn = new Image(skin, "items");
+        itemsBtn.setBounds(ANT_EDITOR_WIDTH/1.25f - antButton.getWidth(), ANT_EDITOR_HEIGHT/1.25f, 150, 75);
+        stage.addActor(itemsBtn);
+      
+        itemsBtn.addListener(new InputListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                // Highlight the saveImage actor on mouse enter
+                itemsBtn.setDrawable(skin, "items-active");
             }
-
             @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                Dialog dialog = new Dialog("Enter Ant Name", skin);
-                final TextField inputField = new TextField("", skin);
-
-                TextButton addButton = new TextButton("Add", skin);
-                addButton.addListener(new InputListener() {
-                    @Override
-                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
-                        String name = inputField.getText();
-                        // check whether human or zomble
-                        Ant newguy = new Human(name);
-                        gameData.addAnt(newguy);
-                        return true;
-                    }
-                });
-
-
-                dialog.getContentTable().add(inputField);
-                dialog.button(addButton);
-                dialog.show(stage);
-                
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                itemsBtn.setDrawable(skin, "items");
+            }
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) { 
+                Button.playButtonPressSound(game);
+                gameData.currPane = GameData.panes.items;
                 return true;
             }
         });
 
-       
+
+        skin.add("ant", new Texture("buttons/Ant.png"));
+        skin.add("ant-active", new Texture("buttons/Ant-Active.png"));
+        final Image antBtn = new Image(skin, "ant");
+        antBtn.setBounds(ANT_EDITOR_WIDTH/1.25f - antButton.getWidth()*2, ANT_EDITOR_HEIGHT/1.25f, 150, 75);
+        stage.addActor(antBtn);
+        antBtn.addListener(new InputListener() {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                antBtn.setDrawable(skin, "ant-active");
+            }
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                antBtn.setDrawable(skin, "ant");
+            }
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) { 
+                Button.playButtonPressSound(game);
+                gameData.currPane = GameData.panes.ant;
+                return true;
+            }
+        });
+
+        skin.add("ai", new Texture("buttons/AI.png"));
+        skin.add("ai-active", new Texture("buttons/AI-Active.png"));
+        final Image aiBtn = new Image(skin, "ai");
+        aiBtn.setBounds(ANT_EDITOR_WIDTH/1.25f, ANT_EDITOR_HEIGHT/1.25f, 150, 75);
+        stage.addActor(aiBtn);
+        aiBtn.addListener(new InputListener() {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                aiBtn.setDrawable(skin, "ai-active");
+            }
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                aiBtn.setDrawable(skin, "ai");
+            }
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) { 
+                Button.playButtonPressSound(game);
+                gameData.currPane = GameData.panes.ai;
+                return true;
+            }
+        });
+
+        skin.add("add", new Texture("buttons/ant-editor/Add.png"));
+        skin.add("add-active", new Texture("buttons/ant-editor/Add-Active.png"));
+
+        final Image addButton = new Image(skin, "add");
+        addButton.setBounds(ANT_EDITOR_WIDTH/1.25f - antButton.getWidth()*2, 30, 64, 64);
+        stage.addActor(addButton);
+        addButton.addListener(new InputListener() {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                addButton.setDrawable(skin, "add-active");
+            }
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                addButton.setDrawable(skin, "add");
+            }
+
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                Button.playButtonPressSound(game);
+                final TextField inputField = new TextField("", skin);
+
+                new Dialog("Enter Ant Name", skin) {
+                    {
+                        getContentTable().add(inputField);
+                        button("add", true);
+                        button("X", false);
+                    }
+
+                    @Override
+                    protected void result(Object obj) {
+                        if (obj.equals(false)) return;
+                        String input = inputField.getText();
+                              
+                        // boolean okInput = false;
+                        // while (!okInput) {
+                            if (input.equals("")) {
+                                // this.hide();
+                                new Dialog("Name cannot be empty", skin) {
+                                    {
+                                        // getContentTable().add(inputField);
+                                        button("Ok", false);
+                                    }
+                                }.show(stage);
+                                return;
+                            }
+                            if (input.length() > 10) {
+                                input = input.substring(0, 9);
+                            }
+
+                        //     okInput = true;
+                        // }
+
+                        final String str = input;
+                        new Dialog("Choose Ant Type", skin) {
+                            {
+                                for (Class<? extends Ant> ant: gameData.getAllAntTypes()) {
+                                    button(ant.getSimpleName(), ant.getName());
+                                }
+                            }
+
+                            @Override
+                            protected void result(Object obj) {
+                                
+                                try {
+                                    ClassFactory cFactory = new ClassFactory();
+                                    @SuppressWarnings("unchecked") Ant ant = cFactory.newAntInstance((Class<? extends Ant>) Class.forName(obj.toString()), str);
+                                    gameData.addAnt(ant);
+                                    gameData.setCurrentAnt(ant);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }.show(stage);
+                    }
+                }.show(stage).toFront();
+
+                return true;
+            }
+        });
     }
 
     @Override
@@ -174,40 +283,40 @@ public class AntEditorScreen extends ScreenAdapter {
         /* Back Button */
         Button.draw(game, this, gameData, 20, ANT_EDITOR_HEIGHT - backButton.getHeight() - 20, backButton, 1);
 
-        /* Button View */
-        Button.draw(game, this, gameData, ANT_EDITOR_WIDTH/1.25f, ANT_EDITOR_HEIGHT/1.25f, AIButton, 0.75f);
-        Button.draw(game, this, gameData, ANT_EDITOR_WIDTH/1.25f - antButton.getWidth()*2, ANT_EDITOR_HEIGHT/1.25f, antButton, 0.75f);
-        Button.draw(game, this, gameData, ANT_EDITOR_WIDTH/1.25f - antButton.getWidth(), ANT_EDITOR_HEIGHT/1.25f, itemsButton, 0.75f);
-
-        /* Add Ant Button */
-        // Button.draw(game, this, gameData, ANT_EDITOR_WIDTH/1.25f - antButton.getWidth()*2, 30, addButton, 1);
         /* The view for whichever button is clicked */
         drawCurrentPane();
         
         /* Animation of the chosen Ant */
-        stateTime += Gdx.graphics.getDeltaTime();
-        antBatch.begin();
-        Texture[] frames = gameData.getCurrentAnt().getAntPreviewAnimation();
-        Animation<Texture> animation = new Animation<>(0.6f, frames);
-        antBatch.draw(frames[animation.getKeyFrameIndex(stateTime)], 10, ANT_EDITOR_HEIGHT/2 + 130);
-        if(animation.isAnimationFinished(stateTime)){
-            stateTime = 0;
+        if (ants.size() > 0) {
+            stateTime += Gdx.graphics.getDeltaTime();
+            antBatch.begin();
+            Texture[] frames = gameData.getCurrentAnt().getAntPreviewAnimation();
+            Animation<Texture> animation = new Animation<>(0.6f, frames);
+            antBatch.draw(frames[animation.getKeyFrameIndex(stateTime)], 10, ANT_EDITOR_HEIGHT/2 + 130);
+            if(animation.isAnimationFinished(stateTime)){
+                stateTime = 0;
+            }
+            antBatch.end();
+            
+            /* Chosen Ant Stats */
+            Ant ant = gameData.getCurrentAnt();
+            String str = (ant.getAI() != null) ? ant.getAI().getName() : "None";
+
+            game.font.draw(game.batch, "AI: " + str, 20, ANT_EDITOR_HEIGHT/1.25f + bounds.height);        
+            str = (ant.getMeleeWeapon() != null) ? ant.getMeleeWeapon().getName() : "None";
+            game.font.draw(game.batch, "Melee: " + str, 10, ANT_EDITOR_HEIGHT/2 + 50);
+            str = (ant.getArmor() != null) ? ant.getArmor().getName() : "None";
+            game.font.draw(game.batch, "Armor: " + str, 10, ANT_EDITOR_HEIGHT/2 + 70);
+            str = (ant.getRangedWeapon() != null) ? ant.getRangedWeapon().getName() : "None";
+            game.font.draw(game.batch, "Ranged: " + str, 10, ANT_EDITOR_HEIGHT/2 + 90);
+            
+            game.font.draw(game.batch, "Name:" + ant.getName(), 10, ANT_EDITOR_HEIGHT/2 + bounds.height);
+            game.font.draw(game.batch, "HP:" + ant.getHealth(), 10, ANT_EDITOR_HEIGHT/2 + bounds.height - 20);
+            game.font.draw(game.batch, "DMG:" + ant.getBaseDamage(), 10, ANT_EDITOR_HEIGHT/2 + bounds.height - 40);
+            game.font.draw(game.batch, "DEF:" + ant.getBaseDefense(), 10, ANT_EDITOR_HEIGHT/2 + bounds.height - 60);
+            game.font.draw(game.batch, "SPD:" + ant.getSpeed(), 10, ANT_EDITOR_HEIGHT/2 + bounds.height - 80);
+            
         }
-        antBatch.end();
-
-        /* Chosen Ant Stats */
-        Ant ant = gameData.getCurrentAnt();
-        game.font.draw(game.batch, "AI:" + ant.getAI().toString(), 20, ANT_EDITOR_HEIGHT/1.25f + bounds.height);
-        game.font.draw(game.batch, "Melee:" + ant.getMeleeWeapon(), 10, ANT_EDITOR_HEIGHT/2 + 50);
-        game.font.draw(game.batch, "Armor:" + ant.getArmor(), 10, ANT_EDITOR_HEIGHT/2 + 70);
-        game.font.draw(game.batch, "Ranged:" + ant.getRangedWeapon(), 10, ANT_EDITOR_HEIGHT/2 + 90);
-
-        game.font.draw(game.batch, "Name:" + ant.getName(), 10, ANT_EDITOR_HEIGHT/2 + bounds.height);
-        game.font.draw(game.batch, "HP:" + ant.getHealth(), 10, ANT_EDITOR_HEIGHT/2 + bounds.height - 20);
-        game.font.draw(game.batch, "DMG:" + ant.getBaseDamage(), 10, ANT_EDITOR_HEIGHT/2 + bounds.height - 40);
-        game.font.draw(game.batch, "DEF:" + ant.getBaseDefense(), 10, ANT_EDITOR_HEIGHT/2 + bounds.height - 60);
-        game.font.draw(game.batch, "SPD:" + ant.getSpeed(), 10, ANT_EDITOR_HEIGHT/2 + bounds.height - 80);
-
 
         /* Settings Button */
         x = ANT_EDITOR_WIDTH - settingsButton.getWidth() - 20;
@@ -225,47 +334,205 @@ public class AntEditorScreen extends ScreenAdapter {
         i = game.font.getCapHeight()+10;
         int j=0;
 
+         for (Actor act: stage.getActors()) {
+            if (act.getName() == "item") {
+                act.remove();
+            }
+        }
         switch(gameData.currPane) {
             case ai:
-                game.font.draw(game.batch, "AIs: ", ANT_EDITOR_WIDTH/2.05f, ANT_EDITOR_HEIGHT/1.35f);
-                for (AI ai: ais) {
-                    Button.drawGeneric(game, gameData, ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/2.05f, itemButton, null, null, null, ai);
+                if (ais.isEmpty()) {
+                    game.font.draw(game.batch, "No Created AIs!", ANT_EDITOR_WIDTH/1.25f-antButton.getWidth(), ANT_EDITOR_HEIGHT/1.35f);
+                } else {
+                    float x = ANT_EDITOR_WIDTH/2.05f+j;
+                    float y = ANT_EDITOR_HEIGHT/1.60f;
+                    int numAi = 0;
+                    // game.font.draw(game.batch, "AIs: ", ANT_EDITOR_WIDTH/2.05f, ANT_EDITOR_HEIGHT/1.35f);
+                    for (AI a: ais) {
+                        final AI ai = a;
+                        final Image itemButton = new Image(skin, "item");
+                        itemButton.setName("item");
+                        if (numAi%4==0) {
+                            j = 0;
+                            x = ANT_EDITOR_WIDTH/2.05f+j;
+                            y = ANT_EDITOR_HEIGHT/1.60f-i;
+                        }
+                        itemButton.setBounds(x, y, 100, 100);
+                        game.font.draw(game.batch, a.getName(), x, y+itemButton.getHeight()+20);
+                        stage.addActor(itemButton);
 
-                    game.font.draw(game.batch, ai.toString(), ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/2.05f);
-                    i += game.font.getCapHeight()+10;
-                    j += itemButton.getWidth()+20;
+                        itemButton.addListener(new InputListener() {
+                            @Override
+                            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                                itemButton.setDrawable(skin, "item-active");
+                            }
+            
+                            @Override
+                            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                                itemButton.setDrawable(skin, "item");
+                            }
+            
+                            @Override
+                            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                                Button.playButtonPressSound(game);
+                                gameData.getCurrentAnt().equipAI(ai);
+                                return true;
+                            }
+                        });
+
+                        j += itemButton.getWidth()+50;
+                        x = ANT_EDITOR_WIDTH/2.05f+j;
+                        i += game.font.getCapHeight()+30;
+                        numAi++;
+                    }
                 }
                 break;
             case ant:
                 if (ants.isEmpty()) {
                     game.font.draw(game.batch, "No Created Ants!", ANT_EDITOR_WIDTH/1.25f-antButton.getWidth(), ANT_EDITOR_HEIGHT/1.35f);
                 } else {
-                    
-                    for (Ant a: ants) {
-                        Button.drawGeneric(game, gameData, ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/2.05f, itemButton, a, null, null, null);
-                        game.font.draw(game.batch, a.getName(), ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/2.05f+itemButton.getHeight()+20);
 
-                        j += itemButton.getWidth()+20;
+                    float x = ANT_EDITOR_WIDTH/2.05f+j;
+                    float y = ANT_EDITOR_HEIGHT/1.60f;
+                    int numAnt = 0;
+                    for (Ant a: ants) {
+                        final Ant ant = a;
+                        final Image itemButton = new Image(skin, "item");
+                        itemButton.setName("item");
+                        if (numAnt%4==0) {
+                            j = 0;
+                            x = ANT_EDITOR_WIDTH/2.05f+j;
+                            y = ANT_EDITOR_HEIGHT/1.60f-i;     
+                        }
+                        itemButton.setBounds(x, y, 100, 100);
+                        game.font.draw(game.batch, a.getName(), x, y+itemButton.getHeight()+20);
+                        stage.addActor(itemButton);
+            
+                        itemButton.addListener(new InputListener() {
+                            @Override
+                            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                                itemButton.setDrawable(skin, "item-active");
+                            }
+            
+                            @Override
+                            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                                itemButton.setDrawable(skin, "item");
+                            }
+            
+                            @Override
+                            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                                Button.playButtonPressSound(game);
+                                gameData.setCurrentAnt(ant);
+                                return true;
+                            }
+                        });
+            
+                        j += itemButton.getWidth()+50;
+                        x = ANT_EDITOR_WIDTH/2.05f+j;
                         i += game.font.getCapHeight()+20;
+                        numAnt++;
                     }
+                    
                 }
                 break;
             case items:
-                game.font.draw(game.batch, "Weapons: ", ANT_EDITOR_WIDTH/2.05f, ANT_EDITOR_HEIGHT/1.35f);
-                for (Weapon weap: weapons) {
-                    Button.drawGeneric(game, gameData, ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/2.05f, itemButton, null, weap, null, null);
-                    game.font.draw(game.batch, weap.getName(), ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/2.05f+itemButton.getHeight()+20);
-                    i += game.font.getCapHeight()+10;
-                    j += itemButton.getWidth()+20;
-                }
-                game.font.draw(game.batch, "Armors: ", ANT_EDITOR_WIDTH/1.25f, ANT_EDITOR_HEIGHT/1.35f);
-                i = game.font.getCapHeight()+10;
-                j = 0;
-                for (Armor armr: armors) {
-                    Button.drawGeneric(game, gameData, ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/3.35f, itemButton, null, null, armr, null);
+                if (gameData.getCurrentAnt() == null) {
+                    game.font.draw(game.batch, "No Selected Ant!", ANT_EDITOR_WIDTH/1.25f-antButton.getWidth(), ANT_EDITOR_HEIGHT/1.35f);
+                } else {
+                    game.font.draw(game.batch, "Weapons", ANT_EDITOR_WIDTH/1.25f-antButton.getWidth(), ANT_EDITOR_HEIGHT/1.35f);
+                    float x = ANT_EDITOR_WIDTH/2.05f+j;
+                    float y = ANT_EDITOR_HEIGHT/1.90f;
+                    // int numWeap = 0;
+                    for (Weapon weap: weapons) {
+                        final Weapon weapon = weap;
+                        final Image itemButton = new Image(skin, "item");
 
-                    game.font.draw(game.batch, armr.getName(), ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/3.35f-i);
-                    i += game.font.getCapHeight()+10;
+                        itemButton.setName("item");
+                        itemButton.setBounds(x, y, 100, 100);
+                        game.font.draw(game.batch, weap.getName(), x, y+itemButton.getHeight()+20);
+                        stage.addActor(itemButton);
+            
+                        itemButton.addListener(new InputListener() {
+                            @Override
+                            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                                itemButton.setDrawable(skin, "item-active");
+                            }
+            
+                            @Override
+                            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                                itemButton.setDrawable(skin, "item");
+                            }
+            
+                            @Override
+                            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                                Button.playButtonPressSound(game);
+                                if (gameData.getCurrentAnt() instanceof Zombie) {
+                                    new Dialog("Zombies cannot equip weapons!", skin) {
+                                        {
+                                            button("Ok");
+                                        }
+                                    }.show(stage);
+                                    return true;
+                                }
+
+                                if (weapon instanceof MeleeWeapon) {
+                                    MeleeWeapon mWeap = (MeleeWeapon) weapon;
+                                    gameData.getCurrentAnt().equipMeleeWeapon(mWeap);
+                                } else if (weapon instanceof RangedWeapon) {
+                                    RangedWeapon rWeap = (RangedWeapon) weapon;
+                                    gameData.getCurrentAnt().equipRangedWeapon(rWeap);
+                                }
+                                return true;
+                            }
+                        });
+
+                        i += game.font.getCapHeight()+10;
+                        j += itemButton.getWidth()+20;
+                        x = ANT_EDITOR_WIDTH/2.05f+j;
+
+                    }
+                    game.font.draw(game.batch, "Armors", ANT_EDITOR_WIDTH/1.25f-antButton.getWidth(), ANT_EDITOR_HEIGHT/2f);
+                    i = game.font.getCapHeight()+10;
+                    j = 0;
+                    x = ANT_EDITOR_WIDTH/2.05f+j;
+                    y = ANT_EDITOR_HEIGHT/3.60f;
+                    for (Armor armr: armors) {
+                        final Armor armor = armr;
+                        final Image itemButton = new Image(skin, "item");
+
+                        itemButton.setName("item");
+                        itemButton.setBounds(x, y, 100, 100);
+                        game.font.draw(game.batch, armor.getName(), x, y+itemButton.getHeight()+20);
+                        stage.addActor(itemButton);
+
+                        itemButton.addListener(new InputListener() {
+                            @Override
+                            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                                itemButton.setDrawable(skin, "item-active");
+                            }
+            
+                            @Override
+                            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                                itemButton.setDrawable(skin, "item");
+                            }
+            
+                            @Override
+                            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                                Button.playButtonPressSound(game);
+                             
+                                gameData.getCurrentAnt().equipArmor(armor);
+                             
+                                return true;
+                            }
+                        });
+
+                        i += game.font.getCapHeight()+10;
+                        j += itemButton.getWidth()+20;
+                        x = ANT_EDITOR_WIDTH/2.05f+j;
+    
+                        // game.font.draw(game.batch, armr.getName(), ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/3.35f-i);
+                        i += game.font.getCapHeight()+10;
+                    }
                 }
                 break;
         }
