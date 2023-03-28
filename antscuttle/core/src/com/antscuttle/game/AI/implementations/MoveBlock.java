@@ -2,6 +2,7 @@ package com.antscuttle.game.AI.implementations;
 
 import com.antscuttle.game.AI.BlockOptions;
 import com.antscuttle.game.AI.DecisionBlock;
+import com.antscuttle.game.AI.options.InteractOptions;
 import com.antscuttle.game.AI.options.MoveOptions;
 import com.antscuttle.game.Ant.Ant;
 
@@ -20,5 +21,7 @@ public class MoveBlock extends DecisionBlock{
         // If directional, move coords to that dir
         // If target, get the targets coords and move towards it
     }
-
+    public static Class<? extends BlockOptions> getOptionsClass(){
+        return InteractOptions.class;
+    }
 }
