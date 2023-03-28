@@ -6,6 +6,8 @@ import com.antscuttle.game.AI.DecisionBlock;
 import com.antscuttle.game.AI.options.AttackOptions;
 import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.Damage.DamageType;
+import com.antscuttle.game.Level.LevelData;
+import com.antscuttle.game.Util.GameData;
 
 /**
  *
@@ -20,7 +22,8 @@ public class AttackBlock extends DecisionBlock{
     
     
     @Override
-    public void execute(Ant ant){
+    public void execute(GameData gameData, LevelData levelData){
+        Ant ant = gameData.getCurrentAnt();
         String attackType = options.getFirstOptionChoice();
         int damageDone = 0;
         int damage = (attackType.equals("Melee")) ? ant.getMeleeDamage() : ant.getRangedDamage();
@@ -37,7 +40,7 @@ public class AttackBlock extends DecisionBlock{
         // damage was taken but we're not done attacking (in which case we
         // should use 'Boolean' instead of 'boolean'
         if(damageDone > 0)
-            super.execute(ant);
+            super.execute(gameData, levelData);
     }
     public static Class<? extends BlockOptions> getOptionsClass(){
         return AttackOptions.class;

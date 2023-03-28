@@ -5,6 +5,8 @@ import com.antscuttle.game.AI.BlockOptions;
 import com.antscuttle.game.AI.DecisionBlock;
 import com.antscuttle.game.AI.options.InteractOptions;
 import com.antscuttle.game.Ant.Ant;
+import com.antscuttle.game.Level.LevelData;
+import com.antscuttle.game.Util.GameData;
 
 /**
  *
@@ -19,8 +21,9 @@ public class InteractBlock extends DecisionBlock{
     }
     
     @Override
-    public void execute(Ant ant){
-        super.execute(ant);
+    public void execute(GameData gameData, LevelData levelData){
+        
+        super.execute(gameData, levelData);
         // target.interact()?
     }
     public static Class<? extends BlockOptions> getOptionsClass(){

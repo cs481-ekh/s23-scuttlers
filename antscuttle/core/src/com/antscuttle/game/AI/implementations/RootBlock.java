@@ -12,6 +12,6 @@ import com.antscuttle.game.AI.options.RootOptions;
 public class RootBlock extends DecisionBlock {
     public RootBlock(){
         super(new RootOptions());
-        execute(null);
+        execute(null, null);
     }
 }

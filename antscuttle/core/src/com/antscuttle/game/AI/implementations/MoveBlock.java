@@ -5,6 +5,8 @@ import com.antscuttle.game.AI.DecisionBlock;
 import com.antscuttle.game.AI.options.InteractOptions;
 import com.antscuttle.game.AI.options.MoveOptions;
 import com.antscuttle.game.Ant.Ant;
+import com.antscuttle.game.Level.LevelData;
+import com.antscuttle.game.Util.GameData;
 
 /**
  *
@@ -16,8 +18,8 @@ public class MoveBlock extends DecisionBlock{
         super(options);
     }
     @Override
-    public void execute(Ant ant){
-        super.execute(ant);
+    public void execute(GameData gameData, LevelData levelData){
+        super.execute(gameData, levelData);
         // If directional, move coords to that dir
         // If target, get the targets coords and move towards it
     }
