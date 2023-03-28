@@ -226,14 +226,15 @@ public class AntEditorScreen extends ScreenAdapter {
                               
                         // boolean okInput = false;
                         // while (!okInput) {
-                            if (input.length() == 0) {
+                            if (input.equals("")) {
                                 // this.hide();
-                                new Dialog("Please enter a name", skin) {
+                                new Dialog("Name cannot be empty", skin) {
                                     {
-                                        getContentTable().add(inputField);
-                                        button("X", false);
+                                        // getContentTable().add(inputField);
+                                        button("Ok", false);
                                     }
-                                };
+                                }.show(stage);
+                                return;
                             }
                             if (input.length() > 10) {
                                 input = input.substring(0, 9);
@@ -343,37 +344,46 @@ public class AntEditorScreen extends ScreenAdapter {
                 if (ais.isEmpty()) {
                     game.font.draw(game.batch, "No Created AIs!", ANT_EDITOR_WIDTH/1.25f-antButton.getWidth(), ANT_EDITOR_HEIGHT/1.35f);
                 } else {
-                    game.font.draw(game.batch, "AIs: ", ANT_EDITOR_WIDTH/2.05f, ANT_EDITOR_HEIGHT/1.35f);
+                    float x = ANT_EDITOR_WIDTH/2.05f+j;
+                    float y = ANT_EDITOR_HEIGHT/1.60f;
+                    int numAi = 0;
+                    // game.font.draw(game.batch, "AIs: ", ANT_EDITOR_WIDTH/2.05f, ANT_EDITOR_HEIGHT/1.35f);
                     for (AI a: ais) {
-                        // Button.drawGeneric(game, gameData, ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/2.05f, itemButton, null, null, null, ai);
                         final AI ai = a;
                         final Image itemButton = new Image(skin, "item");
-                        itemButton.toBack();
-                        itemButton.setBounds(ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/2.05f, 100, 100);
-                            game.font.draw(game.batch, a.getName(), ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/2.05f+itemButton.getHeight()+20);
-                            stage.addActor(itemButton);
-                
-                            itemButton.addListener(new InputListener() {
-                                @Override
-                                public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                                    itemButton.setDrawable(skin, "item-active");
-                                }
-                
-                                @Override
-                                public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                                    itemButton.setDrawable(skin, "item");
-                                }
-                
-                                @Override
-                                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                                    Button.playButtonPressSound(game);
-                                    gameData.getCurrentAnt().equipAI(ai);
-                                    return true;
-                                }
-                            });
-                        // game.font.draw(game.batch, ai.getName(), ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/2.05f);
-                        i += game.font.getCapHeight()+10;
-                        j += itemButton.getWidth()+20;
+                        itemButton.setName("item");
+                        if (numAi%4==0) {
+                            j = 0;
+                            x = ANT_EDITOR_WIDTH/2.05f+j;
+                            y = ANT_EDITOR_HEIGHT/1.60f-i;
+                        }
+                        itemButton.setBounds(x, y, 100, 100);
+                        game.font.draw(game.batch, a.getName(), x, y+itemButton.getHeight()+20);
+                        stage.addActor(itemButton);
+
+                        itemButton.addListener(new InputListener() {
+                            @Override
+                            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                                itemButton.setDrawable(skin, "item-active");
+                            }
+            
+                            @Override
+                            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                                itemButton.setDrawable(skin, "item");
+                            }
+            
+                            @Override
+                            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                                Button.playButtonPressSound(game);
+                                gameData.getCurrentAnt().equipAI(ai);
+                                return true;
+                            }
+                        });
+
+                        j += itemButton.getWidth()+50;
+                        x = ANT_EDITOR_WIDTH/2.05f+j;
+                        i += game.font.getCapHeight()+30;
+                        numAi++;
                     }
                 }
                 break;
@@ -383,16 +393,16 @@ public class AntEditorScreen extends ScreenAdapter {
                 } else {
 
                     float x = ANT_EDITOR_WIDTH/2.05f+j;
-                    float y = ANT_EDITOR_HEIGHT/2.05f;
-                    int numAnt = 1;
+                    float y = ANT_EDITOR_HEIGHT/1.60f;
+                    int numAnt = 0;
                     for (Ant a: ants) {
                         final Ant ant = a;
                         final Image itemButton = new Image(skin, "item");
                         itemButton.setName("item");
-                        if (numAnt%5==0) {
+                        if (numAnt%4==0) {
                             j = 0;
                             x = ANT_EDITOR_WIDTH/2.05f+j;
-                            y = ANT_EDITOR_HEIGHT/2.05f-i;
+                            y = ANT_EDITOR_HEIGHT/1.60f-i;     
                         }
                         itemButton.setBounds(x, y, 100, 100);
                         game.font.draw(game.batch, a.getName(), x, y+itemButton.getHeight()+20);
@@ -419,7 +429,7 @@ public class AntEditorScreen extends ScreenAdapter {
             
                         j += itemButton.getWidth()+50;
                         x = ANT_EDITOR_WIDTH/2.05f+j;
-                        i += game.font.getCapHeight()+30;
+                        i += game.font.getCapHeight()+20;
                         numAnt++;
                     }
                     
@@ -429,15 +439,17 @@ public class AntEditorScreen extends ScreenAdapter {
                 if (gameData.getCurrentAnt() == null) {
                     game.font.draw(game.batch, "No Selected Ant!", ANT_EDITOR_WIDTH/1.25f-antButton.getWidth(), ANT_EDITOR_HEIGHT/1.35f);
                 } else {
-                    game.font.draw(game.batch, "Weapons: ", ANT_EDITOR_WIDTH/2.05f, ANT_EDITOR_HEIGHT/1.35f);
+                    game.font.draw(game.batch, "Weapons", ANT_EDITOR_WIDTH/1.25f-antButton.getWidth(), ANT_EDITOR_HEIGHT/1.35f);
+                    float x = ANT_EDITOR_WIDTH/2.05f+j;
+                    float y = ANT_EDITOR_HEIGHT/1.90f;
+                    // int numWeap = 0;
                     for (Weapon weap: weapons) {
-                        // Button.drawGeneric(game, gameData, ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/2.05f, itemButton, null, weap, null, null);
                         final Weapon weapon = weap;
                         final Image itemButton = new Image(skin, "item");
+
                         itemButton.setName("item");
-                        itemButton.setBounds(ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/2.05f, 100, 100);
-    
-                        game.font.draw(game.batch, weap.getName(), ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/2.05f+itemButton.getHeight()+20);
+                        itemButton.setBounds(x, y, 100, 100);
+                        game.font.draw(game.batch, weap.getName(), x, y+itemButton.getHeight()+20);
                         stage.addActor(itemButton);
             
                         itemButton.addListener(new InputListener() {
@@ -454,7 +466,6 @@ public class AntEditorScreen extends ScreenAdapter {
                             @Override
                             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                                 Button.playButtonPressSound(game);
-                                System.out.println("hi");
                                 if (gameData.getCurrentAnt() instanceof Zombie) {
                                     new Dialog("Zombies cannot equip weapons!", skin) {
                                         {
@@ -477,14 +488,49 @@ public class AntEditorScreen extends ScreenAdapter {
 
                         i += game.font.getCapHeight()+10;
                         j += itemButton.getWidth()+20;
+                        x = ANT_EDITOR_WIDTH/2.05f+j;
+
                     }
-                    game.font.draw(game.batch, "Armors: ", ANT_EDITOR_WIDTH/1.25f, ANT_EDITOR_HEIGHT/1.35f);
+                    game.font.draw(game.batch, "Armors", ANT_EDITOR_WIDTH/1.25f-antButton.getWidth(), ANT_EDITOR_HEIGHT/2f);
                     i = game.font.getCapHeight()+10;
                     j = 0;
+                    x = ANT_EDITOR_WIDTH/2.05f+j;
+                    y = ANT_EDITOR_HEIGHT/3.60f;
                     for (Armor armr: armors) {
-                        Button.drawGeneric(game, gameData, ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/3.35f, itemButton, null, null, armr, null);
+                        final Armor armor = armr;
+                        final Image itemButton = new Image(skin, "item");
+
+                        itemButton.setName("item");
+                        itemButton.setBounds(x, y, 100, 100);
+                        game.font.draw(game.batch, armor.getName(), x, y+itemButton.getHeight()+20);
+                        stage.addActor(itemButton);
+
+                        itemButton.addListener(new InputListener() {
+                            @Override
+                            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                                itemButton.setDrawable(skin, "item-active");
+                            }
+            
+                            @Override
+                            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                                itemButton.setDrawable(skin, "item");
+                            }
+            
+                            @Override
+                            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                                Button.playButtonPressSound(game);
+                             
+                                gameData.getCurrentAnt().equipArmor(armor);
+                             
+                                return true;
+                            }
+                        });
+
+                        i += game.font.getCapHeight()+10;
+                        j += itemButton.getWidth()+20;
+                        x = ANT_EDITOR_WIDTH/2.05f+j;
     
-                        game.font.draw(game.batch, armr.getName(), ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/3.35f-i);
+                        // game.font.draw(game.batch, armr.getName(), ANT_EDITOR_WIDTH/2.05f+j, ANT_EDITOR_HEIGHT/3.35f-i);
                         i += game.font.getCapHeight()+10;
                     }
                 }
