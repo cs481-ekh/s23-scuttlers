@@ -2,6 +2,8 @@
 package com.antscuttle.game.AI;
 
 import com.antscuttle.game.Ant.Ant;
+import com.antscuttle.game.Level.LevelData;
+import com.antscuttle.game.Util.GameData;
 
 /**
  *
@@ -38,7 +40,7 @@ public abstract class DecisionBlock {
     public int getDuration(){
         return duration;
     }
-    public void execute(Ant ant){
+    public void execute(GameData gameData, LevelData levelData){
         // Temp code
         executionResult = true;
     }

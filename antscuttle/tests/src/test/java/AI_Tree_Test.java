@@ -51,7 +51,7 @@ public class AI_Tree_Test {
         String s[] = {"Random", "Door", "Ant"};
         for(int i=0; i<s.length; i++){
             DecisionBlock tblock = (DecisionBlock)it.next();
-            tblock.execute(null);
+            tblock.execute(null, null);
             assertEquals(s[i], ((MoveBlock)tblock).getChosenOptions().getFirstOptionChoice());
             
         }
@@ -79,7 +79,7 @@ public class AI_Tree_Test {
         String s[] = {"Random", "Ant", "Random","Door", "Pressure Plate", "Random"};
         for(int i=0; i<s.length; i++){
             DecisionBlock tblock = (DecisionBlock)it.next();
-                tblock.execute(null);
+                tblock.execute(null, null);
                 assertEquals(s[i], ((MoveBlock)tblock).getChosenOptions().getFirstOptionChoice());
         }
     }
@@ -99,7 +99,7 @@ public class AI_Tree_Test {
         String s[] = {"Ant"};
         for(int i=0; i<s.length; i++){
             DecisionBlock tblock = (DecisionBlock)it.next();
-            tblock.execute(null);
+            tblock.execute(null, null);
             assertEquals(s[i], ((MoveBlock)tblock).getChosenOptions().getFirstOptionChoice());
         }
     }
@@ -119,7 +119,7 @@ public class AI_Tree_Test {
         String s[] = {"Random", "Random"};
         for(int i=0; i<s.length; i++){
             DecisionBlock tblock = (DecisionBlock)it.next();
-            tblock.execute(null);
+            tblock.execute(null, null);
             assertEquals(s[i], ((MoveBlock)tblock).getChosenOptions().getFirstOptionChoice());
         }
     }
@@ -146,7 +146,7 @@ public class AI_Tree_Test {
         String s[] = {"Random", "Ant", "Door", "Random"};
         for(int i=0; i<s.length; i++){
             DecisionBlock tblock = (DecisionBlock)it.next();
-            tblock.execute(null);
+            tblock.execute(null, null);
             assertEquals(s[i], ((MoveBlock)tblock).getChosenOptions().getFirstOptionChoice());
         }
     }
