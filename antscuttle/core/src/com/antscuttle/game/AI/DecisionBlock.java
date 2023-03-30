@@ -1,7 +1,6 @@
 
 package com.antscuttle.game.AI;
 
-import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.Level.LevelData;
 import com.antscuttle.game.Util.GameData;
 
