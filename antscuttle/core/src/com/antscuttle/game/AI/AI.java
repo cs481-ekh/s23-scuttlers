@@ -21,7 +21,7 @@ public class AI implements Iterable{
         this.name = name;
     }
     public String getName(){
-        return this.name;
+        return name;
     }
     public Node getRoot(){
         return root;
