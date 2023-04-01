@@ -25,10 +25,10 @@ public class InteractBlock extends DecisionBlock{
     @Override
     public void execute(GameData gameData, LevelData levelData){
         // get the current ant 
-        BaseAnt ant = (BaseAnt) gameData.getCurrentAnt();
+        // BaseAnt ant = (BaseAnt) gameData.getCurrentAnt();
 
         // get the graph
-        Graph g = levelData.getLevelGraph(ant.getIntelligence())
+        // Graph g = levelData.getLevelGraph(ant.getIntelligence())
 
         // get the ant coords
         // Point interactCoords = ant.getCoords();
