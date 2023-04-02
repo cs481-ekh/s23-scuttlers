@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
 public class Chestplate extends Armor{
     
     public Chestplate(){
-        super("Chestplate", 10, new Texture("armor/chestplate.png"));
+        super("Chestplate", 10, new String("armor/chestplate.png"));
     }
 
 }

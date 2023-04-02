@@ -1,6 +1,6 @@
 package com.Screens;
 
-import com.antscuttle.game.Buttons.Button;
+import com.antscuttle.game.Buttons.ScuttleButton;
 import com.antscuttle.game.AntScuttleGame;
 import com.antscuttle.game.Buttons.BackButton;
 import com.antscuttle.game.Buttons.MusicButton;
@@ -20,7 +20,7 @@ public class SettingsMenuScreen extends ScreenAdapter {
     private static int SETTINGS_MENU_HEIGHT;
     private static int SETTINGS_MENU_WIDTH;
 
-    Button backButton;
+    ScuttleButton backButton;
     MusicButton musicButton;
     SFXButton sfxButton;
 
@@ -59,16 +59,16 @@ public class SettingsMenuScreen extends ScreenAdapter {
         game.batch.begin();
 
         /* Back button */
-        Button.draw(game, this, null, 20, SETTINGS_MENU_HEIGHT - backButton.getHeight() - 20, backButton, 1);
+        ScuttleButton.draw(game, this, null, 20, SETTINGS_MENU_HEIGHT - backButton.getHeight() - 20, backButton, 1);
 
         /* Sound buttons */
         x = (SETTINGS_MENU_WIDTH/2) - 80;
         game.font.draw(game.batch, musicTxt, x, SETTINGS_MENU_HEIGHT/2+musicButton.getHeight() + bounds.height+10);
-        Button.draw(game, this, null, x, SETTINGS_MENU_HEIGHT/2, musicButton, 1);
+        ScuttleButton.draw(game, this, null, x, SETTINGS_MENU_HEIGHT/2, musicButton, 1);
 
         x += 160;
         game.font.draw(game.batch, sfxTxt, x, SETTINGS_MENU_HEIGHT/2+sfxButton.getHeight() + bounds.height+10);
-        Button.draw(game, this, null, x, SETTINGS_MENU_HEIGHT/2, sfxButton, 1);
+        ScuttleButton.draw(game, this, null, x, SETTINGS_MENU_HEIGHT/2, sfxButton, 1);
 
         game.batch.end();
     }

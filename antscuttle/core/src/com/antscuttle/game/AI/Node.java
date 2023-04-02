@@ -1,6 +1,7 @@
 
 package com.antscuttle.game.AI;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -9,11 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  *
  * @author antho
  */
-public class Node {
+public class Node implements Serializable{
     // The current block
     private final DecisionBlock block;
-    //Image of the block
-    private final Image image;
     //Block Coordinates
     public int pos;
     // Children of this block
@@ -22,9 +21,8 @@ public class Node {
     private Node prev;
     private Node parent;
     
-    public Node(DecisionBlock block, Image image){
+    public Node(DecisionBlock block){
         this.pos = 0;
-        this.image = image;
         this.block = block;
         children = new LinkedList<>();
         this.next = this.prev = this.parent = null;
@@ -45,10 +43,6 @@ public class Node {
 
     public DecisionBlock getBlock(Node node){
         return node.block;
-    }
-
-    public Image getImage(){
-        return this.image;
     }
 
     public boolean addChildAt(int index, Node child){

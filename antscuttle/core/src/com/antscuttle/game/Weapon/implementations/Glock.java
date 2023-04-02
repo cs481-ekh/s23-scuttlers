@@ -17,9 +17,9 @@ public class Glock extends Pistol{
                 DamageType.PHYSICAL,
                 0,
                 Integer.MAX_VALUE,
-                new Texture("weapon/Glock26Gen5.png"),
-                Gdx.audio.newSound(Gdx.files.internal("sounds/weapon/shots/pistol.wav")),
-                new Texture("weapon/bullet.png"),
+                new String("weapon/Glock26Gen5.png"),
+                new String("sounds/weapon/shots/pistol.wav"),
+                new String("weapon/bullet.png"),
                 200);
     }
 }

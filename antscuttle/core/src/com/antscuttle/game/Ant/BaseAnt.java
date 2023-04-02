@@ -15,12 +15,13 @@ import com.antscuttle.game.Weapon.Sword;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import java.awt.Point;
+import java.io.Serializable;
 
 /**
  *
  * @author antho
  */
-public abstract class BaseAnt implements Ant{
+public abstract class BaseAnt implements Ant, Serializable{
     private String name;
     private int health;
     private int maxHealth;
@@ -36,12 +37,12 @@ public abstract class BaseAnt implements Ant{
     private AnimationType lastTypeUsed = null;
     // In the following arrays, store in order:
     //  up, right, down, left
-    private Texture[] moveAnimationUnarmed;
-    private Texture[] moveAnimationSword;
-    private Texture[] moveAnimationPistol;
-    private Texture[] attackAnimationUnarmed;
-    private Texture[] attackAnimationSword;
-    private Texture[] attackAnimationPistol;
+    private String[] moveAnimationUnarmed;
+    private String[] moveAnimationSword;
+    private String[] moveAnimationPistol;
+    private String[] attackAnimationUnarmed;
+    private String[] attackAnimationSword;
+    private String[] attackAnimationPistol;
     
     private Point pos, dim;
 
@@ -56,12 +57,12 @@ public abstract class BaseAnt implements Ant{
             int intelligence,
             int speed, 
             AI defaultAI, 
-            Texture[] moveAnimationUnarmed, 
-            Texture[] moveAnimationSword, 
-            Texture[] moveAnimationPistol, 
-            Texture[] attackAnimationUnarmed, 
-            Texture[] attackAnimationSword, 
-            Texture[] attackAnimationPistol) {
+            String[] moveAnimationUnarmed, 
+            String[] moveAnimationSword, 
+            String[] moveAnimationPistol, 
+            String[] attackAnimationUnarmed, 
+            String[] attackAnimationSword, 
+            String[] attackAnimationPistol) {
         this.name = name;
         this.health = health;
         this.maxHealth = maxHealth;
@@ -93,7 +94,12 @@ public abstract class BaseAnt implements Ant{
     }
     @Override
     public Texture[] getAntPreviewAnimation() {
-        return moveAnimationUnarmed;
+        Texture[] textures = new Texture[moveAnimationUnarmed.length];
+
+        for (int i = 0; i < moveAnimationUnarmed.length; i++) {
+        textures[i] = new Texture(moveAnimationUnarmed[i]);
+        }
+        return textures;
     }
 
     @Override
@@ -119,33 +125,45 @@ public abstract class BaseAnt implements Ant{
         }
     }
     protected Texture getMeleeMoveAnimation(AnimationDirection dir){
+        Texture[] move = new Texture[moveAnimationSword.length];
+        for (int i = 0; i < moveAnimationSword.length; i++) {
+            move[i] = new Texture(moveAnimationSword[i]);
+        }
         if(meleeWeapon instanceof Sword){
             switch(dir){
-                case Up: return moveAnimationSword[0];
-                case Right: return moveAnimationSword[1];
-                case Down: return moveAnimationSword[2];
-                case Left: return moveAnimationSword[3];
+                case Up: return move[0];
+                case Right: return move[1];
+                case Down: return move[2];
+                case Left: return move[3];
             }
         }
         return null;
     }
     protected Texture getRangedMoveAnimation(AnimationDirection dir){
+        Texture[] move = new Texture[moveAnimationPistol.length];
+        for (int i = 0; i < moveAnimationPistol.length; i++) {
+            move[i] = new Texture(moveAnimationPistol[i]);
+        }
         if(rangedWeapon instanceof Pistol){
             switch(dir){
-                case Up: return moveAnimationPistol[0];
-                case Right: return moveAnimationPistol[1];
-                case Down: return moveAnimationPistol[2];
-                case Left: return moveAnimationPistol[3];
+                case Up: return move[0];
+                case Right: return move[1];
+                case Down: return move[2];
+                case Left: return move[3];
             }
         }
         return null;
     }
     protected Texture getUnarmedMoveAnimation(AnimationDirection dir){
+        Texture[] move = new Texture[moveAnimationUnarmed.length];
+        for (int i = 0; i < moveAnimationUnarmed.length; i++) {
+            move[i] = new Texture(moveAnimationUnarmed[i]);
+        }
         switch(dir){
-            case Up: return moveAnimationUnarmed[0];
-            case Right: return moveAnimationUnarmed[1];
-            case Down: return moveAnimationUnarmed[2];
-            case Left: return moveAnimationUnarmed[3];
+            case Up: return move[0];
+            case Right: return move[1];
+            case Down: return move[2];
+            case Left: return move[3];
         }
         return null;
     }
@@ -155,32 +173,44 @@ public abstract class BaseAnt implements Ant{
         return getMeleeWeaponAttackAnimation(dir);
     }
     protected Texture getMeleeWeaponAttackAnimation(AnimationDirection dir){
+        Texture[] move = new Texture[attackAnimationSword.length];
+        for (int i = 0; i < attackAnimationSword.length; i++) {
+            move[i] = new Texture(attackAnimationSword[i]);
+        }
         if(meleeWeapon instanceof Sword){
             switch(dir){
-                case Up: return attackAnimationSword[0];
-                case Right: return attackAnimationSword[1];
-                case Down: return attackAnimationSword[2];
-                case Left: return attackAnimationSword[3];
+                case Up: return move[0];
+                case Right: return move[1];
+                case Down: return move[2];
+                case Left: return move[3];
             }
         }
         return null;
     }
     protected Texture getUnarmedAttackAnimation(AnimationDirection dir) {
+        Texture[] move = new Texture[attackAnimationUnarmed.length];
+        for (int i = 0; i < attackAnimationUnarmed.length; i++) {
+            move[i] = new Texture(attackAnimationUnarmed[i]);
+        }
        switch(dir){
-            case Up: return attackAnimationUnarmed[0];
-            case Right: return attackAnimationUnarmed[1];
-            case Down: return attackAnimationUnarmed[2];
-            case Left: return attackAnimationUnarmed[3];
+            case Up: return move[0];
+            case Right: return move[1];
+            case Down: return move[2];
+            case Left: return move[3];
         }
        return null;
     }
     protected Texture getRangedAttackAnimation(AnimationDirection dir) {
+        Texture[] move = new Texture[attackAnimationPistol.length];
+        for (int i = 0; i < attackAnimationPistol.length; i++) {
+            move[i] = new Texture(attackAnimationPistol[i]);
+        }
         if(rangedWeapon instanceof Pistol){
             switch(dir){
-                case Up: return attackAnimationPistol[0];
-                case Right: return attackAnimationPistol[1];
-                case Down: return attackAnimationPistol[2];
-                case Left: return attackAnimationPistol[3];
+                case Up: return move[0];
+                case Right: return move[1];
+                case Down: return move[2];
+                case Left: return move[3];
             }
         }
         return null;

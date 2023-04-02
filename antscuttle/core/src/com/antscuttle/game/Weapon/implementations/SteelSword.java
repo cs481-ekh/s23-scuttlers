@@ -21,7 +21,7 @@ public class SteelSword extends Sword{
                 DamageType.PHYSICAL, 
                 0, 
                 25, 
-                new Texture("weapon/sword.png"), 
-                Gdx.audio.newSound(Gdx.files.internal("sounds/weapon/swish-1.wav")));
+                new String("weapon/sword.png"), 
+                new String("sounds/weapon/swish-1.wav"));
     }
 }

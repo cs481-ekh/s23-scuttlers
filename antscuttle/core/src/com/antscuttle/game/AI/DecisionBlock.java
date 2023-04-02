@@ -1,13 +1,15 @@
 
 package com.antscuttle.game.AI;
 
+import java.io.Serializable;
+
 import com.antscuttle.game.Ant.Ant;
 
 /**
  *
  * @author antho
  */
-public abstract class DecisionBlock {
+public abstract class DecisionBlock implements Serializable{
     private Boolean executionResult = null;
     protected int duration;
     protected BlockOptions options;

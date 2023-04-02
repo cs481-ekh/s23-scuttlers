@@ -19,7 +19,7 @@ import java.util.LinkedList;
  *
  * @author antho
  */
-public class SelectionButtonPrev extends Button{
+public class SelectionButtonPrev extends ScuttleButton{
     private final int WIDTH = 50;
     private final int HEIGHT = 50;
     

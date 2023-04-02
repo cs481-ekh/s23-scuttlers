@@ -18,7 +18,7 @@ public abstract class Sword extends MeleeWeapon{
             int damage, 
             DamageType damageType, 
             int minRange, int maxRange, 
-            Texture img, Sound attackSound)
+            String img, String attackSound)
     {
         super(name, damage, damageType, minRange, maxRange, img, attackSound);
     }

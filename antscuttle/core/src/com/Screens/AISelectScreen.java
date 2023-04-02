@@ -1,7 +1,7 @@
 package com.Screens;
 
 import com.antscuttle.game.AntScuttleGame;
-import com.antscuttle.game.Buttons.Button;
+import com.antscuttle.game.Buttons.ScuttleButton;
 import com.antscuttle.game.Buttons.NewAIButton;
 import com.antscuttle.game.Buttons.AIButton;
 import com.antscuttle.game.Buttons.BackButton;
@@ -16,14 +16,14 @@ public class AISelectScreen extends ScreenAdapter{
     GameData gameData;
     
     /* Buttons */
-    private Button startButton;
+    private ScuttleButton startButton;
    // private Button levelButton;
-    private Button charButton;
-    private Button aiButton;
-    private Button newAiButton;
+    private ScuttleButton charButton;
+    private ScuttleButton aiButton;
+    private ScuttleButton newAiButton;
     // private Button mainButton;
-    private Button settingsButton;
-    private Button backButton;
+    private ScuttleButton settingsButton;
+    private ScuttleButton backButton;
     
 
 
@@ -86,7 +86,7 @@ public class AISelectScreen extends ScreenAdapter{
      * @param y
      * @param button type of button
      */
-    private void drawButton(int x, int y, Button button) {
+    private void drawButton(int x, int y, ScuttleButton button) {
         int w = button.getWidth();
         int h = button.getHeight();
 

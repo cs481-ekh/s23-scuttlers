@@ -1,11 +1,13 @@
 
 package com.antscuttle.game.AI;
 
+import java.io.Serializable;
+
 /**
  *
  * @author antho
  */
-public abstract class BlockOptions {
+public abstract class BlockOptions implements Serializable{
     String optionOne, optionTwo;
     
     public BlockOptions(String chosenOptionOne, 

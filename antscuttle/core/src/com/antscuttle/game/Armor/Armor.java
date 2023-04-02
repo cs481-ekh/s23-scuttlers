@@ -3,24 +3,27 @@
  */
 package com.antscuttle.game.Armor;
 
+import java.io.Serializable;
+
 import com.badlogic.gdx.graphics.Texture;
 
 /**
  *
  * @author antho
  */
-public abstract class Armor {
+public abstract class Armor implements Serializable {
     public String name;
     private int defense;
-    private Texture img;
+    private String img;
     
-    public Armor(String name, int defense, Texture img){
+    public Armor(String name, int defense, String img){
         this.name = name;
         this.defense = defense;
         this.img = img;
     }
     public Texture getTexture(){
-        return img;
+        Texture texture = new Texture(img);
+        return texture;
     }
     
     public int getDefense(){

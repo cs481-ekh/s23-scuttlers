@@ -11,9 +11,9 @@ import com.antscuttle.game.Util.GameData;
 import com.antscuttle.game.Weapon.Weapon;
 
 
-public abstract class Button{
+public abstract class ScuttleButton{
 
-    public Button() {
+    public ScuttleButton() {
         super();      
     }
 
@@ -47,7 +47,7 @@ public abstract class Button{
 
     public abstract void click(AntScuttleGame game, Screen screen, GameData data);
 
-    public static void draw(AntScuttleGame game, Screen screen, GameData data, float x, float y, Button button, float scale) {
+    public static void draw(AntScuttleGame game, Screen screen, GameData data, float x, float y, ScuttleButton button, float scale) {
         float w = button.getWidth()*scale;
         float h = button.getHeight()*scale;
 

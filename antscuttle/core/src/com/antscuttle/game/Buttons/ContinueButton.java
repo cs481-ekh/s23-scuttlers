@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
  *
  * @author antho
  */
-public class ContinueButton extends Button {
+public class ContinueButton extends ScuttleButton {
     private final int WIDTH = 200;
     private final int HEIGHT = 100;
     private GameData gameData;

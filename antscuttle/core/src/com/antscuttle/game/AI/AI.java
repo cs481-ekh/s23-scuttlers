@@ -1,13 +1,14 @@
 
 package com.antscuttle.game.AI;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 /**
  *
  * @author antho
  */
-public class AI implements Iterable{
+public class AI implements Iterable, Serializable{
     
     private final Node root;
     private String name;

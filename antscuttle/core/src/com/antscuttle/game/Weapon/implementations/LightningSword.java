@@ -18,7 +18,7 @@ public class LightningSword extends Sword{
                 DamageType.ELECTRIC, 
                 0, 
                 25, 
-                new Texture("weapon/lightning_sword.png"), 
-                Gdx.audio.newSound(Gdx.files.internal("sounds/weapon/swish-1.wav")));
+                new String("weapon/lightning_sword.png"), 
+                new String("sounds/weapon/swish-1.wav"));
     }
 }

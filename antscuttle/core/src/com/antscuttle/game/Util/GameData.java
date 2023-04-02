@@ -10,6 +10,7 @@ import com.antscuttle.game.Weapon.Weapon;
 import com.antscuttle.game.Weapon.implementations.Glock;
 import com.antscuttle.game.Weapon.implementations.SteelSword;
 
+import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
@@ -20,7 +21,8 @@ import java.util.Set;
  *
  * @author antho
  */
-public class GameData {
+public class GameData implements java.io.Serializable{
+    private static final long serialVersionUID = 2022L;
     /* Current selections */
     private Ant currentAnt;
     private Level currentLevel;

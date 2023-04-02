@@ -16,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
-public class AddButton extends Button {
+public class AddButton extends ScuttleButton {
     private final int WIDTH = 64;
     private final int HEIGHT = 64;
     

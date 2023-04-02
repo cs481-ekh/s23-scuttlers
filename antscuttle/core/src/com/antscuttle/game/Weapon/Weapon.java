@@ -1,8 +1,11 @@
 
 package com.antscuttle.game.Weapon;
 
+import java.io.Serializable;
+
 import com.antscuttle.game.AntScuttleGame;
 import com.antscuttle.game.Damage.DamageType;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 
@@ -10,16 +13,16 @@ import com.badlogic.gdx.graphics.Texture;
  *
  * @author 
  */
-public abstract class Weapon {
+public abstract class Weapon implements Serializable{
     private String name;
     private int damage;
     private DamageType damageType;
     private int minRange;
     private int maxRange;
-    private Texture img;
-    private Sound attackSound;
+    private String img;
+    private String attackSound;
 
-    public Weapon(String name, int damage, DamageType damageType, int minRange, int maxRange, Texture img, Sound attackSound) {
+    public Weapon(String name, int damage, DamageType damageType, int minRange, int maxRange, String img, String attackSound) {
         this.name = name;
         this.damage = damage;
         this.damageType = damageType;
@@ -31,7 +34,8 @@ public abstract class Weapon {
     
     
     public void playAttackSound(AntScuttleGame game){
-        attackSound.play(game.VOLUME);
+        Sound sound = Gdx.audio.newSound(Gdx.files.internal(attackSound));
+        sound.play(game.VOLUME);
     }
 
     public String getName() {
@@ -47,7 +51,8 @@ public abstract class Weapon {
     }
 
     public Texture getImg() {
-        return img;
+        Texture texture = new Texture(img);
+        return texture;
     }
     public int getDamage(){
         return damage;
