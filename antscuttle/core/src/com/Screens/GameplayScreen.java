@@ -48,6 +48,7 @@ public class GameplayScreen extends ScreenAdapter{
     SpriteBatch menuBatch;
     SpriteBatch titleBatch;
     SpriteBatch buttonBatch;
+    SpriteBatch levelBatch;
     ScuttleButton back;
     ScuttleButton pause;
     ScuttleButton start;
@@ -92,18 +93,21 @@ public class GameplayScreen extends ScreenAdapter{
     @Override
     public void show() {
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, (Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) * 10, 10);
-	camera.update();
+        
+        
         gameView = new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         gameView.setCamera(camera);
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
+        
+        
         gameBatch = new SpriteBatch();
         characterBatch = new SpriteBatch();
         titleBatch = new SpriteBatch();
         buttonBatch = new SpriteBatch();
         menuBatch = new SpriteBatch();
+        levelBatch = new SpriteBatch();
 
         Pixmap treeMap = new Pixmap((int)gameView.getWorldWidth() * 1/3, (int)gameView.getWorldHeight(),Format.RGBA8888);
         Color treeColor = new Color(0, 38/255f, 66/255f, 1);
@@ -116,6 +120,10 @@ public class GameplayScreen extends ScreenAdapter{
         playMap.setColor(playColor);
         playMap.fill();
 
+        camera.setToOrtho(false, playMap.getWidth(), playMap.getHeight());
+        
+	camera.update();
+        
         menuImg = new Texture(treeMap);
         titleImg = new Texture("antscuttle.png");
         img = new Texture(playMap);
@@ -129,7 +137,8 @@ public class GameplayScreen extends ScreenAdapter{
         ClassFactory cf = new ClassFactory();
         level = cf.newLevelInstance(gameData.getCurrentLevel().getClass());
         map = new TmxMapLoader().load(level.getTiledMap());
-        renderer = new IsometricTiledMapRenderer(map, 1f / 64f);
+        //renderer = new IsometricTiledMapRenderer(map, 1f / 64f);
+        renderer = new IsometricTiledMapRenderer(map,levelBatch);
         
         startBtn.addListener(new InputListener() {
             @Override
@@ -167,7 +176,10 @@ public class GameplayScreen extends ScreenAdapter{
         
         renderer.setView(camera);
         renderer.render();
-        
+        if(gameStarted){
+            levelBatch.begin();
+            levelBatch.end();
+        }
         
         menuBatch.begin();
         menuBatch.draw(menuImg, gameX + (gameView.getWorldWidth() * 2/3), gameY, gameView.getWorldWidth() * 1/3,gameView.getWorldHeight());
