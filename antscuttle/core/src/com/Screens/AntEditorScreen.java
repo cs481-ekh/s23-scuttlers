@@ -11,7 +11,7 @@ import com.antscuttle.game.Buttons.AIButton;
 import com.antscuttle.game.Buttons.AddButton;
 import com.antscuttle.game.Buttons.AntButton;
 import com.antscuttle.game.Buttons.BackButton;
-import com.antscuttle.game.Buttons.Button;
+import com.antscuttle.game.Buttons.ScuttleButton;
 import com.antscuttle.game.Buttons.ItemButton;
 import com.antscuttle.game.Buttons.ItemsButton;
 import com.antscuttle.game.Buttons.SettingsButton;
@@ -44,14 +44,16 @@ public class AntEditorScreen extends ScreenAdapter {
     AntScuttleGame game;
     GameData gameData;
     SpriteBatch antBatch;
+    
+    ScuttleButton settingsButton;
+    ScuttleButton backButton;
 
-    Button settingsButton;
-    Button backButton;
+    ScuttleButton AIButton;
+    ScuttleButton antButton;
+    ScuttleButton itemsButton;
+    ScuttleButton addButton;
+    ItemButton itemButton;
 
-    // Button antButton;
-    // Button itemsButton;
-    // Button addButton;
-    // ItemButton itemButton;
 
     int x;
 
@@ -129,8 +131,9 @@ public class AntEditorScreen extends ScreenAdapter {
             }
 
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Button.playButtonPressSound(game);
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) { 
+                ScuttleButton.playButtonPressSound(game);
+
                 gameData.currPane = GameData.panes.items;
                 return true;
             }
@@ -153,8 +156,8 @@ public class AntEditorScreen extends ScreenAdapter {
             }
 
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Button.playButtonPressSound(game);
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) { 
+                ScuttleButton.playButtonPressSound(game);
                 gameData.currPane = GameData.panes.ant;
                 return true;
             }
@@ -177,8 +180,8 @@ public class AntEditorScreen extends ScreenAdapter {
             }
 
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Button.playButtonPressSound(game);
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) { 
+                ScuttleButton.playButtonPressSound(game);
                 gameData.currPane = GameData.panes.ai;
                 return true;
             }
@@ -202,8 +205,9 @@ public class AntEditorScreen extends ScreenAdapter {
             }
 
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Button.playButtonPressSound(game);
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                ScuttleButton.playButtonPressSound(game);
+
                 final TextField inputField = new TextField("", skin);
 
                 new Dialog("Enter Ant Name", skin) {
@@ -272,7 +276,7 @@ public class AntEditorScreen extends ScreenAdapter {
         game.batch.begin();
 
         /* Back Button */
-        Button.draw(game, this, gameData, 20, ANT_EDITOR_HEIGHT - backButton.getHeight() - 20, backButton, 1);
+        ScuttleButton.draw(game, this, gameData, 20, ANT_EDITOR_HEIGHT - backButton.getHeight() - 20, backButton, 1);
 
         /* The view for whichever button is clicked */
         drawCurrentPane();
@@ -310,7 +314,7 @@ public class AntEditorScreen extends ScreenAdapter {
 
         /* Settings Button */
         x = ANT_EDITOR_WIDTH - settingsButton.getWidth() - 20;
-        Button.draw(game, this, gameData, x, 20, settingsButton, 1);
+        ScuttleButton.draw(game, this, gameData, x, 20, settingsButton, 1);
 
         game.batch.end();
     }
@@ -365,7 +369,7 @@ public class AntEditorScreen extends ScreenAdapter {
 
                             @Override
                             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                                Button.playButtonPressSound(game);
+                                ScuttleButton.playButtonPressSound(game);
                                 gameData.getCurrentAnt().equipAI(ai);
                                 return true;
                             }
@@ -413,7 +417,7 @@ public class AntEditorScreen extends ScreenAdapter {
 
                             @Override
                             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                                Button.playButtonPressSound(game);
+                                ScuttleButton.playButtonPressSound(game);
                                 gameData.setCurrentAnt(ant);
                                 return true;
                             }
@@ -458,7 +462,7 @@ public class AntEditorScreen extends ScreenAdapter {
 
                             @Override
                             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                                Button.playButtonPressSound(game);
+                                ScuttleButton.playButtonPressSound(game);
                                 if (gameData.getCurrentAnt() instanceof Zombie) {
                                     new Dialog("Zombies cannot equip weapons!", skin) {
                                         {
@@ -511,10 +515,8 @@ public class AntEditorScreen extends ScreenAdapter {
 
                             @Override
                             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                                Button.playButtonPressSound(game);
-
+                                ScuttleButton.playButtonPressSound(game);
                                 gameData.getCurrentAnt().equipArmor(armor);
-
                                 return true;
                             }
                         });

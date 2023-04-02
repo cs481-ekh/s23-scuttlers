@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
  * @author
  */
 public abstract class RangedWeapon extends Weapon{
-    private Texture projectileImg;
+    private String projectileImg;
     private int projectileSpeed;
     
     public RangedWeapon(String name, 
@@ -18,9 +18,9 @@ public abstract class RangedWeapon extends Weapon{
             DamageType damageType, 
             int minRange, 
             int maxRange, 
-            Texture img, 
-            Sound attackSound, 
-            Texture projectileImg, 
+            String img, 
+            String attackSound, 
+            String projectileImg, 
             int projectileSpeed)
     {
         super(name, damage, damageType, minRange, maxRange, img, attackSound);
@@ -28,7 +28,8 @@ public abstract class RangedWeapon extends Weapon{
         this.projectileSpeed = projectileSpeed;
     }
     public Texture getBulletImg() {
-        return projectileImg;
+        Texture texture = new Texture(projectileImg);
+        return texture;
     }
 
     public int getBulletSpeed() {

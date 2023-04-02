@@ -14,7 +14,8 @@ import com.badlogic.gdx.math.Rectangle;
  *
  * @author antho
  */
-public interface Ant {
+public interface Ant{
+
    
     Texture getAnimation(AnimationType type, BaseAnt.AnimationDirection dir);
     public Texture[] getAntPreviewAnimation();

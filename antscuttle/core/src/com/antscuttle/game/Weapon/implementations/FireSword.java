@@ -19,7 +19,7 @@ public class FireSword extends Sword{
                 DamageType.FIRE, 
                 0, 
                 25, 
-                new Texture("weapon/fire_sword.png"), 
-                Gdx.audio.newSound(Gdx.files.internal("sounds/weapon/swish-1.wav")));
+                new String("weapon/fire_sword.png"), 
+                new String("sounds/weapon/swish-1.wav"));
     }
 }

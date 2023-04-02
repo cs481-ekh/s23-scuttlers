@@ -26,7 +26,7 @@ public class WaterSword extends Sword{
                 DamageType.WATER, 
                 0, 
                 25, 
-                new Texture("weapon/ice_sword.png"), 
-                Gdx.audio.newSound(Gdx.files.internal("sounds/weapon/swish-1.wav")));
+                new String("weapon/ice_sword.png"), 
+                new String("sounds/weapon/swish-1.wav"));
     }
 }

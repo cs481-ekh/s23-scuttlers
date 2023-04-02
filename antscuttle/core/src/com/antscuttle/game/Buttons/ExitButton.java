@@ -6,7 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
-public class ExitButton extends Button {
+public class ExitButton extends ScuttleButton {
 
     private final int WIDTH = 200;
     private final int HEIGHT = 100;

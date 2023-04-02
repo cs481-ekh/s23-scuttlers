@@ -25,19 +25,19 @@ public class Zombie extends BaseAnt{
     private static final int baseDefense = 2;
     private static final int intelligence = 1;
     private static final int speed = 20;
-    private static AI defaultAI = new DefaultZombieAI(new Node(new RootBlock(), new Image()), "default");
+    private static AI defaultAI = new DefaultZombieAI(new Node(new RootBlock()), "default");
     
-    private static final Texture[] moveAnimationUnarmed = {
-        new Texture("animations/zombie/zombie_walk_up.png"),
-        new Texture("animations/zombie/zombie_walk_right.png"),
-        new Texture("animations/zombie/zombie_walk_down.png"),
-        new Texture("animations/zombie/zombie_walk_left.png"),
+    private static final String[] moveAnimationUnarmed = {
+        new String("animations/zombie/zombie_walk_up.png"),
+        new String("animations/zombie/zombie_walk_right.png"),
+        new String("animations/zombie/zombie_walk_down.png"),
+        new String("animations/zombie/zombie_walk_left.png"),
     };
-    private static final Texture[] attackAnimationUnarmed = {
-        new Texture("animations/zombie/zombie_attack_up.png"),
-        new Texture("animations/zombie/zombie_attack_right.png"),
-        new Texture("animations/zombie/zombie_attack_down.png"),
-        new Texture("animations/zombie/zombie_attack_left.png"),
+    private static final String[] attackAnimationUnarmed = {
+        new String("animations/zombie/zombie_attack_up.png"),
+        new String("animations/zombie/zombie_attack_right.png"),
+        new String("animations/zombie/zombie_attack_down.png"),
+        new String("animations/zombie/zombie_attack_left.png"),
     };
     
     public Zombie(String name){

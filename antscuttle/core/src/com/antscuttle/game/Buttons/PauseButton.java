@@ -5,7 +5,7 @@ import com.antscuttle.game.Util.GameData;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
-public class PauseButton extends Button {
+public class PauseButton extends ScuttleButton {
 
     private final int WIDTH = 50;
     private final int HEIGHT = 75;

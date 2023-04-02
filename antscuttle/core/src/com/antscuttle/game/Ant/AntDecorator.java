@@ -1,5 +1,7 @@
 package com.antscuttle.game.Ant;
 
+import java.io.Serializable;
+
 import com.antscuttle.game.AI.AI;
 import com.antscuttle.game.Armor.Armor;
 import com.antscuttle.game.Damage.DamageType;
@@ -13,7 +15,7 @@ import com.badlogic.gdx.math.Rectangle;
  *
  * @author antho
  */
-public class AntDecorator implements Ant{
+public class AntDecorator implements Ant, Serializable{
     private final int damage = 5;
     private final DamageType damageType;
     private final Ant wrappedAnt;

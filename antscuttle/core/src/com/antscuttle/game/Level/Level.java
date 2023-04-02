@@ -4,11 +4,11 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
-public abstract class Level {
+public abstract class Level implements java.io.Serializable{
     // Fields
     protected Music soundtrack;
     protected Stage stage;
-    protected Texture backgroundTexture;
+    protected String backgroundTexture;
     protected String name;
     protected LevelData levelData;
 
@@ -17,7 +17,7 @@ public abstract class Level {
     }
 
     // Constructor
-    public Level(Music soundtrack, Stage stage, Texture backgroundTexture, String name) {
+    public Level(Music soundtrack, Stage stage, String backgroundTexture, String name) {
         this.soundtrack = soundtrack;
         this.stage = stage;
         this.backgroundTexture = backgroundTexture;

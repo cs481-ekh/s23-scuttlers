@@ -8,7 +8,7 @@ import com.antscuttle.game.Util.GameData;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
-public class BackButton extends Button {
+public class BackButton extends ScuttleButton {
     private final int WIDTH = 100;
     private final int HEIGHT = 100;
     

@@ -17,9 +17,9 @@ public abstract class Pistol extends RangedWeapon{
             DamageType damageType, 
             int minRange, 
             int maxRange, 
-            Texture img, 
-            Sound attackSound, 
-            Texture projectileImg, 
+            String img, 
+            String attackSound, 
+            String projectileImg, 
             int projectileSpeed)
     {
         super(name, damage, damageType, minRange, maxRange, img, attackSound, projectileImg, projectileSpeed);

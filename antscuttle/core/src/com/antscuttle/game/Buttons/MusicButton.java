@@ -5,7 +5,7 @@ import com.antscuttle.game.Util.GameData;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
-public class MusicButton extends Button {
+public class MusicButton extends ScuttleButton {
     private final int WIDTH = 64;
     private final int HEIGHT = 64;
     

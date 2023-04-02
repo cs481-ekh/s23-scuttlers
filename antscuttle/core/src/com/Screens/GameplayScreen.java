@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import com.antscuttle.game.AntScuttleGame;
 import com.antscuttle.game.AI.Node;
 import com.antscuttle.game.Buttons.BackButton;
-import com.antscuttle.game.Buttons.Button;
+import com.antscuttle.game.Buttons.ScuttleButton;
 import com.antscuttle.game.Buttons.PauseButton;
 import com.antscuttle.game.Buttons.StartButton;
 import com.antscuttle.game.Util.GameData;
@@ -36,10 +36,10 @@ public class GameplayScreen extends ScreenAdapter{
     SpriteBatch menuBatch;
     SpriteBatch titleBatch;
     SpriteBatch buttonBatch;
+    ScuttleButton back;
+    ScuttleButton pause;
+    ScuttleButton start;
 
-    Button back;
-    Button pause;
-    Button start;
     Texture titleImg;
     Texture menuImg;
     Texture img;
@@ -146,14 +146,14 @@ public class GameplayScreen extends ScreenAdapter{
         game.batch.begin();
 
         /* Back Button */
-        Button.draw(game, this, gameData, 20, gameView.getWorldHeight() - back.getHeight() - 20, back, 1);
+        ScuttleButton.draw(game, this, gameData, 20, gameView.getWorldHeight() - back.getHeight() - 20, back, 1);
 
         /* Start Game Button */
         startX = gameX + (gameView.getWorldWidth() * 3/12);
-        Button.draw(game, this, gameData, startX, START_BUTTON_Y, start, 1);
+        ScuttleButton.draw(game, this, gameData, startX, START_BUTTON_Y, start, 1);
         
         /* Pause Game Button */
-        Button.draw(game, this, gameData, startX + 80, START_BUTTON_Y - 150, pause, 1);
+        ScuttleButton.draw(game, this, gameData, startX + 80, START_BUTTON_Y - 150, pause, 1);
         game.batch.end();
 
     }

@@ -14,7 +14,7 @@ import com.antscuttle.game.AI.implementations.RootBlock;
 import com.antscuttle.game.AI.options.AttackOptions;
 import com.antscuttle.game.AI.options.MoveOptions;
 import com.antscuttle.game.Buttons.BackButton;
-import com.antscuttle.game.Buttons.Button;
+import com.antscuttle.game.Buttons.ScuttleButton;
 import com.antscuttle.game.Util.GameData;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
@@ -80,7 +80,7 @@ public class AIEditorScreen extends ScreenAdapter{
     private Camera camera;
     float stateTime = 0;
     Stage stage;
-    private Button backButton;
+    private ScuttleButton backButton;
     private Node rNode;
     public AI ai;
     public final RootBlock rBlock;
@@ -125,7 +125,7 @@ public class AIEditorScreen extends ScreenAdapter{
         this.targetNodeX = TREE_ROOT_X -150;
         this.targetNodeY = TREE_ROOT_Y -150;
         this.dropped = 0;
-        rNode = new Node(rBlock, rootImage);
+        rNode = new Node(rBlock);
         nodeMap = new HashMap<>();
         parentPosition = new Vector2(TREE_ROOT_X, TREE_ROOT_Y);
         nodeMap.put(rNode,parentPosition);
@@ -225,7 +225,7 @@ public class AIEditorScreen extends ScreenAdapter{
                     }
                 }
                 if (payload.getObject().toString() == "move") {
-                    Node temp = new Node(mBlock, moveImage);
+                    Node temp = new Node(mBlock);
                     payload.getDragActor().setPosition(currentPosition.x, currentPosition.y);
                     if(isLeftNode){
                         parentNode.addChildAt(0,temp);
@@ -237,7 +237,7 @@ public class AIEditorScreen extends ScreenAdapter{
                     addNewSource(moveImage);
                 } else if (payload.getObject().toString() == "attack") {
                     payload.getDragActor().setPosition(currentPosition.x, currentPosition.y);
-                    Node temp = new Node(aBlock, attackImage);
+                    Node temp = new Node(aBlock);
                     if(isLeftNode){
                         parentNode.addChildAt(0,temp);
                     }else{
@@ -504,7 +504,7 @@ public class AIEditorScreen extends ScreenAdapter{
         gameBatch.end();
 
         game.batch.begin();
-        Button.draw(game, this, gameData, 20, MAIN_MENU_HEIGHT - backButton.getHeight() - 20, backButton, 1);
+        ScuttleButton.draw(game, this, gameData, 20, MAIN_MENU_HEIGHT - backButton.getHeight() - 20, backButton, 1);
         game.batch.end();
         
         // a stage has its own batch so don't put it within batch.begin() and batch.end()

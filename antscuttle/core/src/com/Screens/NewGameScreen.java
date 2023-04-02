@@ -1,7 +1,7 @@
 package com.Screens;
 
 import com.antscuttle.game.AntScuttleGame;
-import com.antscuttle.game.Buttons.Button;
+import com.antscuttle.game.Buttons.ScuttleButton;
 import com.antscuttle.game.Buttons.MainButton;
 import com.antscuttle.game.Buttons.AIButton;
 import com.antscuttle.game.Buttons.BackButton;
@@ -22,15 +22,15 @@ public class NewGameScreen extends ScreenAdapter{
     GameData gameData;
     
     /* Buttons */
-    private Button startButton;
+    private ScuttleButton startButton;
    // private Button levelButton;
-    private Button charButton;
-    private Button aiButton;
+    private ScuttleButton charButton;
+    private ScuttleButton aiButton;
     // private Button mainButton;
-    private Button settingsButton;
-    private Button backButton;
-    private Button prevLevelButton;
-    private Button nextLevelButton;
+    private ScuttleButton settingsButton;
+    private ScuttleButton backButton;
+    private ScuttleButton prevLevelButton;
+    private ScuttleButton nextLevelButton;
     
 
 
@@ -82,10 +82,10 @@ public class NewGameScreen extends ScreenAdapter{
         game.batch.begin();
         x = (MAIN_MENU_WIDTH / 2) - (startButton.getWidth() / 2);
         /* Back Button */
-        Button.draw(game, this, gameData, 20, MAIN_MENU_HEIGHT - backButton.getHeight() - 20, backButton, 1);
+        ScuttleButton.draw(game, this, gameData, 20, MAIN_MENU_HEIGHT - backButton.getHeight() - 20, backButton, 1);
 
         /* Start Game Button */
-        Button.draw(game, this, gameData, x, START_BUTTON_Y, startButton, 1);
+        ScuttleButton.draw(game, this, gameData, x, START_BUTTON_Y, startButton, 1);
         
         /* Level selection */
         if(gameData.getCurrentLevel() == null){
@@ -102,20 +102,20 @@ public class NewGameScreen extends ScreenAdapter{
         NEXT_LVL_BTN_LOC.y = PREV_LVL_BTN_LOC.y;
         
         game.font.draw(game.batch, levelName, levelX, LEVEL_DISPLAY_Y);
-        Button.draw(game, this, gameData, PREV_LVL_BTN_LOC.x, PREV_LVL_BTN_LOC.y, prevLevelButton, 1);
-        Button.draw(game, this, gameData, NEXT_LVL_BTN_LOC.x, NEXT_LVL_BTN_LOC.y, nextLevelButton, 1);
+        ScuttleButton.draw(game, this, gameData, PREV_LVL_BTN_LOC.x, PREV_LVL_BTN_LOC.y, prevLevelButton, 1);
+        ScuttleButton.draw(game, this, gameData, NEXT_LVL_BTN_LOC.x, NEXT_LVL_BTN_LOC.y, nextLevelButton, 1);
         
         /* AI Editor Button */
         x = (MAIN_MENU_WIDTH / 2) - (aiButton.getWidth() / 2);
-        Button.draw(game, this, gameData, x, AI_BUILDER_BUTTON_Y, aiButton, 1);
+        ScuttleButton.draw(game, this, gameData, x, AI_BUILDER_BUTTON_Y, aiButton, 1);
     
         /* Save Game Button */
         x = (MAIN_MENU_WIDTH / 2) - (charButton.getWidth() / 2);
-        Button.draw(game, this, gameData, x, CHAR_BUTTON_Y, charButton, 1);
+        ScuttleButton.draw(game, this, gameData, x, CHAR_BUTTON_Y, charButton, 1);
 
         /* Settings Button */
         x = MAIN_MENU_WIDTH - settingsButton.getWidth() - 20;
-        Button.draw(game, this, gameData, x, SETTINGS_BUTTON_Y, settingsButton, 1);
+        ScuttleButton.draw(game, this, gameData, x, SETTINGS_BUTTON_Y, settingsButton, 1);
 
         game.batch.end();
     }
