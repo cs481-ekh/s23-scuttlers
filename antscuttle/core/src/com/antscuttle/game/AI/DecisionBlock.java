@@ -1,9 +1,12 @@
 
 package com.antscuttle.game.AI;
 
-import java.io.Serializable;
 
+import java.io.Serializable;
 import com.antscuttle.game.Ant.Ant;
+import com.antscuttle.game.Level.LevelData;
+import com.antscuttle.game.Util.GameData;
+
 
 /**
  *
@@ -40,7 +43,7 @@ public abstract class DecisionBlock implements Serializable{
     public int getDuration(){
         return duration;
     }
-    public void execute(Ant ant){
+    public void execute(GameData gameData, LevelData levelData){
         // Temp code
         executionResult = true;
     }

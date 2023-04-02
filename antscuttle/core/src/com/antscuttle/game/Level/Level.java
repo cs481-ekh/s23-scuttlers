@@ -3,7 +3,6 @@ package com.antscuttle.game.Level;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
 
 public abstract class Level implements java.io.Serializable{
     // Fields
@@ -11,6 +10,11 @@ public abstract class Level implements java.io.Serializable{
     protected Stage stage;
     protected String backgroundTexture;
     protected String name;
+    protected LevelData levelData;
+
+    public LevelData getLevelData() {
+        return levelData;
+    }
 
     // Constructor
     public Level(Music soundtrack, Stage stage, String backgroundTexture, String name) {
@@ -18,6 +22,7 @@ public abstract class Level implements java.io.Serializable{
         this.stage = stage;
         this.backgroundTexture = backgroundTexture;
         this.name = name;
+        this.levelData = new LevelData();
     }
 
     // Methods
@@ -39,6 +44,7 @@ public abstract class Level implements java.io.Serializable{
     public String getName(){
         return name;
     }
+    protected abstract void initLevelData();
     protected abstract void loadResources();
     //protected abstract List<LevelObject> createLevelObjects();
 }

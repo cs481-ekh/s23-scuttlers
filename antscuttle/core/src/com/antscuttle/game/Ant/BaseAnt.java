@@ -92,6 +92,12 @@ public abstract class BaseAnt implements Ant, Serializable{
     public Rectangle getArea(){
         return new Rectangle(pos.x, pos.y, dim.x, dim.y);
     }
+    public Point getCoords() {
+        return pos;
+    }
+    public void setCoords(int x, int y) {
+        pos.move(x, y);
+    }
     @Override
     public Texture[] getAntPreviewAnimation() {
         Texture[] textures = new Texture[moveAnimationUnarmed.length];

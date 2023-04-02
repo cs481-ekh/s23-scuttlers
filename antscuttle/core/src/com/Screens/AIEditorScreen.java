@@ -158,18 +158,11 @@ public class AIEditorScreen extends ScreenAdapter{
         Dialog dialog = new Dialog("Enter AI name", skin);
         final TextField inputField = new TextField("", skin);
         TextButton saveButton = new TextButton("Save", skin);
-        //Add listener so that on AI name save, the correct data is added to gameData, and the user moves back to the new game screen
-        saveButton.addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
-                String aiName = inputField.getText();
-                ai = new AI(rNode, aiName);
-                return true;
-            }
-        });
+       
         dialog.getContentTable().add(inputField);
         dialog.button(saveButton);
         dialog.show(stage);
+       
 
         // Add input listener to the saveImage actor
         saveImage.addListener(new InputListener() {
@@ -189,6 +182,7 @@ public class AIEditorScreen extends ScreenAdapter{
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 long id = game.sfx.play(game.VOLUME);
                 if(rNode.hasChildren()){
+                    ai = new AI(rNode, inputField.getText());
                     gameData.addAI(ai);
                     game.setScreen(new NewGameScreen(game, gameData));
                 } else {
