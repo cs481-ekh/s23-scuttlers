@@ -6,7 +6,7 @@ import com.antscuttle.game.Level.LevelData;
 
 
 public class Level2 extends Level{
-    private static final String tiledMapLoc = "levels/level1.tmx";
+    private static final String tiledMapLoc = "levels/level2.tmx";
     public Level2(){
         // Temporary nulls
         super(null,null,tiledMapLoc, "Level 2");
