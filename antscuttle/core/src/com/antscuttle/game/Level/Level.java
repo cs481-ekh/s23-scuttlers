@@ -1,26 +1,29 @@
 package com.antscuttle.game.Level;
 
+import com.badlogic.gdx.assets.loaders.resolvers.ExternalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public abstract class Level implements java.io.Serializable{
     // Fields
     protected Music soundtrack;
     protected Stage stage;
-    protected String backgroundTexture;
     protected String name;
     protected LevelData levelData;
+    protected String tiledMapLoc;
 
     public LevelData getLevelData() {
         return levelData;
     }
 
     // Constructor
-    public Level(Music soundtrack, Stage stage, String backgroundTexture, String name) {
+    public Level(Music soundtrack, Stage stage, String tiledMapLocation, String name) {
         this.soundtrack = soundtrack;
         this.stage = stage;
-        this.backgroundTexture = backgroundTexture;
+        this.tiledMapLoc = tiledMapLocation;
         this.name = name;
         this.levelData = new LevelData();
     }
@@ -43,6 +46,9 @@ public abstract class Level implements java.io.Serializable{
     }
     public String getName(){
         return name;
+    }
+    public String getTiledMap(){
+        return tiledMapLoc;
     }
     protected abstract void initLevelData();
     protected abstract void loadResources();

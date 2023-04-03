@@ -5,10 +5,10 @@ import com.antscuttle.game.Level.Level;
 import com.antscuttle.game.Level.LevelData;
 
 public class Level1 extends Level{
-
+    private static final String tiledMapLoc = "levels/level1.tmx";
     public Level1(){
         // Temporary nulls
-        super(null,null,null, "Level 1");
+        super(null,null,tiledMapLoc, "Level 1");
     }
     @Override
     protected void loadResources() {
