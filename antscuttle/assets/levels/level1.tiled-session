@@ -1,4 +1,8 @@
 {
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
     "activeFile": "level1.tmx",
     "expandedProjectPaths": [
         "."
@@ -6,14 +10,27 @@
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
         "level1.tmx": {
-            "scale": 1.0082754629629629,
-            "selectedLayer": 1,
+            "scale": 1.5,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 226.62457670894796,
-                "y": 502.8387763301384
+                "x": 214.33333333333334,
+                "y": 236.66666666666663
             }
         },
+        "level1plain.tmx": {
+            "scale": 2,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 4.25,
+                "y": 326
+            }
+        },
+        "pressure_plate.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "tiles.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 1
         },
         "tiles32.tsx": {
@@ -24,18 +41,28 @@
     },
     "last.exportedFilePath": "C:/Users/antho/Documents/Github/s23-scuttlers/antscuttle/assets/levels",
     "last.externalTilesetPath": "C:/Users/antho/Documents/Github/s23-scuttlers/antscuttle/assets/levels",
-    "last.imagePath": "C:/Users/antho/Documents/Github/s23-scuttlers/antscuttle/assets/levels/textures",
+    "last.imagePath": "C:/Users/antho/Documents/Github/s23-scuttlers/antscuttle/assets/animations/levelobj",
+    "map.height": 23,
     "map.lastUsedExportFilter": "All Files (*)",
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 27,
     "openFiles": [
         "level1.tmx",
         "tiles32.tsx"
     ],
     "project": "level1.tiled-project",
     "recentFiles": [
+        "pressure_plate.tsx",
         "tiles32.tsx",
         "level1.tmx"
     ],
     "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)",
     "tileset.lastUsedFormat": "tsx",
-    "tileset.spacing": 2
+    "tileset.spacing": 1,
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
 }

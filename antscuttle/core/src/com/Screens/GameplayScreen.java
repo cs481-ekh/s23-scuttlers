@@ -35,7 +35,7 @@ import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.Array;
 import java.util.ArrayList;
 
@@ -120,8 +120,9 @@ public class GameplayScreen extends ScreenAdapter{
         playMap.setColor(playColor);
         playMap.fill();
 
-        camera.setToOrtho(false, playMap.getWidth(), playMap.getHeight());
-        
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), playMap.getHeight());
+        camera.zoom = .505f;
+        camera.translate(-Gdx.graphics.getWidth()/4+5, -Gdx.graphics.getHeight()/4+2);
 	camera.update();
         
         menuImg = new Texture(treeMap);
@@ -137,8 +138,7 @@ public class GameplayScreen extends ScreenAdapter{
         ClassFactory cf = new ClassFactory();
         level = cf.newLevelInstance(gameData.getCurrentLevel().getClass());
         map = new TmxMapLoader().load(level.getTiledMap());
-        //renderer = new IsometricTiledMapRenderer(map, 1f / 64f);
-        renderer = new IsometricTiledMapRenderer(map,levelBatch);
+        renderer = new OrthogonalTiledMapRenderer(map,levelBatch);
         
         startBtn.addListener(new InputListener() {
             @Override
@@ -203,9 +203,8 @@ public class GameplayScreen extends ScreenAdapter{
             startX = gameX + (gameView.getWorldWidth() * 3/12);
             ScuttleButton.draw(game, this, gameData, startX, START_BUTTON_Y, start, 1);
 
-            /* Pause Game Button */
-            ScuttleButton.draw(game, this, gameData, startX + 80, START_BUTTON_Y - 150, pause, 1);
-            
+        } else {
+            ScuttleButton.draw(game, this, gameData, 20+pause.getWidth()/2, 20+pause.getWidth()/2, pause, 1);
         }
         game.batch.end();
     }
