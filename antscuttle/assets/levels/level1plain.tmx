@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="left-up" width="27" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="1">
+ <editorsettings>
+  <export target="level1plain.tmx" format="tmx"/>
+ </editorsettings>
  <tileset firstgid="1" source="tiles.tsx"/>
  <layer id="1" name="Tile Layer 1" width="27" height="23">
   <data encoding="csv">
@@ -55,7 +58,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,578,580,0
 </data>
  </layer>
- <layer id="3" name="Tile Layer 2" width="27" height="23">
+ <layer id="3" name="Tile Layer 2" width="27" height="23" visible="0">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 834,835,835,835,835,835,835,835,835,835,836,0,0,0,0,0,837,838,838,838,838,838,838,838,838,838,839,

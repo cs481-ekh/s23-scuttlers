@@ -1,4 +1,8 @@
 {
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
     "activeFile": "level1.tmx",
     "expandedProjectPaths": [
         "."
@@ -7,10 +11,18 @@
     "fileStates": {
         "level1.tmx": {
             "scale": 1.0082754629629629,
-            "selectedLayer": 1,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 226.62457670894796,
-                "y": 502.8387763301384
+                "x": 225.63278425070303,
+                "y": 210.26000114790804
+            }
+        },
+        "level1plain.tmx": {
+            "scale": 2,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 4.25,
+                "y": 326
             }
         },
         "tiles.tsx": {
