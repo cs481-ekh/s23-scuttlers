@@ -17,31 +17,31 @@ public class AI_Tree_Test {
     @Test
     public void CreateNode(){
         DecisionBlock db = new RootBlock();
-        Node node = new Node(db, new Image());
+        Node node = new Node(db);
         assertNotNull(db);
         assertNotNull(node);
     }
     @Test
     public void Tree_Root_Only_HasNext(){
-        AI ai = new AI(new Node(new RootBlock(), new Image()), "test");
+        AI ai = new AI(new Node(new RootBlock()), "test");
         assertNotNull(ai.getRoot());
         Iterator it = ai.iterator();
         assertFalse(it.hasNext());
     }
     @Test
     public void Tree_One_Child_HasNext(){
-        Node root = new Node(new RootBlock(), new Image());
-        root.addChild(new Node(new MoveBlock(new MoveOptions("Random")), new Image()));
+        Node root = new Node(new RootBlock());
+        root.addChild(new Node(new MoveBlock(new MoveOptions("Random"))));
         AI ai = new AI(root, "test");
         Iterator it = ai.iterator();
         assertTrue(it.hasNext());
     }
     @Test
     public void Tree_Order_Three_Nodes(){
-        Node root = new Node(new RootBlock(), new Image());
-        Node a = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
-        Node b = new Node(new MoveBlock(new MoveOptions("Door")), new Image());
-        Node c = new Node(new MoveBlock(new MoveOptions("Ant")), new Image());
+        Node root = new Node(new RootBlock());
+        Node a = new Node(new MoveBlock(new MoveOptions("Random")));
+        Node b = new Node(new MoveBlock(new MoveOptions("Door")));
+        Node c = new Node(new MoveBlock(new MoveOptions("Ant")));
         a.addChild(b);
         root.addChild(a);
         root.addChild(c);
@@ -59,13 +59,13 @@ public class AI_Tree_Test {
     
     @Test
     public void Tree_Order_Six_Nodes(){
-        Node root = new Node(new RootBlock(), new Image());
-        Node a = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
-        Node b = new Node(new MoveBlock(new MoveOptions("Ant")), new Image());
-        Node c = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
-        Node d = new Node(new MoveBlock(new MoveOptions("Door")), new Image());
-        Node e = new Node(new MoveBlock(new MoveOptions("Pressure Plate")), new Image());
-        Node f = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
+        Node root = new Node(new RootBlock());
+        Node a = new Node(new MoveBlock(new MoveOptions("Random")));
+        Node b = new Node(new MoveBlock(new MoveOptions("Ant")));
+        Node c = new Node(new MoveBlock(new MoveOptions("Random")));
+        Node d = new Node(new MoveBlock(new MoveOptions("Door")));
+        Node e = new Node(new MoveBlock(new MoveOptions("Pressure Plate")));
+        Node f = new Node(new MoveBlock(new MoveOptions("Random")));
         
         a.addChild(b);
         a.addChild(c);
@@ -85,10 +85,10 @@ public class AI_Tree_Test {
     }
     @Test
     public void Tree_Order_Three_Nodes_Remove_First(){
-        Node root = new Node(new RootBlock(), new Image());
-        Node a = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
-        Node b = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
-        Node c = new Node(new MoveBlock(new MoveOptions("Ant")), new Image());
+        Node root = new Node(new RootBlock());
+        Node a = new Node(new MoveBlock(new MoveOptions("Random")));
+        Node b = new Node(new MoveBlock(new MoveOptions("Random")));
+        Node c = new Node(new MoveBlock(new MoveOptions("Ant")));
         a.addChild(b);
         root.addChild(a);
         root.addChild(c);
@@ -105,10 +105,10 @@ public class AI_Tree_Test {
     }
     @Test
     public void Tree_Order_Three_Nodes_Remove_Last(){
-        Node root = new Node(new RootBlock(), new Image());
-        Node a = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
-        Node b = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
-        Node c = new Node(new MoveBlock(new MoveOptions("Ant")), new Image());
+        Node root = new Node(new RootBlock());
+        Node a = new Node(new MoveBlock(new MoveOptions("Random")));
+        Node b = new Node(new MoveBlock(new MoveOptions("Random")));
+        Node c = new Node(new MoveBlock(new MoveOptions("Ant")));
         a.addChild(b);
         root.addChild(a);
         root.addChild(c);
@@ -125,13 +125,13 @@ public class AI_Tree_Test {
     }
     @Test
     public void Tree_Order_Six_Nodes_Remove_Middle(){
-        Node root = new Node(new RootBlock(), new Image());
-        Node a = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
-        Node b = new Node(new MoveBlock(new MoveOptions("Ant")), new Image());
-        Node c = new Node(new MoveBlock(new MoveOptions("Door")), new Image());
-        Node d = new Node(new MoveBlock(new MoveOptions("Door")), new Image());
-        Node e = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
-        Node f = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
+        Node root = new Node(new RootBlock());
+        Node a = new Node(new MoveBlock(new MoveOptions("Random")));
+        Node b = new Node(new MoveBlock(new MoveOptions("Ant")));
+        Node c = new Node(new MoveBlock(new MoveOptions("Door")));
+        Node d = new Node(new MoveBlock(new MoveOptions("Door")));
+        Node e = new Node(new MoveBlock(new MoveOptions("Random")));
+        Node f = new Node(new MoveBlock(new MoveOptions("Random")));
         
         a.addChild(b);
         a.addChild(c);
@@ -152,13 +152,13 @@ public class AI_Tree_Test {
     }
     @Test
     public void Tree_Max_Child_Count_Is_Three_v1(){
-        Node root = new Node(new RootBlock(), new Image());
-        Node a = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
-        Node b = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
-        Node c = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
-        Node d = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
-        Node e = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
-        Node f = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
+        Node root = new Node(new RootBlock());
+        Node a = new Node(new MoveBlock(new MoveOptions("Random")));
+        Node b = new Node(new MoveBlock(new MoveOptions("Random")));
+        Node c = new Node(new MoveBlock(new MoveOptions("Random")));
+        Node d = new Node(new MoveBlock(new MoveOptions("Random")));
+        Node e = new Node(new MoveBlock(new MoveOptions("Random")));
+        Node f = new Node(new MoveBlock(new MoveOptions("Random")));
         
         a.addChild(b);
         a.addChild(c);
@@ -174,13 +174,13 @@ public class AI_Tree_Test {
     
     @Test
     public void Tree_Max_Child_Count_Is_Two(){
-        Node root = new Node(new RootBlock(), new Image());
-        Node a = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
-        Node b = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
-        Node c = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
-        Node d = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
-        Node e = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
-        Node f = new Node(new MoveBlock(new MoveOptions("Random")), new Image());
+        Node root = new Node(new RootBlock());
+        Node a = new Node(new MoveBlock(new MoveOptions("Random")));
+        Node b = new Node(new MoveBlock(new MoveOptions("Random")));
+        Node c = new Node(new MoveBlock(new MoveOptions("Random")));
+        Node d = new Node(new MoveBlock(new MoveOptions("Random")));
+        Node e = new Node(new MoveBlock(new MoveOptions("Random")));
+        Node f = new Node(new MoveBlock(new MoveOptions("Random")));
         
         a.addChild(b);
         a.addChild(c);
@@ -196,7 +196,7 @@ public class AI_Tree_Test {
     
     @Test
     public void Tree_Max_child_Count_Is_Zero_v1(){
-        AI ai = new AI(new Node(new RootBlock(), new Image()), "test");
+        AI ai = new AI(new Node(new RootBlock()), "test");
         assertEquals(ai.mostChildren(ai.getRoot()), 0);
     }
     

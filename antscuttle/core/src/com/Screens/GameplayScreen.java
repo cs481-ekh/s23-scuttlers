@@ -115,7 +115,7 @@ public class GameplayScreen extends ScreenAdapter{
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Button.playButtonPressSound(game);
+                ScuttleButton.playButtonPressSound(game);
                 LinkedList<Node> childs = gameData.getCurrentAnt().getAI().getRoot().getChildren();
                 childs.removeFirst().getBlock().execute(gameData, null);
                 return true;
