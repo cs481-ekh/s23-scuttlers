@@ -127,7 +127,7 @@ public class MainMenuScreen extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 long id = game.sfx.play(game.VOLUME);
-                String fileName = "test.txt";
+                String fileName = "gamedata.txt";
                 FileOutputStream fos;
                 saveGameButton.setChecked(true);
                 
@@ -145,28 +145,6 @@ public class MainMenuScreen extends ScreenAdapter {
                     }
                 }else{
                     System.out.println("print a dialog eventually with error message");
-                }
-                FileInputStream fis;
-                try {
-                    fis = new FileInputStream(fileName);
-                    ObjectInputStream ois = new ObjectInputStream(fis);
-                    Object test = ois.readObject();
-                    if(test instanceof GameData){
-                        GameData testData = (GameData) test;
-                        LinkedList<AI> ais = testData.getAllAIs();
-                        System.out.println("AI Names:");
-                        for(AI ai: ais){
-                            System.out.println("\t" + ai.getName());
-                        }
-                    }else{
-                        System.out.println("Still not working");
-                    }
-                } catch (FileNotFoundException fnfe) {
-                    Logger.getLogger(GameData.class.getName()).log(Level.SEVERE, null, fnfe);
-                } catch (IOException ioe){
-                    Logger.getLogger(GameData.class.getName()).log(Level.SEVERE, null, ioe);
-                } catch (ClassNotFoundException cnfe){
-                    Logger.getLogger(GameData.class.getName()).log(Level.SEVERE, null, cnfe);
                 }
             }
         });

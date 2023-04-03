@@ -4,13 +4,15 @@ package com.antscuttle.game.Level;
 import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.LevelObject.LevelObject;
 import com.badlogic.gdx.ai.pfa.Graph;
+
+import java.io.Serializable;
 import java.util.Set;
 
 /**
  *
  * @author antho
  */
-public class LevelData {
+public class LevelData implements Serializable{
     protected Set<LevelObject> attackableObjects;
     protected Set<LevelObject> interactableObjects;
     protected Set<LevelObject> collidableObjects;
