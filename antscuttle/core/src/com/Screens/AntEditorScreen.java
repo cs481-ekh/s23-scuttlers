@@ -47,15 +47,12 @@ public class AntEditorScreen extends ScreenAdapter {
     ScuttleButton addButton;
     ItemButton itemButton;
 
-    int x;
-
     private static int ANT_EDITOR_HEIGHT;
     private static int ANT_EDITOR_WIDTH;
 
     GlyphLayout bounds;
 
     float stateTime = 0;
-    float i;
 
     LinkedList<Weapon> weapons;
     LinkedList<Armor> armors;
@@ -91,9 +88,8 @@ public class AntEditorScreen extends ScreenAdapter {
         ants = gameData.getAllAnts();
         ais = gameData.getAllAIs();
 
-        i = game.font.getCapHeight() + 10;
+        // i = game.font.getCapHeight() + 10;
         gameData.currPane = GameData.panes.ant;
-
     }
 
     @Override
@@ -116,7 +112,6 @@ public class AntEditorScreen extends ScreenAdapter {
 
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
-
 
         itemsBtn.setBounds(ANT_EDITOR_WIDTH / 1.25f - 200, ANT_EDITOR_HEIGHT / 1.25f, 150, 75);
         itemsBtn.addListener(new InputListener() {
@@ -199,7 +194,6 @@ public class AntEditorScreen extends ScreenAdapter {
 
         addButton.setBounds(ANT_EDITOR_WIDTH / 1.25f - 200 * 2, 30, 64, 64);
         addButton.addListener(new InputListener() {
-        
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 addButton.setDrawable(skin, "add-active");
@@ -252,12 +246,10 @@ public class AntEditorScreen extends ScreenAdapter {
 
                             @Override
                             protected void result(Object obj) {
-
                                 try {
                                     ClassFactory cFactory = new ClassFactory();
                                     @SuppressWarnings("unchecked")
-                                    Ant ant = cFactory
-                                            .newAntInstance((Class<? extends Ant>) Class.forName(obj.toString()), str);
+                                    Ant ant = cFactory.newAntInstance((Class<? extends Ant>) Class.forName(obj.toString()), str);
                                     gameData.addAnt(ant);
                                     gameData.setCurrentAnt(ant);
 
@@ -266,7 +258,6 @@ public class AntEditorScreen extends ScreenAdapter {
                                     stage.addActor(itemsBtn);
                                     stage.addActor(antBtn);
                                     stage.addActor(aiBtn);
-
                                     drawScrollPane();
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -331,8 +322,7 @@ public class AntEditorScreen extends ScreenAdapter {
         }
 
         /* Settings Button */
-        x = ANT_EDITOR_WIDTH - settingsButton.getWidth() - 20;
-        ScuttleButton.draw(game, this, gameData, x, 20, settingsButton, 1);
+        ScuttleButton.draw(game, this, gameData, ANT_EDITOR_WIDTH - settingsButton.getWidth() - 20, 20, settingsButton, 1);
 
         game.batch.end();
     }
@@ -342,6 +332,7 @@ public class AntEditorScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(null);
     }
 
+    // need to change the skin so I am drawing a different font
     protected void drawScrollPane() {
         scrollButtons = new Array<Image>();
         scrollTable = new Table();
