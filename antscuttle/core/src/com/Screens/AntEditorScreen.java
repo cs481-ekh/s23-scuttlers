@@ -5,12 +5,14 @@ import java.util.LinkedList;
 import com.antscuttle.game.AntScuttleGame;
 import com.antscuttle.game.AI.AI;
 import com.antscuttle.game.Ant.Ant;
+import com.antscuttle.game.Ant.AntDecorator;
 import com.antscuttle.game.Ant.implementations.Zombie;
 import com.antscuttle.game.Armor.Armor;
 import com.antscuttle.game.Buttons.BackButton;
 import com.antscuttle.game.Buttons.ScuttleButton;
 import com.antscuttle.game.Buttons.ItemButton;
 import com.antscuttle.game.Buttons.SettingsButton;
+import com.antscuttle.game.Damage.DamageType;
 import com.antscuttle.game.Util.ClassFactory;
 import com.antscuttle.game.Util.GameData;
 import com.antscuttle.game.Weapon.MeleeWeapon;
@@ -246,31 +248,49 @@ public class AntEditorScreen extends ScreenAdapter {
 
                             @Override
                             protected void result(Object obj) {
-                                try {
-                                    ClassFactory cFactory = new ClassFactory();
-                                    @SuppressWarnings("unchecked")
-                                    Ant ant = cFactory.newAntInstance((Class<? extends Ant>) Class.forName(obj.toString()), str);
-                                    gameData.addAnt(ant);
-                                    gameData.setCurrentAnt(ant);
-
-                                    stage.clear();
-                                    stage.addActor(addButton);
-                                    stage.addActor(itemsBtn);
-                                    stage.addActor(antBtn);
-                                    stage.addActor(aiBtn);
-                                    drawScrollPane();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                                String antType = obj.toString();
+                               new Dialog("Choose Elemental Type", skin) {
+                                {
+                                    for (DamageType type: DamageType.values()) {
+                                        button(type.getName(), type);
+                                    }
+                                    button("None", false);
                                 }
+                                @Override
+                                protected void result (Object obj) {
+                                    try {
+                                        ClassFactory cFactory = new ClassFactory();
+                                        @SuppressWarnings("unchecked")
+                                        Ant ant = cFactory.newAntInstance((Class<? extends Ant>) Class.forName(antType), str);
+                                        if (!obj.equals(false)) {
+                                            AntDecorator eAnt = new AntDecorator(ant,(DamageType) obj);
+                                            gameData.addAnt(eAnt);
+                                            gameData.setCurrentAnt(eAnt);
+                                        } else {
+                                            gameData.addAnt(ant);
+                                            gameData.setCurrentAnt(ant);
+                                        }
+
+                                        stage.clear();
+                                        stage.addActor(addButton);
+                                        stage.addActor(itemsBtn);
+                                        stage.addActor(antBtn);
+                                        stage.addActor(aiBtn);
+                                        drawScrollPane();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                               }.show(stage);
                             }
-                        }.show(stage).setPosition(ANT_EDITOR_WIDTH/3.5f, ANT_EDITOR_HEIGHT/2);
+                        }.show(stage);
                     }
-                }.show(stage).setPosition(ANT_EDITOR_WIDTH/3.5f, ANT_EDITOR_HEIGHT/2);
+                }.show(stage);
 
                 return true;
             }
         });
-        
+      
         stage.addActor(aiBtn);
         stage.addActor(addButton);
         stage.addActor(antBtn);
@@ -313,6 +333,8 @@ public class AntEditorScreen extends ScreenAdapter {
             game.font.draw(game.batch, "Armor: " + str, 10, ANT_EDITOR_HEIGHT / 2 + 70);
             str = (ant.getRangedWeapon() != null) ? ant.getRangedWeapon().getName() : "None";
             game.font.draw(game.batch, "Ranged: " + str, 10, ANT_EDITOR_HEIGHT / 2 + 90);
+
+            game.font.draw(game.batch, "DMG Type:" + gameData.getCurrentAnt(), 10, ANT_EDITOR_HEIGHT / 2 + bounds.height-100);
 
             game.font.draw(game.batch, "Name:" + ant.getName(), 10, ANT_EDITOR_HEIGHT / 2 + bounds.height);
             game.font.draw(game.batch, "HP:" + ant.getHealth(), 10, ANT_EDITOR_HEIGHT / 2 + bounds.height - 20);
