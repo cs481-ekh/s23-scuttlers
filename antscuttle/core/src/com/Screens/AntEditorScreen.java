@@ -334,7 +334,8 @@ public class AntEditorScreen extends ScreenAdapter {
             str = (ant.getRangedWeapon() != null) ? ant.getRangedWeapon().getName() : "None";
             game.font.draw(game.batch, "Ranged: " + str, 10, ANT_EDITOR_HEIGHT / 2 + 90);
 
-            game.font.draw(game.batch, "DMG Type:" + gameData.getCurrentAnt(), 10, ANT_EDITOR_HEIGHT / 2 + bounds.height-100);
+            AntDecorator antD = (AntDecorator) gameData.getCurrentAnt();
+            game.font.draw(game.batch, "DMG Type:" + antD.getType(), 10, ANT_EDITOR_HEIGHT / 2 + bounds.height-100);
 
             game.font.draw(game.batch, "Name:" + ant.getName(), 10, ANT_EDITOR_HEIGHT / 2 + bounds.height);
             game.font.draw(game.batch, "HP:" + ant.getHealth(), 10, ANT_EDITOR_HEIGHT / 2 + bounds.height - 20);
