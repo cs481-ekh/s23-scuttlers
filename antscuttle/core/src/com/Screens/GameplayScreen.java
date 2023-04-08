@@ -1,8 +1,6 @@
 package com.Screens;
-import java.util.LinkedList;
 
 import com.antscuttle.game.AntScuttleGame;
-import com.antscuttle.game.AI.Node;
 import com.antscuttle.game.Buttons.BackButton;
 import com.antscuttle.game.Buttons.ScuttleButton;
 import com.antscuttle.game.Buttons.PauseButton;
@@ -11,8 +9,6 @@ import com.antscuttle.game.Level.Level;
 import com.antscuttle.game.Util.ClassFactory;
 import com.antscuttle.game.Util.GameData;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -30,14 +26,10 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.assets.loaders.resolvers.ExternalFileHandleResolver;
-import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.utils.Array;
-import java.util.ArrayList;
 
 public class GameplayScreen extends ScreenAdapter{
 	public static final float SPEED = 100;
@@ -109,20 +101,20 @@ public class GameplayScreen extends ScreenAdapter{
         menuBatch = new SpriteBatch();
         levelBatch = new SpriteBatch();
 
-        Pixmap treeMap = new Pixmap((int)gameView.getWorldWidth() * 1/3, (int)gameView.getWorldHeight(),Format.RGBA8888);
+        Pixmap treeMap = new Pixmap((int)gameView.getWorldWidth()-864, (int)gameView.getWorldHeight(),Format.RGBA8888);
         Color treeColor = new Color(0, 38/255f, 66/255f, 1);
         treeMap.setColor(treeColor);
         treeMap.fill();
 
-        Pixmap playMap = new Pixmap((int)gameView.getWorldWidth() * 2/3, (int)gameView.getWorldHeight(),Format.RGBA8888);
+        Pixmap playMap = new Pixmap(864, (int)gameView.getWorldHeight(),Format.RGBA8888);
         Color playColor = Color.BLACK;
         
         playMap.setColor(playColor);
         playMap.fill();
 
         camera.setToOrtho(false, Gdx.graphics.getWidth(), playMap.getHeight());
-        camera.zoom = .505f;
-        camera.translate(-Gdx.graphics.getWidth()/4+5, -Gdx.graphics.getHeight()/4+2);
+        camera.zoom = .5f;
+        camera.translate(-Gdx.graphics.getWidth()/4, -Gdx.graphics.getHeight()/4);
 	camera.update();
         
         menuImg = new Texture(treeMap);
@@ -138,6 +130,7 @@ public class GameplayScreen extends ScreenAdapter{
         ClassFactory cf = new ClassFactory();
         level = cf.newLevelInstance(gameData.getCurrentLevel().getClass());
         map = new TmxMapLoader().load(level.getTiledMap());
+        
         renderer = new OrthogonalTiledMapRenderer(map,levelBatch);
         
         startBtn.addListener(new InputListener() {
@@ -160,6 +153,7 @@ public class GameplayScreen extends ScreenAdapter{
                 
                 
                 gameStarted = true;
+                level.startLevel();
                 return true;
             }
         });
@@ -177,22 +171,26 @@ public class GameplayScreen extends ScreenAdapter{
         
         renderer.setView(camera);
         renderer.render();
-        if(gameStarted){
-            levelBatch.begin();
-            levelBatch.end();
-        }
+        
         
         menuBatch.begin();
-        menuBatch.draw(menuImg, gameX + (gameView.getWorldWidth() * 2/3), gameY, gameView.getWorldWidth() * 1/3,gameView.getWorldHeight());
+        menuBatch.draw(menuImg, gameX + (864), gameY, gameView.getWorldWidth()-864,gameView.getWorldHeight());
         menuBatch.end();
         if(!gameStarted){
             gameBatch.begin();
-            gameBatch.draw(img, gameX, gameY, gameView.getWorldWidth()*2/3,gameView.getWorldHeight());
+            gameBatch.draw(img, gameX, gameY, 864,gameView.getWorldHeight());
             gameBatch.end();
         
             titleBatch.begin();
             titleBatch.draw(titleImg, gameX + (gameView.getWorldWidth() * 1/12), gameY + (gameView.getWorldHeight() * 6/12), gameView.getWorldWidth() * 1/2, gameView.getWorldHeight()/3);
             titleBatch.end();
+        }
+        if(gameStarted){
+            
+            levelBatch.begin();
+            
+            level.render(levelBatch);
+            levelBatch.end();
         }
         game.batch.begin();
 
@@ -207,6 +205,7 @@ public class GameplayScreen extends ScreenAdapter{
             ScuttleButton.draw(game, this, gameData, 20+pause.getWidth()/2, 20+pause.getWidth()/2, pause, 1);
         }
         game.batch.end();
+        
     }
 
     @Override

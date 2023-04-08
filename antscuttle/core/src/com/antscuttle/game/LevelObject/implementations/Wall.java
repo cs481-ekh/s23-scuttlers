@@ -3,9 +3,11 @@ package com.antscuttle.game.LevelObject.implementations;
 
 import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.Damage.DamageType;
+import com.antscuttle.game.Level.LevelData;
 import com.antscuttle.game.LevelObject.LevelObject;
 import com.antscuttle.game.LevelObject.InteractableLevelObject;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
  *
@@ -13,7 +15,7 @@ import com.badlogic.gdx.graphics.Texture;
  */
 public class Wall extends InteractableLevelObject{
 
-    public Wall(Texture texture, int defense){
+    public Wall(TextureRegion texture, int defense){
         super(texture, defense, 0);
     }
     @Override
@@ -30,13 +32,10 @@ public class Wall extends InteractableLevelObject{
         
     }
 
-    @Override
-    protected void update(float arg0) {
-        
-    }
+    
 
     @Override
-    public boolean interact(Ant ant) {
+    public boolean interact(Ant ant, LevelData levelData) {
         return false;
     }
     

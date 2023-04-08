@@ -7,6 +7,7 @@ package com.antscuttle.game.LevelObject.implementations;
 import com.antscuttle.game.Damage.DamageType;
 import com.antscuttle.game.LevelObject.LevelObject;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
  *
@@ -14,7 +15,7 @@ import com.badlogic.gdx.graphics.Texture;
  */
 public class StaticLevelObject extends LevelObject{
 
-    public StaticLevelObject(Texture tex){
+    public StaticLevelObject(TextureRegion tex){
         super(tex, 0);
     }
 
@@ -22,8 +23,6 @@ public class StaticLevelObject extends LevelObject{
     protected void init() {
     }
 
-    @Override
-    protected void update(float arg0) {
-    }
+    
     
 }

@@ -3,9 +3,10 @@ package com.antscuttle.game.LevelObject.implementations;
 
 import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.Damage.DamageType;
+import com.antscuttle.game.Level.LevelData;
 import com.antscuttle.game.LevelObject.InteractableLevelObject;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
  *
@@ -16,16 +17,23 @@ public class Door extends InteractableLevelObject{
     private static final int def = 10;
     private boolean isOpen;
     
-    public Door(Texture tex){
+    public Door(TextureRegion tex){
         super(tex, def, intelligenceReq);
         isOpen = false;
     }
     @Override
-    public boolean interact(Ant ant) {
+    public boolean interact(Ant ant, LevelData levelData) {
         if(ant.getIntelligence() < intelligenceReq)
             return false;
         isOpen = !isOpen;
+        // Adjust collidability
+        if(isOpen)
+            levelData.removeCollidableObject(this);
+        else
+            levelData.addCollidableObject(this);
+        
         update(Gdx.graphics.getDeltaTime());
+        
         return true;
         
     }
@@ -42,8 +50,6 @@ public class Door extends InteractableLevelObject{
     protected void init() {
     }
 
-    @Override
-    protected void update(float arg0) {
-    }
+    
     
 }

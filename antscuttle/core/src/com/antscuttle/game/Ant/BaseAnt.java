@@ -6,6 +6,7 @@ package com.antscuttle.game.Ant;
 import com.antscuttle.game.AI.AI;
 import com.antscuttle.game.Armor.Armor;
 import com.antscuttle.game.Damage.DamageType;
+import com.antscuttle.game.Level.LevelData;
 import com.antscuttle.game.LevelObject.LevelObject;
 import com.antscuttle.game.LevelObject.InteractableLevelObject;
 import com.antscuttle.game.Weapon.MeleeWeapon;
@@ -14,7 +15,7 @@ import com.antscuttle.game.Weapon.Pistol;
 import com.antscuttle.game.Weapon.Sword;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
-import java.awt.Point;
+import com.badlogic.gdx.math.Vector2;
 import java.io.Serializable;
 
 /**
@@ -44,7 +45,7 @@ public abstract class BaseAnt implements Ant, Serializable{
     private String[] attackAnimationSword;
     private String[] attackAnimationPistol;
     
-    private Point pos, dim;
+    private Vector2 pos, dim;
 
     public enum AnimationType { Move, MeleeAttack, RangedAttack }
     public enum AnimationDirection { Up, Right, Down, Left }
@@ -81,22 +82,24 @@ public abstract class BaseAnt implements Ant, Serializable{
         this.attackAnimationSword = attackAnimationSword;
         this.attackAnimationPistol = attackAnimationPistol;
         this.ai = this.defaultAI;
-        this.pos = new Point();
-        this.dim = new Point();
+        this.pos = new Vector2();
+        this.dim = new Vector2();
         this.pos.x = 0;
         this.pos.y = 0;
         this.dim.x = 40;
         this.dim.y = 40;
     }
 
+    @Override
     public Rectangle getArea(){
         return new Rectangle(pos.x, pos.y, dim.x, dim.y);
     }
-    public Point getCoords() {
+    public Vector2 getPos() {
         return pos;
     }
-    public void setCoords(int x, int y) {
-        pos.move(x, y);
+    public void setPos(float x, float y) {
+        pos.x=x;
+        pos.y=y;
     }
     @Override
     public Texture[] getAntPreviewAnimation() {
