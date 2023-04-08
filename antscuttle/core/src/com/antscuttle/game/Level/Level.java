@@ -14,6 +14,7 @@ public abstract class Level implements java.io.Serializable{
     protected String name;
     protected LevelData levelData;
     protected String tiledMapLoc;
+    protected Point playerStartLoc;
 
     public LevelData getLevelData() {
         return levelData;
@@ -24,12 +25,13 @@ public abstract class Level implements java.io.Serializable{
             Stage stage, 
             String tiledMapLocation, 
             String name,
-            Point playerStartLocation) {
+            Point playerStartLoc) {
         this.soundtrack = soundtrack;
         this.stage = stage;
         this.tiledMapLoc = tiledMapLocation;
         this.name = name;
         this.levelData = new LevelData();
+        this.playerStartLoc = playerStartLoc;
     }
 
     // Methods
@@ -48,7 +50,9 @@ public abstract class Level implements java.io.Serializable{
     public String getTiledMap(){
         return tiledMapLoc;
     }
-    
+    public Point getPlayerStartLoc(){
+        return playerStartLoc;
+    }
     protected abstract void initLevelData();
     protected abstract void loadResources();
     

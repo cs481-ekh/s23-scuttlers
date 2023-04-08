@@ -14,6 +14,8 @@ import com.antscuttle.game.Weapon.RangedWeapon;
 import com.antscuttle.game.Weapon.Pistol;
 import com.antscuttle.game.Weapon.Sword;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import java.io.Serializable;
@@ -23,6 +25,7 @@ import java.io.Serializable;
  * @author antho
  */
 public abstract class BaseAnt implements Ant, Serializable{
+    private static final long serialVersionUID = 40L;
     private String name;
     private int health;
     private int maxHealth;
@@ -46,8 +49,11 @@ public abstract class BaseAnt implements Ant, Serializable{
     private String[] attackAnimationPistol;
     
     private Vector2 pos, dim;
-
-    public enum AnimationType { Move, MeleeAttack, RangedAttack }
+    private AnimationDirection direction;
+    private AnimationType state;
+    private short stateTime;
+    
+    public enum AnimationType { Stand, Move, MeleeAttack, RangedAttack }
     public enum AnimationDirection { Up, Right, Down, Left }
 
     public BaseAnt(String name, 
@@ -88,15 +94,28 @@ public abstract class BaseAnt implements Ant, Serializable{
         this.pos.y = 0;
         this.dim.x = 40;
         this.dim.y = 40;
+        this.direction = AnimationDirection.Down;
+        this.state = AnimationType.Stand;
+        this.stateTime = 0;
     }
-
+    @Override
+    public void render(SpriteBatch batch){
+        Texture animation = getAnimation(state, direction); 
+        if(animation != null){
+        TextureRegion tex = new TextureRegion(animation)
+                .split(40, 40)[0][stateTime];
+            batch.draw(tex, pos.x, pos.y);
+        }
+    }
     @Override
     public Rectangle getArea(){
         return new Rectangle(pos.x, pos.y, dim.x, dim.y);
     }
+    @Override
     public Vector2 getPos() {
         return pos;
     }
+    @Override
     public void setPos(float x, float y) {
         pos.x=x;
         pos.y=y;
@@ -120,13 +139,13 @@ public abstract class BaseAnt implements Ant, Serializable{
             case RangedAttack:
                 lastTypeUsed = AnimationType.RangedAttack;
                 return getRangedAttackAnimation(dir);
-            case Move:
-                return getMoveAnimation(dir);
             default:
-                return null;
+                return getMoveAnimation(dir);
         }
     }
     protected Texture getMoveAnimation(AnimationDirection dir){
+        if(lastTypeUsed == null)
+            lastTypeUsed = AnimationType.Move;
         switch(lastTypeUsed){
             case MeleeAttack: return getMeleeMoveAnimation(dir); 
             case RangedAttack: return getRangedMoveAnimation(dir);
@@ -148,6 +167,7 @@ public abstract class BaseAnt implements Ant, Serializable{
         }
         return null;
     }
+    
     protected Texture getRangedMoveAnimation(AnimationDirection dir){
         Texture[] move = new Texture[moveAnimationPistol.length];
         for (int i = 0; i < moveAnimationPistol.length; i++) {

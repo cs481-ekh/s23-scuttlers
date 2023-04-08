@@ -1,11 +1,14 @@
 
 package com.antscuttle.game.Level.levels;
 
+import com.antscuttle.game.Ant.Ant;
+import com.antscuttle.game.Ant.implementations.Zombie;
 import com.antscuttle.game.Level.Level;
 import com.antscuttle.game.LevelObject.LevelObject;
 import com.antscuttle.game.LevelObject.implementations.Tree;
 import com.antscuttle.game.LevelObject.implementations.Wall;
 import com.antscuttle.game.LevelObject.implementations.Water;
+import com.antscuttle.game.Util.ClassFactory;
 import com.antscuttle.game.Util.TileUtils;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import java.awt.Point;
@@ -19,6 +22,14 @@ import org.jgrapht.graph.DefaultEdge;
 
 public final class Level1 extends Level{
     private static final String tiledMapLoc = "levels/level1plain.tmx";
+    private static final Point zombieLocs[] = {
+        new Point(3,14),
+        new Point(9,13),
+        new Point(19,16),
+        new Point(22,17),
+        new Point(23,15),
+        new Point(24,17)
+    };
     private static final Point lowerTreeLocs[] = {
         new Point(0,12),
         new Point(0,14),
@@ -205,11 +216,11 @@ public final class Level1 extends Level{
         new Point(24,20),
         new Point(25,20)
     };
-    private static final Point playerStartLoc = new Point(25*16,0);
+    private static final Point playerStartLoc = new Point(25,0);
     
     /* Constructor */
     public Level1(){
-        // Temporary nulls
+        
         super(null,null,tiledMapLoc, "Level 1", playerStartLoc);
         
     }
@@ -217,7 +228,7 @@ public final class Level1 extends Level{
     protected void loadResources() {
         // Load assests if using asset manager
     }
-
+    
     @Override
     protected void initLevelData() {
         initLevelObjects();
@@ -230,7 +241,13 @@ public final class Level1 extends Level{
     
     
     protected void initEnemies(){
-        
+        ClassFactory cf = new ClassFactory();
+        Ant ant;
+        for(Point p: zombieLocs){
+            ant = cf.newAntInstance(Zombie.class, "npc");
+            ant.setPos(p.x*32, p.y*32);
+            levelData.addEnemy(ant);
+        }
     }
     protected void initLevelObjects(){
         // Get tiles
@@ -391,5 +408,6 @@ public final class Level1 extends Level{
             addObjAtPos(obj, p.x, p.y);
             levelData.addAttackableObject(obj);
         }
+        
     }
 }
