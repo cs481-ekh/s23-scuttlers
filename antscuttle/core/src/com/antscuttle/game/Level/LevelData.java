@@ -52,6 +52,10 @@ public class LevelData implements Serializable{
     public void removeFromAllObjects(LevelObject o){
         if(allObjects != null)
             allObjects.remove(o);
+        removeAttackableObject(o);
+        removeInteractableObject(o);
+        removeCollidableObject(o);
+        removeHazardousObject(o);
     }
     public Graph<String,DefaultEdge> getLevelGraph(int intelligence){
         if(intelligence < 1)
@@ -101,12 +105,16 @@ public class LevelData implements Serializable{
         return collidableObjects;
     }
     public void addCollidableObject(LevelObject o){
-        if(collidableObjects != null)
+        if(collidableObjects != null){
             collidableObjects.add(o);
+            addToGraphs(o);
+        }
     }
     public void removeCollidableObject(LevelObject o){
-        if(collidableObjects != null)
+        if(collidableObjects != null){
             collidableObjects.remove(o);
+            removeFromGraphs(o);
+        }
     }
     public Set<LevelObject> getHazardousObjects() {
         return hazardousObjects;
@@ -144,10 +152,21 @@ public class LevelData implements Serializable{
     }
     public void removeFromGraphs(LevelObject obj){
         Vector2 pos = obj.getPos();
-        int tileX = (int)pos.x/16;
-        int tileY = (int)pos.y/16;
+        int tileX = floatPosToGraphPos(pos.x);
+        int tileY = floatPosToGraphPos(pos.y);
         String vertex = GraphUtils.getVertexName(tileX, tileY);
         zeroIntelligenceGraph.removeVertex(vertex);
         normalIntelligenceGraph.removeVertex(vertex);
+    }
+
+    private void addToGraphs(LevelObject obj) {
+        Vector2 pos = obj.getPos();
+        int tileX = floatPosToGraphPos(pos.x);
+        int tileY = floatPosToGraphPos(pos.y);
+        GraphUtils.addToGraph(zeroIntelligenceGraph, tileX, tileY);
+        GraphUtils.addToGraph(normalIntelligenceGraph, tileX, tileY);
+    }
+    public int floatPosToGraphPos(float x){
+        return (int)x/16;
     }
 }

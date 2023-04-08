@@ -81,18 +81,20 @@ public class GraphUtils {
         return graph;
     }
 
-    public static void removeFromGraph(Graph g, int x, int y) {
+    public static void removeFromGraph(Graph<String,DefaultEdge> g, int x, int y) {
         String vertex = getVertexName(x,y);
-        g.removeVertex(vertex);
+        if(g.containsVertex(vertex))
+            g.removeVertex(vertex);
     }
     
-    public static void addToGraph(Graph g, int x, int y){
+    public static void addToGraph(Graph<String,DefaultEdge> g, int x, int y){
         String vertex = getVertexName(x,y);
         Set<String> neighbors = getVertexNeighbors(x,y);
         
         g.addVertex(vertex);
         for(String n : neighbors){
-            g.addEdge(vertex, n);
+            if(g.containsVertex(vertex) && g.containsVertex(n))
+                g.addEdge(vertex, n);
         }
         
     }
