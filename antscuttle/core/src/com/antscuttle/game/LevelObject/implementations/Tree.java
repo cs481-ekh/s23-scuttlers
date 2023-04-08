@@ -6,6 +6,7 @@ import com.antscuttle.game.Damage.DamageType;
 import com.antscuttle.game.LevelObject.InteractableLevelObject;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
  *
@@ -14,7 +15,7 @@ import com.badlogic.gdx.graphics.Texture;
 public class Tree extends InteractableLevelObject{
     private static final int def = 10;
     private static final int intelligenceReq = 1;
-    public Tree(Texture tex){
+    public Tree(TextureRegion tex){
         super(tex, def, intelligenceReq);
     }
     @Override
@@ -35,8 +36,6 @@ public class Tree extends InteractableLevelObject{
     protected void init() {
     }
 
-    @Override
-    protected void update(float arg0) {
-    }
+    
     
 }

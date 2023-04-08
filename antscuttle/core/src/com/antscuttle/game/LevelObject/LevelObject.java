@@ -1,28 +1,40 @@
 package com.antscuttle.game.LevelObject;
 import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.Damage.DamageType;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import java.awt.Point;
 
-public abstract class LevelObject extends Actor {
+public abstract class LevelObject extends Actor{
     // Fields
-    protected Texture texture;
+    protected TextureRegion texture;
     protected Sprite sprite;
     protected int defense;
     protected Point pos, dim;
 
     // Constructor
-    public LevelObject(Texture texture, int defense) {
+    public LevelObject(TextureRegion texture, int defense) {
+        
         this.texture = texture;
-        this.dim.x = texture.getWidth();
-        this.dim.y = texture.getHeight();
+        this.dim = new Point();
+        this.pos = new Point();
+        this.dim.x = 16;
+        this.dim.y = 16;
         // TODO: Not sure which of these width/height things we'll need
 //        setWidth(texture.getWidth());
 //        setHeight(texture.getHeight());
         this.defense = defense;
+        this.sprite = new Sprite(texture);
+        sprite.setSize(dim.x, dim.y);
+        sprite.setPosition(pos.x, pos.y);
+        
+        
        
     }
     
@@ -44,7 +56,14 @@ public abstract class LevelObject extends Actor {
     public void setPos(int x, int y){
         pos.x = x;
         pos.y = y;
+        sprite.setPosition(x, y);
     }
+    
     protected abstract void init();
-    protected abstract void update(float delta);
+    public void update(float delta){}
+    public void render(SpriteBatch batch){
+        if(sprite != null)
+            sprite.draw(batch);
+    }
+    
 }

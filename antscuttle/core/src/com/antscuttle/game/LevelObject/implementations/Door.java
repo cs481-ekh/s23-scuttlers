@@ -6,6 +6,7 @@ import com.antscuttle.game.Damage.DamageType;
 import com.antscuttle.game.LevelObject.InteractableLevelObject;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
  *
@@ -16,7 +17,7 @@ public class Door extends InteractableLevelObject{
     private static final int def = 10;
     private boolean isOpen;
     
-    public Door(Texture tex){
+    public Door(TextureRegion tex){
         super(tex, def, intelligenceReq);
         isOpen = false;
     }
@@ -42,8 +43,6 @@ public class Door extends InteractableLevelObject{
     protected void init() {
     }
 
-    @Override
-    protected void update(float arg0) {
-    }
+    
     
 }

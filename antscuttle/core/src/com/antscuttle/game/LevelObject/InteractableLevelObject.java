@@ -7,6 +7,7 @@ package com.antscuttle.game.LevelObject;
 import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.Damage.DamageType;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
  *
@@ -14,7 +15,7 @@ import com.badlogic.gdx.graphics.Texture;
  */
 public abstract class InteractableLevelObject extends LevelObject{
     private int intelligenceRequirement;
-    public InteractableLevelObject(Texture tex, int def, int intelligenceRequired){
+    public InteractableLevelObject(TextureRegion tex, int def, int intelligenceRequired){
         super(tex, def);
         this.intelligenceRequirement = intelligenceRequired;
     }

@@ -10,8 +10,8 @@ public class PauseButton extends ScuttleButton {
     private final int WIDTH = 50;
     private final int HEIGHT = 75;
     
-    private final Texture INACTIVE = new Texture("buttons/pause.png");
-    private final Texture ACTIVE = new Texture("buttons/pause-active.png");
+    private final Texture INACTIVE = new Texture("buttons/pause-active.png");
+    private final Texture ACTIVE = new Texture("buttons/pause.png");
 
 	@Override
 	public int getWidth() {

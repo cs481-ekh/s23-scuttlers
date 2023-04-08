@@ -5,6 +5,7 @@ import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.Damage.DamageType;
 import com.antscuttle.game.LevelObject.InteractableLevelObject;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
  *
@@ -15,7 +16,7 @@ public class PressurePlate extends InteractableLevelObject{
     private InteractableLevelObject affectedObject;
     private boolean isPressed;
     
-    public PressurePlate(Texture tex, InteractableLevelObject o){
+    public PressurePlate(TextureRegion tex, InteractableLevelObject o){
         super(tex, 0, 0);
         this.affectedObject = o;
     }
@@ -34,8 +35,6 @@ public class PressurePlate extends InteractableLevelObject{
     protected void init() {
     }
 
-    @Override
-    protected void update(float arg0) {
-    }
+    
     
 }

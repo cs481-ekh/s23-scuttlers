@@ -5,6 +5,7 @@ import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.Damage.DamageType;
 import com.antscuttle.game.LevelObject.InteractableLevelObject;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
  *
@@ -13,7 +14,7 @@ import com.badlogic.gdx.graphics.Texture;
 public class Water extends InteractableLevelObject{
     private static final int drowningDamage = 5;
     
-    public Water(Texture tex){
+    public Water(TextureRegion tex){
         super(tex, 0, 0);
     }
     
@@ -33,8 +34,6 @@ public class Water extends InteractableLevelObject{
     protected void init() {
     }
 
-    @Override
-    protected void update(float arg0) {
-    }
+    
     
 }
