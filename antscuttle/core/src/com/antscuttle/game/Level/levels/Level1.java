@@ -9,6 +9,13 @@ import com.antscuttle.game.LevelObject.implementations.Water;
 import com.antscuttle.game.Util.TileUtils;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import org.jgrapht.Graph;
+import org.jgrapht.graph.DefaultEdge;
 
 public final class Level1 extends Level{
     private static final String tiledMapLoc = "levels/level1plain.tmx";
@@ -218,6 +225,7 @@ public final class Level1 extends Level{
         initEnemies();
         removeCollidablesFromGraph();
         removeHazardsFromGraph();
+        
     }
     
     
@@ -233,10 +241,15 @@ public final class Level1 extends Level{
         // Create Trees
         LevelObject obj;
         for(Point p: lowerTreeLocs){
+            // Lower tree
             obj = new Tree(splitTiles[11][15]);
             addObjAtPos(obj, p.x, p.y);
             levelData.addAttackableObject(obj);
+            levelData.addCollidableObject(obj);
+            
+            // Upper tree
             obj = new Tree(splitTiles[10][15]);
+            obj.setZIndex(5);
             addObjAtPos(obj, p.x, p.y+1);
         }
         // Create water
@@ -281,21 +294,25 @@ public final class Level1 extends Level{
         }
         // Add Walls
         obj = new Wall(splitTiles[14][35], 200);
+        obj.setZIndex(5);
         addObjAtPos(obj, leftWallTopLeft.x, leftWallTopLeft.y);
         levelData.addAttackableObject(obj);
         
         for(Point p: leftWallTop){
             obj = new Wall(splitTiles[14][36], 200);
+            obj.setZIndex(5);
             addObjAtPos(obj, p.x, p.y);
             levelData.addAttackableObject(obj);
         }
         
         obj = new Wall(splitTiles[14][37], 200);
+        obj.setZIndex(5);
         addObjAtPos(obj, leftWallTopRight.x, leftWallTopRight.y);
         levelData.addAttackableObject(obj);
         
         for(Point p: wallLeft){
             obj = new Wall(splitTiles[15][38], 200);
+            obj.setZIndex(5);
             addObjAtPos(obj, p.x, p.y);
             levelData.addAttackableObject(obj);
         }
@@ -308,6 +325,7 @@ public final class Level1 extends Level{
         
         for(Point p: wallRight){
             obj = new Wall(splitTiles[15][40], 200);
+            obj.setZIndex(5);
             addObjAtPos(obj, p.x, p.y);
             levelData.addAttackableObject(obj);
         }
@@ -315,29 +333,35 @@ public final class Level1 extends Level{
         obj = new Wall(splitTiles[15][37], 200);
         addObjAtPos(obj, leftWallBottomRight.x, leftWallBottomRight.y);
         levelData.addAttackableObject(obj);
+        levelData.addCollidableObject(obj);
         
         obj = new Wall(splitTiles[14][38], 200);
+        obj.setZIndex(5);
         addObjAtPos(obj, rightWallTopLeft.x, rightWallTopLeft.y);
         levelData.addAttackableObject(obj);
         
         for(Point p: rightWallTop){
             obj = new Wall(splitTiles[14][39], 200);
+            obj.setZIndex(5);
             addObjAtPos(obj, p.x, p.y);
             levelData.addAttackableObject(obj);
         }
         
         obj = new Wall(splitTiles[14][40], 200);
+        obj.setZIndex(5);
         addObjAtPos(obj, rightWallTopRight.x, rightWallTopRight.y);
         levelData.addAttackableObject(obj);
         
         for(Point p: wallDots){
             obj = new Wall(splitTiles[18][40], 200);
+            obj.setZIndex(5);
             addObjAtPos(obj, p.x, p.y);
             levelData.addAttackableObject(obj);
         }
         
         for(Point p: wallCracked){
             obj = new Wall(splitTiles[20][40], 200);
+            obj.setZIndex(5);
             addObjAtPos(obj, p.x, p.y);
             levelData.addAttackableObject(obj);
         }
@@ -346,20 +370,24 @@ public final class Level1 extends Level{
             obj = new Wall(splitTiles[20][38], 200);
             addObjAtPos(obj, p.x, p.y);
             levelData.addAttackableObject(obj);
+            levelData.addCollidableObject(obj);
         }
         
         obj = new Wall(splitTiles[20][39], 200);
         addObjAtPos(obj, rightWallBottomRight.x, rightWallBottomRight.y);
         levelData.addAttackableObject(obj);
+        levelData.addCollidableObject(obj);
         
         for(Point p: wallBottom){
             obj = new Wall(splitTiles[15][34], 200);
             addObjAtPos(obj, p.x, p.y);
             levelData.addAttackableObject(obj);
+            levelData.addCollidableObject(obj);
         }
         
         for(Point p: wallMiddle){
             obj = new Wall(splitTiles[15][39], 200);
+            obj.setZIndex(5);
             addObjAtPos(obj, p.x, p.y);
             levelData.addAttackableObject(obj);
         }

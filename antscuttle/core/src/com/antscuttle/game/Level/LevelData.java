@@ -4,6 +4,7 @@ package com.antscuttle.game.Level;
 import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.LevelObject.LevelObject;
 import com.antscuttle.game.Util.GraphUtils;
+import com.badlogic.gdx.math.Vector2;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -52,17 +53,17 @@ public class LevelData implements Serializable{
         if(allObjects != null)
             allObjects.remove(o);
     }
-    public Graph getLevelGraph(int intelligence){
+    public Graph<String,DefaultEdge> getLevelGraph(int intelligence){
         if(intelligence < 1)
             return zeroIntelligenceGraph;
         return normalIntelligenceGraph;
     }
 
-    public void setZeroIntelligenceGraph(Graph zeroIntelligenceGraph) {
+    public void setZeroIntelligenceGraph(Graph<String,DefaultEdge> zeroIntelligenceGraph) {
         this.zeroIntelligenceGraph = zeroIntelligenceGraph;
     }
 
-    public void setNormalIntelligenceGraph(Graph normalIntelligenceGraph) {
+    public void setNormalIntelligenceGraph(Graph<String,DefaultEdge> normalIntelligenceGraph) {
         this.normalIntelligenceGraph = normalIntelligenceGraph;
     }
     public Set<LevelObject> getAttackableObjects() {
@@ -142,7 +143,10 @@ public class LevelData implements Serializable{
             enemies.remove(o);
     }
     public void removeFromGraphs(LevelObject obj){
-        String vertex = GraphUtils.getVertexName((int)obj.getX(), (int)obj.getY());
+        Vector2 pos = obj.getPos();
+        int tileX = (int)pos.x/16;
+        int tileY = (int)pos.y/16;
+        String vertex = GraphUtils.getVertexName(tileX, tileY);
         zeroIntelligenceGraph.removeVertex(vertex);
         normalIntelligenceGraph.removeVertex(vertex);
     }

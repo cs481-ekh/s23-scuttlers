@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import java.awt.Point;
 
@@ -16,14 +17,14 @@ public abstract class LevelObject extends Actor{
     protected TextureRegion texture;
     protected Sprite sprite;
     protected int defense;
-    protected Point pos, dim;
+    protected Vector2 pos, dim;
 
     // Constructor
     public LevelObject(TextureRegion texture, int defense) {
         
         this.texture = texture;
-        this.dim = new Point();
-        this.pos = new Point();
+        this.dim = new Vector2();
+        this.pos = new Vector2();
         this.dim.x = 16;
         this.dim.y = 16;
         // TODO: Not sure which of these width/height things we'll need
@@ -53,12 +54,14 @@ public abstract class LevelObject extends Actor{
     protected Rectangle getArea(){
         return new Rectangle(pos.x, pos.y, dim.x, dim.y);
     }
-    public void setPos(int x, int y){
+    public void setPos(float x, float y){
         pos.x = x;
         pos.y = y;
         sprite.setPosition(x, y);
     }
-    
+    public Vector2 getPos(){
+        return pos;
+    }
     protected abstract void init();
     public void update(float delta){}
     public void render(SpriteBatch batch){
