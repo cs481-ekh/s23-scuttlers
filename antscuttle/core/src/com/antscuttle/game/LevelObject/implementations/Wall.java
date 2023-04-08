@@ -3,6 +3,7 @@ package com.antscuttle.game.LevelObject.implementations;
 
 import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.Damage.DamageType;
+import com.antscuttle.game.Level.LevelData;
 import com.antscuttle.game.LevelObject.LevelObject;
 import com.antscuttle.game.LevelObject.InteractableLevelObject;
 import com.badlogic.gdx.graphics.Texture;
@@ -34,7 +35,7 @@ public class Wall extends InteractableLevelObject{
     
 
     @Override
-    public boolean interact(Ant ant) {
+    public boolean interact(Ant ant, LevelData levelData) {
         return false;
     }
     

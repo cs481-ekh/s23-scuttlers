@@ -3,6 +3,7 @@ package com.antscuttle.game.LevelObject.implementations;
 
 import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.Damage.DamageType;
+import com.antscuttle.game.Level.LevelData;
 import com.antscuttle.game.LevelObject.InteractableLevelObject;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -25,7 +26,7 @@ public class Lava extends InteractableLevelObject{
     
 
     @Override
-    public boolean interact(Ant ant) {
+    public boolean interact(Ant ant, LevelData levelData) {
         ant.receiveAttack(damage, DamageType.FIRE);
         return false;
     }

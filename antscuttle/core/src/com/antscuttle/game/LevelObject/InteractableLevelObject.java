@@ -6,6 +6,7 @@ package com.antscuttle.game.LevelObject;
 
 import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.Damage.DamageType;
+import com.antscuttle.game.Level.LevelData;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
@@ -19,6 +20,6 @@ public abstract class InteractableLevelObject extends LevelObject{
         super(tex, def);
         this.intelligenceRequirement = intelligenceRequired;
     }
-    public abstract boolean interact(Ant ant);
+    public abstract boolean interact(Ant ant, LevelData levelData);
     public abstract int receiveAttack(int damage, DamageType damageType);
 }

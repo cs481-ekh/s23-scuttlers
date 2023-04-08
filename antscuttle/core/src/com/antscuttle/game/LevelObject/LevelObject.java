@@ -1,16 +1,11 @@
 package com.antscuttle.game.LevelObject;
 import com.antscuttle.game.Ant.Ant;
-import com.antscuttle.game.Damage.DamageType;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import java.awt.Point;
 
 public abstract class LevelObject extends Actor{
     // Fields

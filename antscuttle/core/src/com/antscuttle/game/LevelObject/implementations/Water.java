@@ -3,6 +3,7 @@ package com.antscuttle.game.LevelObject.implementations;
 
 import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.Damage.DamageType;
+import com.antscuttle.game.Level.LevelData;
 import com.antscuttle.game.LevelObject.InteractableLevelObject;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -12,14 +13,14 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  * @author antho
  */
 public class Water extends InteractableLevelObject{
-    private static final int drowningDamage = 5;
+    private static final int drowningDamage = 2;
     
     public Water(TextureRegion tex){
         super(tex, 0, 0);
     }
     
     @Override
-    public boolean interact(Ant ant) {
+    public boolean interact(Ant ant, LevelData levelData) {
         // Call when an ant is in water for drowning
         ant.receiveAttack(drowningDamage, DamageType.WATER);
         return false;
