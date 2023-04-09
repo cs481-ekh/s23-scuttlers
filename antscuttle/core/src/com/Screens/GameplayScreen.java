@@ -1,11 +1,13 @@
 package com.Screens;
 
+import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.AntScuttleGame;
 import com.antscuttle.game.Buttons.BackButton;
 import com.antscuttle.game.Buttons.ScuttleButton;
 import com.antscuttle.game.Buttons.PauseButton;
 import com.antscuttle.game.Buttons.StartButton;
 import com.antscuttle.game.Level.Level;
+import com.antscuttle.game.Level.LevelData;
 import com.antscuttle.game.Util.ClassFactory;
 import com.antscuttle.game.Util.GameData;
 import com.badlogic.gdx.Gdx;
@@ -25,14 +27,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import java.awt.Point;
 
 public class GameplayScreen extends ScreenAdapter{
-	public static final float SPEED = 100;
+    public static final float SPEED = 100;
     private static final int START_BUTTON_Y = 200;
 
     SpriteBatch gameBatch;
@@ -49,8 +51,6 @@ public class GameplayScreen extends ScreenAdapter{
     Texture menuImg;
     Texture img;
 
-	float charY;
-	float charX;
     float gameX;
     float gameY;
     float startX;
@@ -61,13 +61,14 @@ public class GameplayScreen extends ScreenAdapter{
 
     AntScuttleGame game;
     GameData gameData;
+    LevelData levelData;
     final Skin skin;
     Stage stage;
     
     private TiledMapRenderer renderer;
     private TiledMap map;
     private Level level;
-    private AssetManager assetManager;
+    private Ant player;
 
     private boolean gameStarted;
     
@@ -79,7 +80,7 @@ public class GameplayScreen extends ScreenAdapter{
         pause = new PauseButton();
         skin = game.skin;
         this.gameStarted = false;
-        assetManager = new AssetManager();
+        this.player = gameData.getCurrentAnt();
     }
 
     @Override
@@ -130,8 +131,10 @@ public class GameplayScreen extends ScreenAdapter{
         ClassFactory cf = new ClassFactory();
         level = cf.newLevelInstance(gameData.getCurrentLevel().getClass());
         map = new TmxMapLoader().load(level.getTiledMap());
-        
         renderer = new OrthogonalTiledMapRenderer(map,levelBatch);
+        
+        levelData = level.getLevelData();
+        
         
         startBtn.addListener(new InputListener() {
             @Override
@@ -147,13 +150,14 @@ public class GameplayScreen extends ScreenAdapter{
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 ScuttleButton.playButtonPressSound(game);
-
-                //LinkedList<Node> childs = gameData.getCurrentAnt().getAI().getRoot().getChildren();
-                //childs.removeFirst().getBlock().execute(gameData, null);
-                
-                
-                gameStarted = true;
-                level.startLevel();
+                if(player != null){
+                    Point startLoc = level.getPlayerStartLoc();
+                    player.setPos(startLoc.x*32, startLoc.y*32);
+                    gameStarted = true;
+                    level.startLevel();
+                    //LinkedList<Node> childs = gameData.getCurrentAnt().getAI().getRoot().getChildren();
+                    //childs.removeFirst().getBlock().execute(gameData, null);
+                }
                 return true;
             }
         });
@@ -188,9 +192,14 @@ public class GameplayScreen extends ScreenAdapter{
         if(gameStarted){
             
             levelBatch.begin();
-            
             level.render(levelBatch);
             levelBatch.end();
+            
+            characterBatch.begin();
+            player.render(characterBatch);
+            for(Ant enemy: levelData.getEnemies())
+                enemy.render(characterBatch);
+            characterBatch.end();
         }
         game.batch.begin();
 

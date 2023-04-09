@@ -8,7 +8,9 @@ import com.antscuttle.game.Damage.DamageType;
 import com.antscuttle.game.Weapon.MeleeWeapon;
 import com.antscuttle.game.Weapon.RangedWeapon;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 
 /**
  *
@@ -42,5 +44,7 @@ public interface Ant{
     public int receiveAttack(int damage, DamageType damageType);
     public int attack(Object target, String attackType);
     public Rectangle getArea();
-    
+    public void setPos(float x, float y);
+    public Vector2 getPos();
+    public void render(SpriteBatch characterBatch);
 }
