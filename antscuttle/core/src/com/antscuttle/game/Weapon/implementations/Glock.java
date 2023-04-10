@@ -14,7 +14,7 @@ public class Glock extends Pistol{
     public Glock(){
         super("Glock",
                 20,
-                DamageType.PHYSICAL,
+                DamageType.Physical,
                 0,
                 Integer.MAX_VALUE,
                 new String("weapon/Glock26Gen5.png"),

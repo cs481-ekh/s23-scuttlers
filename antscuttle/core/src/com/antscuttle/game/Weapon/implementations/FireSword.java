@@ -16,7 +16,7 @@ public class FireSword extends Sword{
     public FireSword(){
         super("Fire Sword", 
                 20, 
-                DamageType.FIRE, 
+                DamageType.Fire, 
                 0, 
                 25, 
                 new String("weapon/fire_sword.png"), 

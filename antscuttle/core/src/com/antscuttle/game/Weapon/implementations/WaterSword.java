@@ -23,7 +23,7 @@ public class WaterSword extends Sword{
 //        Sound attackSound = Gdx.audio.newSound(Gdx.files.internal("sounds/weapon/swish-1.wav"));
         super("Water Sword", 
                 20, 
-                DamageType.WATER, 
+                DamageType.Water, 
                 0, 
                 25, 
                 new String("weapon/ice_sword.png"), 

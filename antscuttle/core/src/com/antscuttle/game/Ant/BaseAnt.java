@@ -334,7 +334,7 @@ public abstract class BaseAnt implements Ant, Serializable{
     }
     @Override
     public DamageType getMeleeDamageType(){
-        return (meleeWeapon == null) ? DamageType.PHYSICAL : meleeWeapon.getDamageType();
+        return (meleeWeapon == null) ? DamageType.Physical : meleeWeapon.getDamageType();
     }
     @Override
     public DamageType getRangedDamageType(){
@@ -353,7 +353,7 @@ public abstract class BaseAnt implements Ant, Serializable{
     public int attack(Object target, String attackType){
         int damageDone = 0;
         int damage = 0;
-        DamageType damageType = DamageType.PHYSICAL;
+        DamageType damageType = DamageType.Physical;
         switch(attackType){
             case "Melee": 
                 damage = getMeleeDamage();

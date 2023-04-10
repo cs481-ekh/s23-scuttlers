@@ -26,7 +26,9 @@ public class AntDecorator implements Ant, Serializable{
         wrappedAnt = ant;
         this.damageType = damageType;
     }
-    
+    public DamageType getType(){
+        return damageType;
+    }
     @Override
     public int attack(Object target, String attackType){
         int damageDone = 0;

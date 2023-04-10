@@ -18,7 +18,7 @@ public class SteelSword extends Sword{
     public SteelSword(){
         super("Sword", 
                 20, 
-                DamageType.PHYSICAL, 
+                DamageType.Physical, 
                 0, 
                 25, 
                 new String("weapon/sword.png"), 

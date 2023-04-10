@@ -20,7 +20,7 @@ public class Wall extends InteractableLevelObject{
     }
     @Override
     public int receiveAttack(int damage, DamageType damageType) {
-        if( damageType == DamageType.EXPLOSIVE && damage > defense){
+        if( damageType == DamageType.Explosive && damage > defense){
             //TODO: destroy this object
             return damage;
         }

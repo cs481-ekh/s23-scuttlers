@@ -1,12 +1,12 @@
 package com.antscuttle.game.Damage;
 
 public enum DamageType {
-    PHYSICAL("physical"),
-    FIRE("fire"),
-    WATER("water"),
-    POISON("poison"),
-    ELECTRIC("electric"),
-    EXPLOSIVE("explosive");
+    Physical("Physical"),
+    Fire("Fire"),
+    Water("Water"),
+    Poison("Poison"),
+    Electric("Electric"),
+    Explosive("Explosive");
 
     private final String name;
 
