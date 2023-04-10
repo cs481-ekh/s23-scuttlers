@@ -15,7 +15,7 @@ public class LightningSword extends Sword{
     public LightningSword(){
         super("Lightning Sword", 
                 20, 
-                DamageType.ELECTRIC, 
+                DamageType.Electric, 
                 0, 
                 25, 
                 new String("weapon/lightning_sword.png"), 

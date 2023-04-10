@@ -254,22 +254,17 @@ public class AntEditorScreen extends ScreenAdapter {
                                     for (DamageType type: DamageType.values()) {
                                         button(type.getName(), type);
                                     }
-                                    button("None", false);
                                 }
                                 @Override
                                 protected void result (Object obj) {
                                     try {
                                         ClassFactory cFactory = new ClassFactory();
+
                                         @SuppressWarnings("unchecked")
                                         Ant ant = cFactory.newAntInstance((Class<? extends Ant>) Class.forName(antType), str);
-                                        if (!obj.equals(false)) {
-                                            AntDecorator eAnt = new AntDecorator(ant,(DamageType) obj);
-                                            gameData.addAnt(eAnt);
-                                            gameData.setCurrentAnt(eAnt);
-                                        } else {
-                                            gameData.addAnt(ant);
-                                            gameData.setCurrentAnt(ant);
-                                        }
+                                        AntDecorator eAnt = new AntDecorator(ant,(DamageType) obj);
+                                        gameData.addAnt(eAnt);
+                                        gameData.setCurrentAnt(eAnt);
 
                                         stage.clear();
                                         stage.addActor(addButton);

@@ -20,7 +20,7 @@ public class Water extends InteractableLevelObject{
     @Override
     public boolean interact(Ant ant) {
         // Call when an ant is in water for drowning
-        ant.receiveAttack(drowningDamage, DamageType.WATER);
+        ant.receiveAttack(drowningDamage, DamageType.Water);
         return false;
     }
 
