@@ -21,14 +21,19 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+
 import java.awt.Point;
 import java.io.File;
 import java.io.FileInputStream;
@@ -71,6 +76,7 @@ public class MainMenuScreen extends ScreenAdapter {
     public Image saveImage;
     public final Skin skin;
     public final Stage stage;
+    public String fileName = "";
     int x;
     
     Preferences prefs; 
@@ -124,28 +130,47 @@ public class MainMenuScreen extends ScreenAdapter {
         stage.addActor(saveGameButton);
 
         saveGameButton.addListener(new ClickListener() {
+            
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                
+                //Create new dialog for save name
+                Dialog dialog = new Dialog("Enter Save Name", skin);
+                final TextField inputField = new TextField("", skin);
+                TextButton saveButton = new TextButton("Save", skin);
+                saveButton.addListener(new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent event, float x, float y){
+                        fileName = inputField.getText() + ".txt";
+                        FileOutputStream fos;
+                        // Serialize the SaveData object to a file using Kryo
+                        if(gameData != null){ 
+                            try {
+                                fos = new FileOutputStream(fileName);
+                                ObjectOutputStream oos = new ObjectOutputStream(fos);
+                                oos.writeObject(gameData); 
+                                oos.close();
+                            } catch (FileNotFoundException fnfe) {
+                                Logger.getLogger(GameData.class.getName()).log(Level.SEVERE, null, fnfe);
+                            } catch (IOException ioe){
+                                Logger.getLogger(GameData.class.getName()).log(Level.SEVERE, null, ioe);
+                            }
+                        }else{
+                            System.out.println("print a dialog eventually with error message");
+                        }
+                    }
+                });
+                dialog.getContentTable().add(inputField);
+                dialog.button(saveButton);
+                dialog.setBounds(SAVE_GAME_BUTTON_LOC.x, SAVE_GAME_BUTTON_LOC.y, 200, 100);
+                dialog.setZIndex(100);
+                stage.addActor(dialog);
+        
+
                 long id = game.sfx.play(game.VOLUME);
-                String fileName = "gamedata.txt";
-                FileOutputStream fos;
                 saveGameButton.setChecked(true);
                 
-                // Serialize the SaveData object to a file using Kryo
-               if(gameData != null){ 
-                    try {
-                        fos = new FileOutputStream(fileName);
-                        ObjectOutputStream oos = new ObjectOutputStream(fos);
-                        oos.writeObject(gameData); 
-                        oos.close();
-                    } catch (FileNotFoundException fnfe) {
-                        Logger.getLogger(GameData.class.getName()).log(Level.SEVERE, null, fnfe);
-                    } catch (IOException ioe){
-                        Logger.getLogger(GameData.class.getName()).log(Level.SEVERE, null, ioe);
-                    }
-                }else{
-                    System.out.println("print a dialog eventually with error message");
-                }
+
             }
         });
     }
