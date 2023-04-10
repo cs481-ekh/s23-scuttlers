@@ -9,7 +9,9 @@ import com.antscuttle.game.LevelObject.InteractableLevelObject;
 import com.antscuttle.game.Weapon.MeleeWeapon;
 import com.antscuttle.game.Weapon.RangedWeapon;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 
 /**
  *
@@ -152,5 +154,20 @@ public class AntDecorator implements Ant, Serializable{
     @Override
     public Rectangle getArea() {
         return wrappedAnt.getArea();
+    }
+
+    @Override
+    public void setPos(float x, float y) {
+        wrappedAnt.setPos(x, y);
+    }
+
+    @Override
+    public Vector2 getPos() {
+        return wrappedAnt.getPos();
+    }
+
+    @Override
+    public void render(SpriteBatch characterBatch) {
+        wrappedAnt.render(characterBatch);
     }
 }
