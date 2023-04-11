@@ -2,6 +2,7 @@ package com.Screens;
 
 import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.AntScuttleGame;
+import com.antscuttle.game.AI.Node;
 import com.antscuttle.game.Buttons.BackButton;
 import com.antscuttle.game.Buttons.ScuttleButton;
 import com.antscuttle.game.Buttons.PauseButton;
@@ -32,6 +33,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import java.awt.Point;
+import java.util.LinkedList;
 
 public class GameplayScreen extends ScreenAdapter{
     public static final float SPEED = 100;
@@ -71,6 +73,8 @@ public class GameplayScreen extends ScreenAdapter{
     private Ant player;
 
     private boolean gameStarted;
+
+    int test = 0;
     
     public GameplayScreen(AntScuttleGame game, GameData gameData){
         this.game = game;
@@ -116,7 +120,7 @@ public class GameplayScreen extends ScreenAdapter{
         camera.setToOrtho(false, Gdx.graphics.getWidth(), playMap.getHeight());
         camera.zoom = .5f;
         camera.translate(-Gdx.graphics.getWidth()/4, -Gdx.graphics.getHeight()/4);
-	camera.update();
+	    camera.update();
         
         menuImg = new Texture(treeMap);
         titleImg = new Texture("antscuttle.png");
@@ -155,8 +159,6 @@ public class GameplayScreen extends ScreenAdapter{
                     player.setPos(startLoc.x*32, startLoc.y*32);
                     gameStarted = true;
                     level.startLevel();
-                    //LinkedList<Node> childs = gameData.getCurrentAnt().getAI().getRoot().getChildren();
-                    //childs.removeFirst().getBlock().execute(gameData, null);
                 }
                 return true;
             }
@@ -197,6 +199,12 @@ public class GameplayScreen extends ScreenAdapter{
             
             characterBatch.begin();
             player.render(characterBatch);
+
+            if (test == 0) {
+                LinkedList<Node> childs = player.getAI().getRoot().getChildren();
+                childs.getFirst().getBlock().execute(gameData, levelData);
+                test = 1;
+            }
             for(Ant enemy: levelData.getEnemies())
                 enemy.render(characterBatch);
             characterBatch.end();

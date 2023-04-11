@@ -26,7 +26,7 @@ public class Lava extends InteractableLevelObject{
     
 
     @Override
-    public boolean interact(Ant ant) {
+    public boolean interact(Ant ant, LevelData levelData) {
         ant.receiveAttack(damage, DamageType.Fire);
         return false;
     }
