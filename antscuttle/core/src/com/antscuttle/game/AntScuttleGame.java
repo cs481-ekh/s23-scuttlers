@@ -15,9 +15,14 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+
 
 public class AntScuttleGame extends Game {
 	public SpriteBatch batch;
@@ -27,7 +32,7 @@ public class AntScuttleGame extends Game {
 	public float VOLUME = 1f;
 	public float FONT_SCALE = 0.75f;
 	public Music music;
-
+	
 	public boolean musicActive = true;
 	public boolean sfxActive = true;
 	
@@ -35,15 +40,22 @@ public class AntScuttleGame extends Game {
 	
 	@Override
 	public void create () {
-		String fileName = "gamedata.txt";
+		// Create a list of file names from a folder
+		FileHandle folder = Gdx.files.internal("saves");
+		LinkedList<String> fileNames = new LinkedList<>();
+		for(FileHandle file: folder.list()){
+			fileNames.add(file.toString());
+		}
+
+		String fileName = fileNames.isEmpty() ? "": fileNames.get(0);
 		FileInputStream fis;
 		try {
 			fis = new FileInputStream(fileName);
 			ObjectInputStream ois = new ObjectInputStream(fis);
-			Object test = ois.readObject();
-			if(test instanceof GameData){
-				GameData testData = (GameData) test;
-				LinkedList<AI> ais = testData.getAllAIs();
+			Object save = ois.readObject();
+			if(save instanceof GameData){
+				GameData saveData = (GameData) save;
+				LinkedList<AI> ais = saveData.getAllAIs();
 				System.out.println("AI Names:");
 				for(AI ai: ais){
 					System.out.println("\t" + ai.getName());
@@ -61,7 +73,7 @@ public class AntScuttleGame extends Game {
 				music.setLooping(true);
 				music.play();
 						
-				setScreen(new MainMenuScreen(this, testData));
+				setScreen(new MainMenuScreen(this, saveData, true));
 			}else{
 				System.out.println("Still not working");
 			}
@@ -79,7 +91,7 @@ public class AntScuttleGame extends Game {
 			music.setLooping(true);
 			music.play();
 					
-			setScreen(new MainMenuScreen(this, null));
+			setScreen(new MainMenuScreen(this, null, true));
 		} catch (IOException ioe){
 			Logger.getLogger(GameData.class.getName()).log(Level.SEVERE, null, ioe);
 		} catch (ClassNotFoundException cnfe){

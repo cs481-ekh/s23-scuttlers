@@ -23,6 +23,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
@@ -77,6 +78,7 @@ public class MainMenuScreen extends ScreenAdapter {
     public final Skin skin;
     public final Stage stage;
     public String fileName = "";
+    public boolean isInitialMainScreen;
     int x;
     
     Preferences prefs; 
@@ -85,7 +87,8 @@ public class MainMenuScreen extends ScreenAdapter {
 
     AntScuttleGame game;
 
-    public MainMenuScreen(AntScuttleGame game, GameData gameData) {
+    public MainMenuScreen(AntScuttleGame game, GameData gameData, boolean isInitialMainScreen) {
+        this.isInitialMainScreen = isInitialMainScreen;
         this.game = game;
         this.gameData = gameData;
         this.stage = new Stage();
@@ -128,6 +131,53 @@ public class MainMenuScreen extends ScreenAdapter {
     public void show() {
         Gdx.input.setInputProcessor(stage);
         stage.addActor(saveGameButton);
+        // Create a list of file names from a folder
+        FileHandle folder = Gdx.files.internal("saves");
+        LinkedList<String> fileNames = new LinkedList<>();
+        for(FileHandle file: folder.list()){
+            fileNames.add(file.toString());
+        }
+        if(isInitialMainScreen && fileNames.size() > 1){
+            // Create a new dialog
+            Dialog loadDialog = new Dialog("Title", skin);
+
+            // Create a select box for the dropdown
+            SelectBox<String> selectBox = new SelectBox<String>(skin);
+            TextButton okButton = new TextButton("OK", skin);
+            okButton.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y){
+                    String fileName = selectBox.getSelected();
+                    FileInputStream fis;
+                    try {
+                        fis = new FileInputStream(fileName);
+                        ObjectInputStream ois = new ObjectInputStream(fis);
+                        Object save = ois.readObject();
+                        if(save instanceof GameData){
+                            gameData = (GameData) save;
+                        }
+                    }catch (FileNotFoundException fnfe) {
+                        Logger.getLogger(GameData.class.getName()).log(Level.SEVERE, null, fnfe);
+                    } catch (IOException ioe){
+                        Logger.getLogger(GameData.class.getName()).log(Level.SEVERE, null, ioe);
+                    } catch (ClassNotFoundException cnfe){
+                        Logger.getLogger(GameData.class.getName()).log(Level.SEVERE, null, cnfe);
+                    }
+                }
+            });
+                
+            // Add the file names to the select box
+            selectBox.setItems(fileNames.toArray(new String[0]));
+            loadDialog.button(okButton);
+            // Add the select box to the dialog
+            loadDialog.getContentTable().add(selectBox);
+            loadDialog.setBounds(400, 400, 200, 100);
+
+            // Show the dialog
+            stage.addActor(loadDialog);
+            
+        }
+        
 
         saveGameButton.addListener(new ClickListener() {
             
@@ -146,7 +196,7 @@ public class MainMenuScreen extends ScreenAdapter {
                         // Serialize the SaveData object to a file using Kryo
                         if(gameData != null){ 
                             try {
-                                fos = new FileOutputStream(fileName);
+                                fos = new FileOutputStream("saves/" + fileName);
                                 ObjectOutputStream oos = new ObjectOutputStream(fos);
                                 oos.writeObject(gameData); 
                                 oos.close();
@@ -200,6 +250,7 @@ public class MainMenuScreen extends ScreenAdapter {
         ScuttleButton.draw(game, this, gameData, SETTINGS_BUTTON_LOC.x, SETTINGS_BUTTON_LOC.y, settingsButton, 1);
 
         game.batch.end();
+
         // a stage has its own batch so don't put it within batch.begin() and batch.end()
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f)); //you are likely missing THIS LINE :D
         stage.draw();
