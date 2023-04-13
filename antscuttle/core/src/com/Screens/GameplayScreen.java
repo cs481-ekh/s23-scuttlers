@@ -74,7 +74,6 @@ public class GameplayScreen extends ScreenAdapter{
 
     private boolean gameStarted;
 
-    int test = 0;
     
     public GameplayScreen(AntScuttleGame game, GameData gameData){
         this.game = game;
@@ -200,10 +199,13 @@ public class GameplayScreen extends ScreenAdapter{
             characterBatch.begin();
             player.render(characterBatch);
 
-            if (test == 0) {
+            if (!player.getAI().getRoot().getChildren().getFirst().getBlock().isFinished()) {
                 LinkedList<Node> childs = player.getAI().getRoot().getChildren();
+                // player.getAI().
+                levelData.setDeltaTime(delta);
                 childs.getFirst().getBlock().execute(gameData, levelData);
-                test = 1;
+            } else {
+                // System.out.println("done");
             }
             for(Ant enemy: levelData.getEnemies())
                 enemy.render(characterBatch);

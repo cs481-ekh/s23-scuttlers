@@ -13,42 +13,72 @@ import com.antscuttle.game.Util.GameData;
 import com.antscuttle.game.Util.GraphUtils;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import java.util.List;
+import java.util.LinkedList;
 
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.alg.shortestpath.*;
 
 public class MoveBlock extends DecisionBlock {
-    
+
+    private boolean setup = false;
+    Ant ant;
+    Graph<String,DefaultEdge> g;
+    BFSShortestPath<String, DefaultEdge> shortestPath;
+    LinkedList<DefaultEdge> path;
+
+    int targX;
+    int targY;
+    int srcX;
+    int srcY;
+    DefaultEdge currEdge;
+
     public MoveBlock(MoveOptions options){
         super(options);
     }
     @Override
     public void execute(GameData gameData, LevelData levelData){
-        Ant ant = gameData.getCurrentAnt();
-        Graph<String,DefaultEdge> g = levelData.getLevelGraph(ant.getIntelligence());
 
-        // Find the nearest level object given from lvlobj
-        
-        String target = options.getFirstOptionChoice();
-      
-        BFSShortestPath<String, DefaultEdge> shortestPath = new BFSShortestPath<>(g);
-
-        List<DefaultEdge> path = shortestPath.getPath(GraphUtils.getVertexName((int) ant.getPos().x / 32, (int) ant.getPos().y / 32), GraphUtils.getVertexName(0+1, 12-1)).getEdgeList();
-
-        for (DefaultEdge edge: path) {
-            // String srcX = g.getEdgeSource(edge).substring(1, 2);
-            // String srcY = g.getEdgeSource(edge).substring(1, 2);
-
-            int targX = Integer.parseInt(g.getEdgeTarget(edge).substring(1,3));
-            int targY = Integer.parseInt(g.getEdgeTarget(edge).substring(3,5));
-
-            ant.setPos(targX*32, targY*32);
+        if(!setup) {
+            ant = gameData.getCurrentAnt();
+            g = levelData.getLevelGraph(ant.getIntelligence());
+            shortestPath = new BFSShortestPath<>(g);
+            path = (LinkedList<DefaultEdge>) shortestPath.getPath(GraphUtils.getVertexName((int) ant.getPos().x / 32, (int) ant.getPos().y / 32), GraphUtils.getVertexName(0+1, 12-1)).getEdgeList();
+            setup = true;
         }
+        
+        // Find the nearest level object given from lvlobj
+        // String target = options.getFirstOptionChoice();
+
+        // check if not at the next tile
+        if (!path.isEmpty()) {
+            currEdge = path.removeFirst();
+            srcX = Integer.parseInt(g.getEdgeSource(currEdge).substring(1,3));
+            srcY = Integer.parseInt(g.getEdgeSource(currEdge).substring(3,5));
+
+            targX = Integer.parseInt(g.getEdgeTarget(currEdge).substring(1,3));
+            targY = Integer.parseInt(g.getEdgeTarget(currEdge).substring(3,5));
+            // System.out.println("x: " + targX + " y: " + targY);
+            // if (srcX != targX) {
+            //     ant.setPos(targX-levelData.getDeltaTime()*ant.getSpeed(), targY*32);
+            // } else {
+            //     ant.setPos(targX*32, targY-levelData.getDeltaTime()*ant.getSpeed());
+            // }
+            ant.setPos(targX*32, targY*32);
+        } else {
+            finished(true);
+            return;
+        }
+
+
+        // for (DefaultEdge edge: path) {
+        // }
 
         System.out.println(ant.getPos());
     }
+
+
+
 
     public static Class<? extends BlockOptions> getOptionsClass(){
         return InteractOptions.class;

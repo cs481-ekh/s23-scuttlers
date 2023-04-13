@@ -27,6 +27,8 @@ public class LevelData implements Serializable{
     protected Graph<String, DefaultEdge> zeroIntelligenceGraph;
     protected Graph<String, DefaultEdge> normalIntelligenceGraph;
 
+    protected float deltaTime;
+
     public LevelData(){
         attackableObjects = new HashSet<>();
         interactableObjects = new HashSet<>();
@@ -40,6 +42,13 @@ public class LevelData implements Serializable{
 
     public Set<LevelObject> getAllObjects() {
         return allObjects;
+    }
+
+    public void setDeltaTime(float delta) {
+        deltaTime = delta;
+    }
+    public float getDeltaTime() {
+        return deltaTime;
     }
 
     public void setAllObjects(Set<LevelObject> allObjects) {

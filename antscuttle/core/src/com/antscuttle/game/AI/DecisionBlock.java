@@ -13,7 +13,7 @@ import com.antscuttle.game.Util.GameData;
  * @author antho
  */
 public abstract class DecisionBlock implements Serializable{
-    private Boolean executionResult = null;
+    private Boolean executionResult = false;
     protected int duration;
     protected BlockOptions options;
     
@@ -37,8 +37,12 @@ public abstract class DecisionBlock implements Serializable{
         return options;
     }
     
-    public boolean getExecutionResult(){
+    public boolean isFinished(){
         return executionResult;
+    }
+
+    public void finished(boolean bool) {
+        executionResult = bool;
     }
     public int getDuration(){
         return duration;
