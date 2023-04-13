@@ -224,7 +224,6 @@ public class GameplayScreen extends ScreenAdapter{
         
     }
     private void doBlocks(){
-        System.out.println(currentBlock.getClass());
         if (currentBlock.isFinished()) {
             // Reset the finished status and move on
             currentBlock.setExecutionResult(false);
@@ -235,10 +234,12 @@ public class GameplayScreen extends ScreenAdapter{
             initAI();
         currentBlock.execute(gameData, levelData);
     }
+
     private void initAI(){
         blockIterator = player.getAI().iterator();
         currentBlock = (DecisionBlock)blockIterator.next();
     }
+    
     @Override
     public void resize(int width, int height) {
         gameView.update(width, height);

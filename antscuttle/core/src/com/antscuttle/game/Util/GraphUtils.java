@@ -99,7 +99,7 @@ public class GraphUtils {
         
     }
     
-    protected static Set<String> getVertexNeighbors(int x, int y){
+    public static Set<String> getVertexNeighbors(int x, int y){
         Set<String> neighbors = new HashSet<>();
         
         String xstr = (x<10) ? "0"+x : ""+x;
