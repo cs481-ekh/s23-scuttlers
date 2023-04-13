@@ -13,8 +13,12 @@ import com.antscuttle.game.Util.GameData;
  * @author antho
  */
 public abstract class DecisionBlock implements Serializable{
-    private Boolean executionResult = false;
-    protected int duration;
+    // Execution result represents whether the block was able to
+    // achieve its goal. This is used during tree traversal.
+    private Boolean executionResult;
+    // Finished represents whether the block is done executing.
+    // This is used to determine whether to continue using this block.
+    private boolean finished = false;
     protected BlockOptions options;
     
     
@@ -37,15 +41,18 @@ public abstract class DecisionBlock implements Serializable{
         return options;
     }
     
-    public boolean isFinished(){
+    public boolean getExecutionResult(){
         return executionResult;
     }
 
-    public void finished(boolean bool) {
+    public void setExecutionResult(boolean bool) {
         executionResult = bool;
     }
-    public int getDuration(){
-        return duration;
+    public Boolean isFinished(){
+        return finished;
+    }
+    public void setFinished(boolean finished){
+        this.finished = finished;
     }
     public void execute(GameData gameData, LevelData levelData){
         // Temp code

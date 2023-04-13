@@ -3,6 +3,9 @@
  */
 package com.antscuttle.game.AI;
 
+import com.antscuttle.game.AI.implementations.MoveBlock;
+import com.antscuttle.game.AI.options.MoveOptions;
+
 /**
  *
  * @author antho
@@ -11,7 +14,9 @@ public class DefaultHumanAI extends AI{
 
     public DefaultHumanAI(Node root, String name){
         super(root, name);
-        // TODO: build default AI tree here
+        DecisionBlock move1 = new MoveBlock(new MoveOptions("Ant"));
+        Node n = new Node(move1);
+        root.addChild(n);
     }
 
     @Override

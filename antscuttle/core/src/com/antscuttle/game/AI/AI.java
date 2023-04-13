@@ -46,7 +46,7 @@ public class AI implements Iterable, Serializable{
         public boolean hasNext() {
             
             // If current block execution failed, then don't use the children
-            if((currentNode == root || currentBlock.isFinished()) && 
+            if((currentNode == root || currentBlock.getExecutionResult()) && 
                     currentNode.hasChildren())
                 return true;
             
@@ -68,7 +68,7 @@ public class AI implements Iterable, Serializable{
         public Object next() {
             Node startingNode = currentNode;
             // If current block execution succeeded and children exist, use them
-            if((currentNode == root || currentBlock.isFinished()) && 
+            if((currentNode == root || currentBlock.getExecutionResult()) && 
                     currentNode.hasChildren()){
                 currentNode = currentNode.getChildren().getFirst();
             // Else if current Node has a right sibling use it

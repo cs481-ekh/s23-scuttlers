@@ -1,5 +1,6 @@
 package com.Screens;
 
+import com.antscuttle.game.AI.DecisionBlock;
 import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.AntScuttleGame;
 import com.antscuttle.game.AI.Node;
@@ -33,6 +34,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import java.awt.Point;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class GameplayScreen extends ScreenAdapter{
@@ -73,7 +75,8 @@ public class GameplayScreen extends ScreenAdapter{
     private Ant player;
 
     private boolean gameStarted;
-
+    private Iterator blockIterator;
+    private DecisionBlock currentBlock;
     
     public GameplayScreen(AntScuttleGame game, GameData gameData){
         this.game = game;
@@ -153,11 +156,12 @@ public class GameplayScreen extends ScreenAdapter{
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 ScuttleButton.playButtonPressSound(game);
-                if(player != null){
+                if(player != null && player.getAI() != null){
                     Point startLoc = level.getPlayerStartLoc();
                     player.setPos(startLoc.x*32, startLoc.y*32);
                     gameStarted = true;
                     level.startLevel();
+                    initAI();
                 }
                 return true;
             }
@@ -195,18 +199,11 @@ public class GameplayScreen extends ScreenAdapter{
             levelBatch.begin();
             level.render(levelBatch);
             levelBatch.end();
+            // Do block stuff
+            doBlocks();
             
             characterBatch.begin();
             player.render(characterBatch);
-
-            if (!player.getAI().getRoot().getChildren().getFirst().getBlock().isFinished()) {
-                LinkedList<Node> childs = player.getAI().getRoot().getChildren();
-                // player.getAI().
-                levelData.setDeltaTime(delta);
-                childs.getFirst().getBlock().execute(gameData, levelData);
-            } else {
-                // System.out.println("done");
-            }
             for(Ant enemy: levelData.getEnemies())
                 enemy.render(characterBatch);
             characterBatch.end();
@@ -226,7 +223,22 @@ public class GameplayScreen extends ScreenAdapter{
         game.batch.end();
         
     }
-
+    private void doBlocks(){
+        System.out.println(currentBlock.getClass());
+        if (currentBlock.isFinished()) {
+            // Reset the finished status and move on
+            currentBlock.setExecutionResult(false);
+            currentBlock = (DecisionBlock)blockIterator.next();
+        }
+        // If at the end of the tree, restart the tree.
+        if (currentBlock == null)
+            initAI();
+        currentBlock.execute(gameData, levelData);
+    }
+    private void initAI(){
+        blockIterator = player.getAI().iterator();
+        currentBlock = (DecisionBlock)blockIterator.next();
+    }
     @Override
     public void resize(int width, int height) {
         gameView.update(width, height);

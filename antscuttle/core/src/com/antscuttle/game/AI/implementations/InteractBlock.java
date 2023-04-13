@@ -19,7 +19,6 @@ public class InteractBlock extends DecisionBlock{
     
     public InteractBlock(InteractOptions options){
         super(options);
-        this.duration = 1; // I don't know if we even need duration
     }
     
     @Override
