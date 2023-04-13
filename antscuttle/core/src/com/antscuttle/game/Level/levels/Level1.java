@@ -5,6 +5,7 @@ import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.Ant.implementations.Zombie;
 import com.antscuttle.game.Level.Level;
 import com.antscuttle.game.LevelObject.LevelObject;
+import com.antscuttle.game.LevelObject.implementations.End;
 import com.antscuttle.game.LevelObject.implementations.Tree;
 import com.antscuttle.game.LevelObject.implementations.Wall;
 import com.antscuttle.game.LevelObject.implementations.Water;
@@ -217,7 +218,13 @@ public final class Level1 extends Level{
         new Point(25,20)
     };
     private static final Point playerStartLoc = new Point(25,0);
-    
+    private static final Point endLocs[] = {
+        new Point(15,19),
+        new Point(14,19),
+        new Point(13,19),
+        new Point(12,19),
+        new Point(11,19)
+    };
     /* Constructor */
     public Level1(){
         
@@ -408,6 +415,11 @@ public final class Level1 extends Level{
             addObjAtPos(obj, p.x, p.y);
             levelData.addAttackableObject(obj);
         }
-        
+        // Create end zone
+        for(Point p: endLocs){
+            obj = new End();
+            addObjAtPos(obj,p.x,p.y);
+            levelData.addInteractableObject(obj);
+        }
     }
 }

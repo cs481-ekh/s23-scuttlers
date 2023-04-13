@@ -180,6 +180,16 @@ public class GameplayScreen extends ScreenAdapter{
         menuBatch.begin();
         menuBatch.draw(menuImg, gameX + (864), gameY, gameView.getWorldWidth()-864,gameView.getWorldHeight());
         menuBatch.end();
+        // Check for game over
+        if(levelData.isGameFinished()){
+            if(levelData.isGameWon()){
+                Object unlockedItem =gameData.unlockRandomItem();
+                Level unlockedLevel = gameData.unlockNewLevel();
+                //Display game won + items unlocked dialog, go to NewGameScreen
+            } else {
+                //Display game lost dialog, go to NewGameScreen
+            }
+        }
         if(!gameStarted){
             gameBatch.begin();
             gameBatch.draw(img, gameX, gameY, 864,gameView.getWorldHeight());
@@ -200,6 +210,8 @@ public class GameplayScreen extends ScreenAdapter{
             for(Ant enemy: levelData.getEnemies())
                 enemy.render(characterBatch);
             characterBatch.end();
+            
+            checkForCollisions();
         }
         game.batch.begin();
 
@@ -216,7 +228,9 @@ public class GameplayScreen extends ScreenAdapter{
         game.batch.end();
         
     }
-
+    public void checkForCollisions(){
+        
+    }
     @Override
     public void resize(int width, int height) {
         gameView.update(width, height);

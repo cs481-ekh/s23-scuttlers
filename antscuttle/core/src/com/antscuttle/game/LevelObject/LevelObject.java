@@ -22,16 +22,12 @@ public abstract class LevelObject extends Actor{
         this.pos = new Vector2();
         this.dim.x = 16;
         this.dim.y = 16;
-        // TODO: Not sure which of these width/height things we'll need
-//        setWidth(texture.getWidth());
-//        setHeight(texture.getHeight());
         this.defense = defense;
-        this.sprite = new Sprite(texture);
-        sprite.setSize(dim.x, dim.y);
-        sprite.setPosition(pos.x, pos.y);
-        
-        
-       
+        if(texture != null){
+            this.sprite = new Sprite(texture);
+            sprite.setSize(dim.x, dim.y);
+            sprite.setPosition(pos.x, pos.y);
+        }
     }
     
     // Methods
@@ -52,7 +48,9 @@ public abstract class LevelObject extends Actor{
     public void setPos(float x, float y){
         pos.x = x;
         pos.y = y;
-        sprite.setPosition(x, y);
+        if(sprite != null)
+            sprite.setPosition(x, y);
+        
     }
     public Vector2 getPos(){
         return pos;
