@@ -170,7 +170,7 @@ public class GameData implements java.io.Serializable{
      * 
      * @return true if successful, else false
      */
-    public boolean unlockRandomItem(){
+    public Object unlockRandomItem(){
         if(lockedItems.isEmpty())
             return false;
         int rand = new Random().nextInt(lockedItems.size()) - 1;
@@ -180,26 +180,27 @@ public class GameData implements java.io.Serializable{
             unlockedWeapons.add((Weapon)unlockedItem);
         else if( unlockedItem instanceof Armor )
             unlockedArmors.add((Armor)unlockedItem);
-        else return false;
-        return true;
+        else return null;
+        return unlockedItem;
     }
     /** unlockNewLevel unlocks a new level and assigns it to currentLevel
      * 
      * @return true if successful, else false 
      */
-    public boolean unlockNewLevel(){
+    public Level unlockNewLevel(){
         if(lockedLevels.isEmpty())
-            return false;
+            return null;
         Class<? extends Level> unlockedLevel = lockedLevels.poll();
         unlockedLevels.add(unlockedLevel);
         try{
             @SuppressWarnings("unchecked") Constructor<? extends Level> cons = (Constructor<? extends Level>) unlockedLevel.getConstructors()[0];
             Level level = cons.newInstance();
             currentLevel = level;
+            return level;
         } catch (IllegalAccessException | InstantiationException | InvocationTargetException ex){
             System.err.println("Error loading new level: " + unlockedLevel.getName());
-            return false;
+            return null;
         }
-        return true;
+        
     }
 }
