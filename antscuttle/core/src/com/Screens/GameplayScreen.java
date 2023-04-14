@@ -233,7 +233,6 @@ public class GameplayScreen extends ScreenAdapter{
             currentBlock = (DecisionBlock)blockIterator.next();
         }
         // If at the end of the tree, restart the tree.
-        System.out.println(currentBlock.getClass());
         if (currentBlock instanceof RootBlock)
             initAI();
         currentBlock.execute(gameData, levelData);
@@ -242,7 +241,6 @@ public class GameplayScreen extends ScreenAdapter{
     private void initAI(){
         blockIterator = player.getAI().iterator();
         currentBlock = (DecisionBlock)blockIterator.next();
-        System.out.println("initAI current block: "+currentBlock.getClass());
     }
     
     @Override

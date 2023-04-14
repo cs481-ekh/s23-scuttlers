@@ -18,6 +18,7 @@ import java.util.HashSet;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -39,6 +40,8 @@ public class MoveBlock extends DecisionBlock {
     int srcX;
     int srcY;
     DefaultEdge currEdge;
+    int pathCounter;
+    Point target;
 
     public MoveBlock(MoveOptions options){
         super(options);
@@ -46,32 +49,24 @@ public class MoveBlock extends DecisionBlock {
     @Override
     public void execute(GameData gameData, LevelData levelData){
         float delta = Gdx.graphics.getDeltaTime();
-        Set<Point> potentialTargets = new HashSet<>();
+        
         
         if(!setup) {
+            pathCounter = 0;
             ant = gameData.getCurrentAnt();
             g = levelData.getLevelGraph(ant.getIntelligence());
             shortestPath = new BFSShortestPath<>(g);
-            currEdge = path.peek();
-            // Find all potential targets of type targetType
-            String targetType = options.getFirstOptionChoice();
-            potentialTargets = findTargets(levelData, gameData, targetType);
-            for(Point p: potentialTargets){
-                // Find path for each potential target
-                System.out.println("potential target: " + p.x + ", " + p.y);
-                
-                // Out of these potential paths, choose the shortest one
-                
-            }
-            
+            findTargetAndPath(gameData, levelData);
             setup = true;
         }
         int antX = (int)(ant.getPos().x/32);
         int antY = (int)(ant.getPos().y/32);
-        //System.out.println("antX: " + antX + ", antY: " + antY);
         
-        
-        
+        // Refresh path every so many calls
+        if(pathCounter++ == 20){
+            path = findPath(target);
+            pathCounter = 0;
+        }
         // Check if path exists
         if(currEdge == null) {
             setExecutionResult(false);
@@ -106,7 +101,39 @@ public class MoveBlock extends DecisionBlock {
             ant.setPos(ant.getPos().x, ant.getPos().y-delta*ant.getSpeed());
         }
     }
-    
+    protected void findTargetAndPath(GameData gameData, LevelData levelData){
+        Set<Point> potentialTargets;
+        // Find all potential targets of type targetType
+        String targetType = options.getFirstOptionChoice();
+        potentialTargets = findTargets(levelData, gameData, targetType);
+        for(Point p: potentialTargets){
+            // Find path for each potential target
+            List<DefaultEdge> potentialPath = findPath(p);
+            System.out.println("path: "+path);
+            // Out of these potential paths, choose the shortest one
+            if(potentialPath != null && (path == null || potentialPath.size()< path.size())){
+                path = (LinkedList<DefaultEdge>)potentialPath;
+                target = p;
+                System.out.println("Target: "+target.x+", "+target.y);
+            }
+        }
+        if(path != null)
+            currEdge = path.peek();
+    }
+    protected LinkedList<DefaultEdge> findPath(Point sink){
+        List<DefaultEdge> potentialPath;
+        try{
+            potentialPath = shortestPath
+                    .getPath(GraphUtils.getVertexName((int) ant.getPos().x / 32, (int) ant.getPos().y / 32),  GraphUtils.getVertexName(sink.x, sink.y))
+                    .getEdgeList();
+            if(potentialPath.isEmpty())
+                return new LinkedList<>();
+            return (LinkedList<DefaultEdge>)potentialPath;
+        } catch (IllegalArgumentException e){
+        }
+        // Point not in graph
+        return null;
+    }
     public static Class<? extends BlockOptions> getOptionsClass(){
         return InteractOptions.class;
     }

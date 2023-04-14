@@ -79,7 +79,9 @@ public abstract class DecisionBlock implements Serializable{
         int antY = levelData.AntPosToGraphPos(playerPos.y);
         switch(targetType){
             case "Ant": 
-                targets = levelData.getEnemyPoints();
+                Set<Point> enemyPoints = levelData.getEnemyPoints();
+                for(Point p : enemyPoints)
+                    targets.addAll(GraphUtils.getVertexNeighborsAsPoints(p.x, p.y));
                 break;
             case "Random": 
                 targets.add(getRandomNeighbor(antX, antY));
