@@ -1,6 +1,7 @@
 
 package com.antscuttle.game.Util;
 
+import java.awt.Point;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Supplier;
@@ -129,5 +130,16 @@ public class GraphUtils {
             String vD = "v" + xstr + ystrD;
         }
         return neighbors;
+    }
+    
+    public static Set<Point> getVertexNeighborsAsPoints(int x, int y){
+        Set<String> neighbors = getVertexNeighbors(x,y);
+        Set<Point> points = new HashSet<>();
+        for(String vname: neighbors){
+            int vx = Integer.parseInt(vname.substring(1, 3));
+            int vy = Integer.parseInt(vname.substring(3, 5));
+            points.add(new Point(vx, vy));
+        }
+        return points;
     }
 }

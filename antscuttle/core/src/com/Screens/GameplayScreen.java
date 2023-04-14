@@ -4,12 +4,14 @@ import com.antscuttle.game.AI.DecisionBlock;
 import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.AntScuttleGame;
 import com.antscuttle.game.AI.Node;
+import com.antscuttle.game.AI.implementations.RootBlock;
 import com.antscuttle.game.Buttons.BackButton;
 import com.antscuttle.game.Buttons.ScuttleButton;
 import com.antscuttle.game.Buttons.PauseButton;
 import com.antscuttle.game.Buttons.StartButton;
 import com.antscuttle.game.Level.Level;
 import com.antscuttle.game.Level.LevelData;
+import com.antscuttle.game.LevelObject.LevelObject;
 import com.antscuttle.game.Util.ClassFactory;
 import com.antscuttle.game.Util.GameData;
 import com.badlogic.gdx.Gdx;
@@ -36,6 +38,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import java.awt.Point;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Set;
 
 public class GameplayScreen extends ScreenAdapter{
     public static final float SPEED = 100;
@@ -230,7 +233,8 @@ public class GameplayScreen extends ScreenAdapter{
             currentBlock = (DecisionBlock)blockIterator.next();
         }
         // If at the end of the tree, restart the tree.
-        if (currentBlock == null)
+        System.out.println(currentBlock.getClass());
+        if (currentBlock instanceof RootBlock)
             initAI();
         currentBlock.execute(gameData, levelData);
     }
@@ -238,6 +242,7 @@ public class GameplayScreen extends ScreenAdapter{
     private void initAI(){
         blockIterator = player.getAI().iterator();
         currentBlock = (DecisionBlock)blockIterator.next();
+        System.out.println("initAI current block: "+currentBlock.getClass());
     }
     
     @Override

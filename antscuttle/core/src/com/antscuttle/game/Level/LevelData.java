@@ -3,8 +3,10 @@ package com.antscuttle.game.Level;
 
 import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.LevelObject.LevelObject;
+import com.antscuttle.game.Util.GameData;
 import com.antscuttle.game.Util.GraphUtils;
 import com.badlogic.gdx.math.Vector2;
+import java.awt.Point;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -161,8 +163,8 @@ public class LevelData implements Serializable{
     }
     public void removeFromGraphs(LevelObject obj){
         Vector2 pos = obj.getPos();
-        int tileX = floatPosToGraphPos(pos.x);
-        int tileY = floatPosToGraphPos(pos.y);
+        int tileX = LevelObjPosToGraphPos(pos.x);
+        int tileY = LevelObjPosToGraphPos(pos.y);
         String vertex = GraphUtils.getVertexName(tileX, tileY);
         zeroIntelligenceGraph.removeVertex(vertex);
         normalIntelligenceGraph.removeVertex(vertex);
@@ -170,12 +172,33 @@ public class LevelData implements Serializable{
 
     private void addToGraphs(LevelObject obj) {
         Vector2 pos = obj.getPos();
-        int tileX = floatPosToGraphPos(pos.x);
-        int tileY = floatPosToGraphPos(pos.y);
+        int tileX = LevelObjPosToGraphPos(pos.x);
+        int tileY = LevelObjPosToGraphPos(pos.y);
         GraphUtils.addToGraph(zeroIntelligenceGraph, tileX, tileY);
         GraphUtils.addToGraph(normalIntelligenceGraph, tileX, tileY);
     }
-    public int floatPosToGraphPos(float x){
+    public int LevelObjPosToGraphPos(float x){
         return (int)x/16;
+    }
+    public int AntPosToGraphPos(float x){
+        return (int)x/32;
+    }
+    public Set<Point> getEnemyPoints(){
+        Set<Point> points = new HashSet<>();
+        for(Ant enemy: enemies){
+            Vector2 pos = enemy.getPos();
+            int enemyX = AntPosToGraphPos(pos.x);
+            int enemyY = AntPosToGraphPos(pos.y);
+            points.addAll(GraphUtils.getVertexNeighborsAsPoints(enemyX, enemyY));
+        }
+        return points;
+    }
+    public Set<LevelObject> getTargetableObjects(){
+        Set<LevelObject> targetables = new HashSet<>();
+        targetables.addAll(attackableObjects);
+        targetables.addAll(interactableObjects);
+        targetables.addAll(hazardousObjects);
+        targetables.addAll(collidableObjects);
+        return targetables;
     }
 }
