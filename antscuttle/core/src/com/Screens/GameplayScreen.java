@@ -8,6 +8,7 @@ import com.antscuttle.game.Buttons.PauseButton;
 import com.antscuttle.game.Buttons.StartButton;
 import com.antscuttle.game.Level.Level;
 import com.antscuttle.game.Level.LevelData;
+import com.antscuttle.game.LevelObject.LevelObject;
 import com.antscuttle.game.Util.ClassFactory;
 import com.antscuttle.game.Util.GameData;
 import com.badlogic.gdx.Gdx;
@@ -203,6 +204,9 @@ public class GameplayScreen extends ScreenAdapter{
             
             levelBatch.begin();
             level.render(levelBatch);
+            for(LevelObject obj: levelData.getAllObjects()){
+                obj.update(delta);
+            }
             levelBatch.end();
             
             characterBatch.begin();
