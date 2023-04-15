@@ -1,6 +1,8 @@
 package com.antscuttle.game.Level.levels;
 
 
+import com.antscuttle.game.Ant.Ant;
+import com.antscuttle.game.Ant.implementations.Zombie;
 import com.antscuttle.game.Level.Level;
 import com.antscuttle.game.Level.LevelData;
 import com.antscuttle.game.LevelObject.InteractableLevelObject;
@@ -10,6 +12,7 @@ import com.antscuttle.game.LevelObject.implementations.End;
 import com.antscuttle.game.LevelObject.implementations.PressurePlate;
 import com.antscuttle.game.LevelObject.implementations.Tree;
 import com.antscuttle.game.LevelObject.implementations.Wall;
+import com.antscuttle.game.Util.ClassFactory;
 import com.antscuttle.game.Util.TileUtils;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import java.awt.Point;
@@ -19,6 +22,21 @@ public class Level2 extends Level{
     private static final String tiledMapLoc = "levels/level2plain.tmx";
     private static final Point playerStartLoc = new Point(25, 0);
     
+    private static final Point enemies[] = {
+        new Point(5,3),
+        new Point(3,2),
+        new Point(6,12),
+        new Point(16,19),
+        new Point(22,12),
+        new Point(24,12),
+        new Point(23,13),
+        new Point(24,14),
+        new Point(25,14),
+        new Point(23,15),
+        new Point(23,16),
+        new Point(24,16),
+        new Point(23,18)
+    };
     private static final Point walls[] = {
         new Point(1,0),
         new Point(2,0),
@@ -322,7 +340,13 @@ public class Level2 extends Level{
     }
 
     private void initEnemies() {
-    
+    ClassFactory cf = new ClassFactory();
+        Ant ant;
+        for(Point p: enemies){
+            ant = cf.newAntInstance(Zombie.class, "npc");
+            ant.setPos(p.x*32, p.y*32);
+            levelData.addEnemy(ant);
+        }
     }
 
     private void initLevelObjects() {
