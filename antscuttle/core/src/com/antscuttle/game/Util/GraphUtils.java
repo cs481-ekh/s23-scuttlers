@@ -105,7 +105,6 @@ public class GraphUtils {
         
         String xstr = (x<10) ? "0"+x : ""+x;
         String ystr = (y<10) ? "0"+y : ""+y;
-        
         // R neighbor
         if(x < 26){
             String xstrR = (x<9) ? "0" + (x+1) : ""+(x+1);
@@ -128,6 +127,7 @@ public class GraphUtils {
         if(y > 0){
             String ystrD = (y<11) ? "0" + (y-1) : "" + (y-1);
             String vD = "v" + xstr + ystrD;
+            neighbors.add(vD);
         }
         return neighbors;
     }

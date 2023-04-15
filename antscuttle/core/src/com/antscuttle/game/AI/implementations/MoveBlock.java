@@ -40,8 +40,10 @@ public class MoveBlock extends DecisionBlock {
     int srcX;
     int srcY;
     DefaultEdge currEdge;
+    Point srcTile;
     int pathCounter;
-    Point target;
+    Point finalTarget;
+    Object objectTarget;
 
     public MoveBlock(MoveOptions options){
         super(options);
@@ -58,14 +60,26 @@ public class MoveBlock extends DecisionBlock {
             shortestPath = new BFSShortestPath<>(g);
             findTargetAndPath(gameData, levelData);
             setup = true;
+            srcTile = new Point((int)((ant.getPos().x)/32),(int)((ant.getPos().y)/32));
+            if(path == null || path.isEmpty()){
+                setExecutionResult(false);
+                setFinished(true);
+                return;
+            }
         }
-        int antX = (int)(ant.getPos().x/32);
-        int antY = (int)(ant.getPos().y/32);
+        float antX = ((ant.getPos().x)/32);
+        float antY = ((ant.getPos().y)/32);
         
         // Refresh path every so many calls
         if(pathCounter++ == 20){
-            path = findPath(target);
+            findTargetAndPath(gameData,levelData);
             pathCounter = 0;
+            if(path == null || path.isEmpty()){
+                setExecutionResult(false);
+                setFinished(true);
+                return;
+            }
+                
         }
         // Check if path exists
         if(currEdge == null) {
@@ -80,26 +94,52 @@ public class MoveBlock extends DecisionBlock {
         targX = Integer.parseInt(g.getEdgeTarget(currEdge).substring(1,3));
         targY = Integer.parseInt(g.getEdgeTarget(currEdge).substring(3,5));
         
+        if(targX == srcTile.x && targY == srcTile.y){
+            // Edge is backwards
+            int temp = srcX;
+            srcX = targX;
+            targX = temp;
+            
+            temp = srcY;
+            srcY = targY;
+            targY = temp;
+        }
         if(antX == targX && antY == targY){
+            // Ant has reached edge target
+            if(path == null){
+                if(antX == finalTarget.x && antY == finalTarget.y){
+                    // Ant reached target
+                    setExecutionResult(true);
+                } else {
+                    setExecutionResult(false);
+                }
+                setFinished(true);
+                return;
+            }
+            
             path.removeFirst();
+            srcTile = new Point(targX,targY);
             currEdge = path.peek();
         }
-
-        if(path.isEmpty() && currEdge == null){
+        if((path == null || path.isEmpty()) && currEdge == null){
             setExecutionResult(true);
             setFinished(true);
             return;
         }
-        
         if (antX < targX) {
-            ant.setPos(ant.getPos().x+delta*ant.getSpeed(), ant.getPos().y);
+            float newX = ant.getPos().x+delta*ant.getSpeed(); 
+            ant.setPos(Float.min(newX, targX*32), ant.getPos().y);
         } else if(antX > targX){
-            ant.setPos(ant.getPos().x-delta*ant.getSpeed(), ant.getPos().y);
+            float newX = ant.getPos().x-delta*ant.getSpeed();
+            ant.setPos(Float.max(newX, targX*32), ant.getPos().y);
         } else if(antY < targY){
-            ant.setPos(ant.getPos().x, ant.getPos().y+delta*ant.getSpeed());
+            float newY = ant.getPos().y+delta*ant.getSpeed();
+            ant.setPos(ant.getPos().x, Float.min(newY, targY*32));
         } else if(antY > targY){
-            ant.setPos(ant.getPos().x, ant.getPos().y-delta*ant.getSpeed());
+            float newY = ant.getPos().y-delta*ant.getSpeed();
+            ant.setPos(ant.getPos().x, Float.max(newY, targY*32));
         }
+        
     }
     protected void findTargetAndPath(GameData gameData, LevelData levelData){
         Set<Point> potentialTargets;
@@ -109,12 +149,10 @@ public class MoveBlock extends DecisionBlock {
         for(Point p: potentialTargets){
             // Find path for each potential target
             List<DefaultEdge> potentialPath = findPath(p);
-            System.out.println("path: "+path);
             // Out of these potential paths, choose the shortest one
             if(potentialPath != null && (path == null || potentialPath.size()< path.size())){
                 path = (LinkedList<DefaultEdge>)potentialPath;
-                target = p;
-                System.out.println("Target: "+target.x+", "+target.y);
+                finalTarget = p;
             }
         }
         if(path != null)

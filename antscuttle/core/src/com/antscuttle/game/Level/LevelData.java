@@ -183,7 +183,7 @@ public class LevelData implements Serializable{
     public int AntPosToGraphPos(float x){
         return (int)x/32;
     }
-    public Set<Point> getEnemyPoints(){
+    public Set<Point> getEnemyNeighboringPoints(){
         Set<Point> points = new HashSet<>();
         for(Ant enemy: enemies){
             Vector2 pos = enemy.getPos();
