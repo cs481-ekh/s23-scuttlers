@@ -11,10 +11,10 @@
     "fileStates": {
         "level1.tmx": {
             "scale": 2,
-            "selectedLayer": 2,
+            "selectedLayer": -1,
             "viewCenter": {
-                "x": 286.25,
-                "y": 187.5
+                "x": 255.75,
+                "y": 262
             }
         },
         "level1plain.tmx": {
@@ -23,6 +23,14 @@
             "viewCenter": {
                 "x": 4.25,
                 "y": 326
+            }
+        },
+        "level2plain.tmx": {
+            "scale": 2.0407407407407407,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 257.99455535390194,
+                "y": 186.20689655172418
             }
         },
         "pressure_plate.tsx": {
@@ -49,14 +57,13 @@
     "map.tileWidth": 16,
     "map.width": 27,
     "openFiles": [
-        "level1.tmx",
-        "tiles32.tsx"
+        "level1.tmx"
     ],
     "project": "level1.tiled-project",
     "recentFiles": [
+        "level1.tmx",
         "pressure_plate.tsx",
-        "tiles32.tsx",
-        "level1.tmx"
+        "tiles32.tsx"
     ],
     "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)",
     "tileset.lastUsedFormat": "tsx",
