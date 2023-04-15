@@ -98,12 +98,6 @@ public final class Level1 extends Level{
     };
     
     
-    private static final Point rocks[] = {
-        new Point(0,3),
-        new Point(2,2),
-        new Point(0,7),
-        new Point(1,1)
-    };
     private static final Point walls[] = {
         new Point(0,21),
         new Point(1,21),
@@ -173,6 +167,12 @@ public final class Level1 extends Level{
         new Point(25,20),
         
     };
+    private static final Point bigWaterRock = new Point(0,3);
+    private static final Point rightWaterRock = new Point(2,2);
+    private static final Point leftWaterRocks[]={
+        new Point(0,7),
+        new Point(1,1)
+    };
     private static final Point playerStartLoc = new Point(25,0);
     private static final Point endLocs[] = {
         new Point(15,19),
@@ -214,7 +214,7 @@ public final class Level1 extends Level{
     }
     protected void initLevelObjects(){
         // Get tiles
-        
+        TextureRegion[][] splitTiles = TileUtils.getAllTextures();
         
         // Create Trees
         LevelObject obj;
@@ -239,8 +239,18 @@ public final class Level1 extends Level{
         }
         
         // Add rocks
-        for(Point p: rocks){
-            obj = new Wall(null,5);
+        obj = new Wall(splitTiles[24][54],1);
+        addObjAtPos(obj, bigWaterRock.x, bigWaterRock.y);
+        levelData.addAttackableObject(obj);
+        levelData.addCollidableObject(obj);
+        
+        obj = new Wall(splitTiles[24][54], 1);
+        addObjAtPos(obj, rightWaterRock.x, rightWaterRock.y);
+        levelData.addAttackableObject(obj);
+        levelData.addCollidableObject(obj);
+        
+        for(Point p: leftWaterRocks){
+            obj = new Water(splitTiles[24][55]);
             addObjAtPos(obj, p.x, p.y);
             levelData.addAttackableObject(obj);
             levelData.addCollidableObject(obj);
