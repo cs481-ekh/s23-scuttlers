@@ -23,6 +23,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
@@ -51,13 +52,18 @@ import com.badlogic.gdx.Preferences;
 
 public class MainMenuScreen extends ScreenAdapter {
     /* Buttons */
-    private ScuttleButton exitButton;
-    private ScuttleButton newGameButton;
-    private ScuttleButton loadGameButton;
+    private Button exitButton;
+    private ButtonStyle exitStyle;
+    private Button newGameButton;
+    private ButtonStyle newStyle;
+    private Button loadGameButton;
+    private ButtonStyle loadStyle;
     private Button saveGameButton;
-    private ButtonStyle buttonStyle;
-    private ScuttleButton settingsButton;
-    private ScuttleButton continueButton;
+    private ButtonStyle saveStyle;
+    private Button settingsButton;
+    private ButtonStyle settingsStyle;
+    private Button continueButton;
+    private ButtonStyle continueStyle;
     private final Texture logo = new Texture("antscuttle.png");
     private GameData gameData;
     /* y-axis for buttons */
@@ -77,6 +83,7 @@ public class MainMenuScreen extends ScreenAdapter {
     public final Skin skin;
     public final Stage stage;
     public String fileName = "";
+    public boolean isInitialMainScreen;
     int x;
     
     Preferences prefs; 
@@ -85,23 +92,14 @@ public class MainMenuScreen extends ScreenAdapter {
 
     AntScuttleGame game;
 
-    public MainMenuScreen(AntScuttleGame game, GameData gameData) {
-        this.game = game;
-        this.gameData = gameData;
-        this.stage = new Stage();
-        exitButton = new ExitButton();
-        newGameButton = new NewGameButton();
-        loadGameButton = new LoadGameButton();
-        settingsButton = new SettingsButton();
-        continueButton = new ContinueButton(gameData);
-
+    public MainMenuScreen(AntScuttleGame game, GameData gameData, boolean isInitialMainScreen) {
         /* Grab the menu size (1280x720) */
         MAIN_MENU_HEIGHT = Gdx.graphics.getHeight();
         MAIN_MENU_WIDTH = Gdx.graphics.getWidth();
         
-        int firstColumnX = (2*MAIN_MENU_WIDTH / 5) - (newGameButton.getWidth() / 2);
-        int secondColumnX = (3* MAIN_MENU_WIDTH / 5) - (newGameButton.getWidth() / 2);
-        int settingsX = MAIN_MENU_WIDTH - settingsButton.getWidth() - 20;
+        int firstColumnX = (2*MAIN_MENU_WIDTH / 5) - (200 / 2);
+        int secondColumnX = (3* MAIN_MENU_WIDTH / 5) - (200 / 2);
+        int settingsX = MAIN_MENU_WIDTH - 200 - 20;
         int logoX = MAIN_MENU_WIDTH/2 - logo.getWidth()/2;
         int logoY = MAIN_MENU_HEIGHT * 4/6;
         
@@ -112,15 +110,63 @@ public class MainMenuScreen extends ScreenAdapter {
         EXIT_BUTTON_LOC = new Point(secondColumnX, 70);
         SETTINGS_BUTTON_LOC = new Point(settingsX, 20);
         LOGO_LOC = new Point(logoX, logoY);
+
+        this.isInitialMainScreen = isInitialMainScreen;
+        this.game = game;
+        this.gameData = gameData;
+        this.stage = new Stage();
         skin = new Skin(Gdx.files.internal("skin/clean-crispy-ui.json"));
         skin.add("saveActive", new Texture("buttons/main-menu/Save-Game-Active.png"));
         skin.add("saveInactive", new Texture("buttons/main-menu/Save-Game.png"));
-        buttonStyle = new ButtonStyle();
-        buttonStyle.checked = new TextureRegionDrawable(skin.getRegion("saveInactive"));
-        buttonStyle.checkedOver = new TextureRegionDrawable(skin.getRegion("saveActive"));
-        saveGameButton = new Button(buttonStyle);
+        skin.add("exitActive", new Texture("buttons/main-menu/Exit-Active.png"));
+        skin.add("exitInactive", new Texture("buttons/main-menu/Exit.png"));
+        skin.add("newActive", new Texture("buttons/main-menu/New-Game-Active.png"));
+        skin.add("newInactive", new Texture("buttons/main-menu/New-Game.png"));
+        skin.add("loadActive", new Texture("buttons/main-menu/Load-Game-Active.png"));
+        skin.add("loadInactive", new Texture("buttons/main-menu/Load-Game.png"));
+        skin.add("settingsActive", new Texture("buttons/cog2.png"));
+        skin.add("settingsInactive", new Texture("buttons/cog1.png"));
+        skin.add("continueActive", new Texture("buttons/main-menu/Continue-Active.png"));
+        skin.add("continueInactive", new Texture("buttons/main-menu/Continue-Unavailable.png"));
+        saveStyle = new ButtonStyle();
+        saveStyle.checked = new TextureRegionDrawable(skin.getRegion("saveInactive"));
+        saveStyle.checkedOver = new TextureRegionDrawable(skin.getRegion("saveActive"));
+        saveGameButton = new Button(saveStyle);
         saveGameButton.setBounds(SAVE_GAME_BUTTON_LOC.x, SAVE_GAME_BUTTON_LOC.y, 200, 100);
         saveGameButton.setChecked(true);
+        exitStyle = new ButtonStyle();
+        exitStyle.checked = new TextureRegionDrawable(skin.getRegion("exitInactive"));
+        exitStyle.checkedOver = new TextureRegionDrawable(skin.getRegion("exitActive"));
+        newStyle = new ButtonStyle();
+        newStyle.checked = new TextureRegionDrawable(skin.getRegion("newInactive"));
+        newStyle.checkedOver = new TextureRegionDrawable(skin.getRegion("newActive"));
+        loadStyle = new ButtonStyle();
+        loadStyle.checked = new TextureRegionDrawable(skin.getRegion("loadInactive"));
+        loadStyle.checkedOver = new TextureRegionDrawable(skin.getRegion("loadActive"));
+        settingsStyle = new ButtonStyle();
+        settingsStyle.checked = new TextureRegionDrawable(skin.getRegion("settingsInactive"));
+        settingsStyle.checkedOver = new TextureRegionDrawable(skin.getRegion("settingsActive"));
+        continueStyle = new ButtonStyle();
+        continueStyle.checked = new TextureRegionDrawable(skin.getRegion("continueInactive"));
+        if(gameData != null)
+            continueStyle.checkedOver = new TextureRegionDrawable(skin.getRegion("continueActive"));
+        exitButton = new Button(exitStyle);
+        exitButton.setBounds(EXIT_BUTTON_LOC.x, EXIT_BUTTON_LOC.y, 200, 100);
+        exitButton.setChecked(true);
+        newGameButton = new Button(newStyle);
+        newGameButton.setBounds(NEW_GAME_BUTTON_LOC.x, NEW_GAME_BUTTON_LOC.y, 200, 100);
+        newGameButton.setChecked(true);
+        loadGameButton = new Button(loadStyle);
+        loadGameButton.setBounds(LOAD_BUTTON_LOC.x, LOAD_BUTTON_LOC.y, 200, 100);
+        loadGameButton.setChecked(true);
+        settingsButton = new Button(settingsStyle);
+        settingsButton.setBounds(SETTINGS_BUTTON_LOC.x, SETTINGS_BUTTON_LOC.y, 70, 70);
+        settingsButton.setChecked(true);
+        continueButton = new Button(continueStyle);
+        continueButton.setBounds(CONTINUE_BUTTON_LOC.x, CONTINUE_BUTTON_LOC.y, 200, 100);
+        continueButton.setChecked(true);
+
+
     }
 
 
@@ -128,6 +174,59 @@ public class MainMenuScreen extends ScreenAdapter {
     public void show() {
         Gdx.input.setInputProcessor(stage);
         stage.addActor(saveGameButton);
+        stage.addActor(continueButton);
+        stage.addActor(loadGameButton);
+        stage.addActor(exitButton);
+        stage.addActor(settingsButton);
+        stage.addActor(newGameButton);
+
+
+        // Create a list of file names from a folder
+        FileHandle folder = Gdx.files.internal("saves");
+        LinkedList<String> fileNames = new LinkedList<>();
+        for(FileHandle file: folder.list()){
+            fileNames.add(file.toString());
+        }
+        if(isInitialMainScreen && fileNames.size() > 1){
+            // Create a new dialog
+            Dialog loadDialog = new Dialog("Title", skin);
+
+            // Create a select box for the dropdown
+            SelectBox<String> selectBox = new SelectBox<String>(skin);
+            TextButton okButton = new TextButton("OK", skin);
+            okButton.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y){
+                    String fileName = selectBox.getSelected();
+                    FileInputStream fis;
+                    try {
+                        fis = new FileInputStream(fileName);
+                        ObjectInputStream ois = new ObjectInputStream(fis);
+                        Object save = ois.readObject();
+                        if(save instanceof GameData){
+                            gameData = (GameData) save;
+                        }
+                    }catch (FileNotFoundException fnfe) {
+                        Logger.getLogger(GameData.class.getName()).log(Level.SEVERE, null, fnfe);
+                    } catch (IOException ioe){
+                        Logger.getLogger(GameData.class.getName()).log(Level.SEVERE, null, ioe);
+                    } catch (ClassNotFoundException cnfe){
+                        Logger.getLogger(GameData.class.getName()).log(Level.SEVERE, null, cnfe);
+                    }
+                }
+            });
+                
+            // Add the file names to the select box
+            selectBox.setItems(fileNames.toArray(new String[0]));
+            loadDialog.button(okButton);
+            // Add the select box to the dialog
+            loadDialog.getContentTable().add(selectBox);
+            loadDialog.setBounds(stage.getWidth() / 2 - loadDialog.getWidth() / 2, stage.getHeight() / 2 - loadDialog.getHeight() / 2, 200, 100);
+            // Show the dialog
+            stage.addActor(loadDialog);
+            
+        }
+        
 
         saveGameButton.addListener(new ClickListener() {
             
@@ -146,7 +245,7 @@ public class MainMenuScreen extends ScreenAdapter {
                         // Serialize the SaveData object to a file using Kryo
                         if(gameData != null){ 
                             try {
-                                fos = new FileOutputStream(fileName);
+                                fos = new FileOutputStream("saves/" + fileName);
                                 ObjectOutputStream oos = new ObjectOutputStream(fos);
                                 oos.writeObject(gameData); 
                                 oos.close();
@@ -162,7 +261,7 @@ public class MainMenuScreen extends ScreenAdapter {
                 });
                 dialog.getContentTable().add(inputField);
                 dialog.button(saveButton);
-                dialog.setBounds(SAVE_GAME_BUTTON_LOC.x, SAVE_GAME_BUTTON_LOC.y, 200, 100);
+                dialog.setBounds(stage.getWidth() / 2 - dialog.getWidth() / 2, stage.getHeight() / 2 - dialog.getHeight() / 2, 200, 100);
                 dialog.setZIndex(100);
                 stage.addActor(dialog);
         
@@ -173,33 +272,105 @@ public class MainMenuScreen extends ScreenAdapter {
 
             }
         });
+        
+        continueButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                if(gameData != null){
+                    long id = game.sfx.play(game.VOLUME);
+                    game.setScreen(new NewGameScreen(game, gameData)); 
+                } 
+                continueButton.setChecked(true);
+            }
+
+        });
+
+        newGameButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                long id = game.sfx.play(game.VOLUME);
+                game.setScreen(new NewGameScreen(game, new GameData()));
+                newGameButton.setChecked(true);
+            }
+        });
+
+        exitButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                long id = game.sfx.play(game.VOLUME);
+                Gdx.app.exit();
+                exitButton.setChecked(true);
+            }
+            
+        });
+
+        loadGameButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                long id = game.sfx.play(game.VOLUME);
+                // Create a list of file names from a folder
+                FileHandle folder = Gdx.files.internal("saves");
+                LinkedList<String> fileNames = new LinkedList<>();
+                for(FileHandle file: folder.list()){
+                    fileNames.add(file.toString());
+                }
+
+                if(fileNames.isEmpty()){
+                    Dialog dialog = new Dialog("Load Error", skin);
+                    dialog.text("You don't have any saved games");
+                    dialog.button("OK");
+                    dialog.show(stage);                    
+                }else{
+                    // Create a new dialog
+                    Dialog loadDialog = new Dialog("Saved Games", skin);
+
+                    // Create a select box for the dropdown
+                    SelectBox<String> selectBox = new SelectBox<String>(skin);
+                    TextButton okButton = new TextButton("OK", skin);
+                    okButton.addListener(new ClickListener(){
+                        @Override
+                        public void clicked(InputEvent event, float x, float y){
+                            String fileName = selectBox.getSelected();
+                            FileInputStream fis;
+                            try {
+                                fis = new FileInputStream(fileName);
+                                ObjectInputStream ois = new ObjectInputStream(fis);
+                                Object save = ois.readObject();
+                                if(save instanceof GameData){
+                                    gameData = (GameData) save;
+                                }
+                            }catch (FileNotFoundException fnfe) {
+                                Logger.getLogger(GameData.class.getName()).log(Level.SEVERE, null, fnfe);
+                            } catch (IOException ioe){
+                                Logger.getLogger(GameData.class.getName()).log(Level.SEVERE, null, ioe);
+                            } catch (ClassNotFoundException cnfe){
+                                Logger.getLogger(GameData.class.getName()).log(Level.SEVERE, null, cnfe);
+                            }
+                        }
+                    });
+                        
+                    // Add the file names to the select box
+                    selectBox.setItems(fileNames.toArray(new String[0]));
+                    loadDialog.button(okButton);
+                    // Add the select box to the dialog
+                    loadDialog.getContentTable().add(selectBox);
+                    loadDialog.setBounds(stage.getWidth() / 2 - loadDialog.getWidth() / 2, stage.getHeight() / 2 - loadDialog.getHeight() / 2, 200, 100);
+                    // Show the dialog
+                    stage.addActor(loadDialog);
+                }
+                loadGameButton.setChecked(true);
+            }
+        });
+        
     }
 
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0, 38/255f, 66/255f, 1);
         game.batch.begin();
-
         drawLogo();
-        
-        /* Continue Button */
-        ScuttleButton.draw(game, this, gameData, CONTINUE_BUTTON_LOC.x, CONTINUE_BUTTON_LOC.y, continueButton, 1);
-        /* New Game Button */
-        ScuttleButton.draw(game, this, gameData, NEW_GAME_BUTTON_LOC.x, NEW_GAME_BUTTON_LOC.y, newGameButton, 1);
-      
-        /* Load Game Button */
-        ScuttleButton.draw(game, this, gameData, LOAD_BUTTON_LOC.x, LOAD_BUTTON_LOC.y, loadGameButton, 1);
-    
-        /* Save Game Button */
-        //Button.draw(game, this, gameData, SAVE_GAME_BUTTON_LOC.x, SAVE_GAME_BUTTON_LOC.y, saveGameButton, 1);
-
-        /* Exit Button */
-        ScuttleButton.draw(game, this, gameData, EXIT_BUTTON_LOC.x, EXIT_BUTTON_LOC.y, exitButton, 1);
-
-        /* Settings Button */
-        ScuttleButton.draw(game, this, gameData, SETTINGS_BUTTON_LOC.x, SETTINGS_BUTTON_LOC.y, settingsButton, 1);
-
         game.batch.end();
+
         // a stage has its own batch so don't put it within batch.begin() and batch.end()
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f)); //you are likely missing THIS LINE :D
         stage.draw();

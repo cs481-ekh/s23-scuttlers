@@ -28,6 +28,8 @@ public class LevelData implements Serializable{
     protected Set<Ant> enemies;
     protected Graph<String, DefaultEdge> zeroIntelligenceGraph;
     protected Graph<String, DefaultEdge> normalIntelligenceGraph;
+    protected boolean gameFinished = false;
+    protected boolean gameWon = false;
 
     protected float deltaTime;
 
@@ -42,6 +44,22 @@ public class LevelData implements Serializable{
         normalIntelligenceGraph = new SimpleGraph<>(DefaultEdge.class);
     }
 
+    public boolean isGameFinished() {
+        return gameFinished;
+    }
+
+    public void setGameFinished(boolean gameFinished) {
+        this.gameFinished = gameFinished;
+    }
+
+    public boolean isGameWon() {
+        return gameWon;
+    }
+
+    public void setGameWon(boolean gameWon) {
+        this.gameWon = gameWon;
+    }
+    
     public Set<LevelObject> getAllObjects() {
         return allObjects;
     }

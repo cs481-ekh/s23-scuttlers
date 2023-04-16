@@ -12,6 +12,8 @@ import com.antscuttle.game.Buttons.StartButton;
 import com.antscuttle.game.Level.Level;
 import com.antscuttle.game.Level.LevelData;
 import com.antscuttle.game.LevelObject.LevelObject;
+import com.antscuttle.game.LevelObject.implementations.Door;
+import com.antscuttle.game.LevelObject.implementations.PressurePlate;
 import com.antscuttle.game.Util.ClassFactory;
 import com.antscuttle.game.Util.GameData;
 import com.badlogic.gdx.Gdx;
@@ -188,6 +190,16 @@ public class GameplayScreen extends ScreenAdapter{
         menuBatch.begin();
         menuBatch.draw(menuImg, gameX + (864), gameY, gameView.getWorldWidth()-864,gameView.getWorldHeight());
         menuBatch.end();
+        // Check for game over
+        if(levelData.isGameFinished()){
+            if(levelData.isGameWon()){
+                Object unlockedItem =gameData.unlockRandomItem();
+                Level unlockedLevel = gameData.unlockNewLevel();
+                //Display game won + items unlocked dialog, go to NewGameScreen
+            } else {
+                //Display game lost dialog, go to NewGameScreen
+            }
+        }
         if(!gameStarted){
             gameBatch.begin();
             gameBatch.draw(img, gameX, gameY, 864,gameView.getWorldHeight());
@@ -201,15 +213,21 @@ public class GameplayScreen extends ScreenAdapter{
             
             levelBatch.begin();
             level.render(levelBatch);
+            for(LevelObject obj: levelData.getAllObjects()){
+                obj.update(delta);
+            }
             levelBatch.end();
             // Do block stuff
             doBlocks();
             
             characterBatch.begin();
+            player.update(delta);
             player.render(characterBatch);
             for(Ant enemy: levelData.getEnemies())
                 enemy.render(characterBatch);
             characterBatch.end();
+            
+            checkForCollisions();
         }
         game.batch.begin();
 
@@ -243,6 +261,9 @@ public class GameplayScreen extends ScreenAdapter{
         currentBlock = (DecisionBlock)blockIterator.next();
     }
     
+    public void checkForCollisions(){
+        
+    }
     @Override
     public void resize(int width, int height) {
         gameView.update(width, height);

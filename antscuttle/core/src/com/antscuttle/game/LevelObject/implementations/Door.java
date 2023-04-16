@@ -14,12 +14,15 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  */
 public class Door extends InteractableLevelObject{
     private static final int intelligenceReq = 5;
-    private static final int def = 10;
+    private static final int def = 100;
     private boolean isOpen;
+    private TextureRegion closedTex, openTex;
     
-    public Door(TextureRegion tex){
-        super(tex, def, intelligenceReq);
+    public Door(TextureRegion closedTex, TextureRegion openTex){
+        super(closedTex, def, intelligenceReq);
         isOpen = false;
+        this.closedTex = closedTex;
+        this.openTex = openTex;
     }
     @Override
     public boolean interact(Ant ant, LevelData levelData) {
@@ -27,12 +30,16 @@ public class Door extends InteractableLevelObject{
             return false;
         isOpen = !isOpen;
         // Adjust collidability
-        if(isOpen)
+        if(isOpen){
             levelData.removeCollidableObject(this);
-        else
+            texture = openTex;
+            sprite.setRegion(texture);
+        }
+        else{
             levelData.addCollidableObject(this);
-        
-        update(Gdx.graphics.getDeltaTime());
+            texture = closedTex;
+            sprite.setRegion(texture);
+        }
         
         return true;
         

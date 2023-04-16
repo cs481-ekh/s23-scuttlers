@@ -43,7 +43,7 @@ public class BackButton extends ScuttleButton {
         this.playButtonPressSound(game);
         switch (screen.toString()) {
             case "SettingsMenuScreen": game.setScreen(SettingsMenuScreen.previousScreen); break;
-            case "NewGameScreen": game.setScreen(new MainMenuScreen(game, data)); break;
+            case "NewGameScreen": game.setScreen(new MainMenuScreen(game, data, false)); break;
 
             case "GameplayScreen": 
             case "AIEditorScreen":
