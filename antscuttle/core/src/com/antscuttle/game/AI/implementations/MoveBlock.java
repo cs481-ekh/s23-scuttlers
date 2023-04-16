@@ -23,6 +23,7 @@ import java.util.Random;
 import java.util.Set;
 
 import org.jgrapht.Graph;
+import org.jgrapht.GraphPath;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.alg.shortestpath.*;
 
@@ -161,9 +162,11 @@ public class MoveBlock extends DecisionBlock {
     protected LinkedList<DefaultEdge> findPath(Point sink){
         List<DefaultEdge> potentialPath;
         try{
-            potentialPath = shortestPath
-                    .getPath(GraphUtils.getVertexName((int) ant.getPos().x / 32, (int) ant.getPos().y / 32),  GraphUtils.getVertexName(sink.x, sink.y))
-                    .getEdgeList();
+            GraphPath gp = shortestPath
+                    .getPath(GraphUtils.getVertexName((int) ant.getPos().x / 32, (int) ant.getPos().y / 32),  GraphUtils.getVertexName(sink.x, sink.y));
+            if(gp == null)
+                return null;
+            potentialPath = gp.getEdgeList();
             if(potentialPath.isEmpty())
                 return new LinkedList<>();
             return (LinkedList<DefaultEdge>)potentialPath;

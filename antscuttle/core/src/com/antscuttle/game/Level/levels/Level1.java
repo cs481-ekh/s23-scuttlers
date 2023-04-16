@@ -222,13 +222,11 @@ public final class Level1 extends Level{
             // Lower tree
             obj = new Tree(null);
             addObjAtPos(obj, p.x, p.y);
-            levelData.addAttackableObject(obj);
             levelData.addCollidableObject(obj);
             
             // Upper tree
             obj = new Tree(null);
             addObjAtPos(obj, p.x, p.y+1);
-            levelData.addAttackableObject(obj);
             levelData.addCollidableObject(obj);
         }
         // Create water
