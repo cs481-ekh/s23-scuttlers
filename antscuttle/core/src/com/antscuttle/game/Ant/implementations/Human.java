@@ -21,7 +21,7 @@ public class Human extends BaseAnt{
     private static int baseDamage = 8;
     private static int baseDefense = 4;
     private static int intelligence = 10;
-    private static int speed = 40;
+    private static int speed = 100;
     
     private  static String[] moveAnimationUnarmed = {
         new String("animations/human/human_unarmed_walk_up.png"),

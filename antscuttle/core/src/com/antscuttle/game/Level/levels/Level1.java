@@ -1,25 +1,16 @@
 
 package com.antscuttle.game.Level.levels;
 
+import com.antscuttle.game.LevelObject.implementations.Rock;
 import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.Ant.implementations.Zombie;
 import com.antscuttle.game.Level.Level;
 import com.antscuttle.game.LevelObject.LevelObject;
-import com.antscuttle.game.LevelObject.implementations.End;
-import com.antscuttle.game.LevelObject.implementations.Tree;
-import com.antscuttle.game.LevelObject.implementations.Wall;
-import com.antscuttle.game.LevelObject.implementations.Water;
+import com.antscuttle.game.LevelObject.implementations.*;
 import com.antscuttle.game.Util.ClassFactory;
 import com.antscuttle.game.Util.TileUtils;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import java.awt.Point;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultEdge;
 
 public final class Level1 extends Level{
     private static final String tiledMapLoc = "levels/level1.tmx";
@@ -222,13 +213,11 @@ public final class Level1 extends Level{
             // Lower tree
             obj = new Tree(null);
             addObjAtPos(obj, p.x, p.y);
-            levelData.addAttackableObject(obj);
             levelData.addCollidableObject(obj);
             
             // Upper tree
             obj = new Tree(null);
             addObjAtPos(obj, p.x, p.y+1);
-            levelData.addAttackableObject(obj);
             levelData.addCollidableObject(obj);
         }
         // Create water
@@ -239,18 +228,18 @@ public final class Level1 extends Level{
         }
         
         // Add rocks
-        obj = new Wall(splitTiles[24][54],1);
+        obj = new Rock(splitTiles[24][54],1);
         addObjAtPos(obj, bigWaterRock.x, bigWaterRock.y);
         levelData.addAttackableObject(obj);
         levelData.addCollidableObject(obj);
         
-        obj = new Wall(splitTiles[24][54], 1);
+        obj = new Rock(splitTiles[24][54], 1);
         addObjAtPos(obj, rightWaterRock.x, rightWaterRock.y);
         levelData.addAttackableObject(obj);
         levelData.addCollidableObject(obj);
         
         for(Point p: leftWaterRocks){
-            obj = new Water(splitTiles[24][55]);
+            obj = new Rock(splitTiles[24][55],1);
             addObjAtPos(obj, p.x, p.y);
             levelData.addAttackableObject(obj);
             levelData.addCollidableObject(obj);
@@ -261,7 +250,7 @@ public final class Level1 extends Level{
         for(Point p: walls){
             obj = new Wall(null, 100);
             addObjAtPos(obj, p.x, p.y);
-            levelData.addAttackableObject(obj);
+            levelData.addCollidableObject(obj);
         }
         
         // Create end zone

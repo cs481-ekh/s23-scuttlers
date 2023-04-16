@@ -1,7 +1,10 @@
 package com.Screens;
 
+import com.antscuttle.game.AI.DecisionBlock;
 import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.AntScuttleGame;
+import com.antscuttle.game.AI.Node;
+import com.antscuttle.game.AI.implementations.RootBlock;
 import com.antscuttle.game.Buttons.BackButton;
 import com.antscuttle.game.Buttons.ScuttleButton;
 import com.antscuttle.game.Buttons.PauseButton;
@@ -35,6 +38,8 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import java.awt.Point;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Set;
 
 public class GameplayScreen extends ScreenAdapter{
@@ -75,6 +80,8 @@ public class GameplayScreen extends ScreenAdapter{
     private Ant player;
 
     private boolean gameStarted;
+    private Iterator blockIterator;
+    private DecisionBlock currentBlock;
     
     public GameplayScreen(AntScuttleGame game, GameData gameData){
         this.game = game;
@@ -120,7 +127,7 @@ public class GameplayScreen extends ScreenAdapter{
         camera.setToOrtho(false, Gdx.graphics.getWidth(), playMap.getHeight());
         camera.zoom = .5f;
         camera.translate(-Gdx.graphics.getWidth()/4, -Gdx.graphics.getHeight()/4);
-	camera.update();
+	    camera.update();
         
         menuImg = new Texture(treeMap);
         titleImg = new Texture("antscuttle.png");
@@ -154,13 +161,12 @@ public class GameplayScreen extends ScreenAdapter{
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 ScuttleButton.playButtonPressSound(game);
-                if(player != null){
+                if(player != null && player.getAI() != null){
                     Point startLoc = level.getPlayerStartLoc();
                     player.setPos(startLoc.x*32, startLoc.y*32);
                     gameStarted = true;
                     level.startLevel();
-                    //LinkedList<Node> childs = gameData.getCurrentAnt().getAI().getRoot().getChildren();
-                    //childs.removeFirst().getBlock().execute(gameData, null);
+                    initAI();
                 }
                 return true;
             }
@@ -211,6 +217,8 @@ public class GameplayScreen extends ScreenAdapter{
                 obj.update(delta);
             }
             levelBatch.end();
+            // Do block stuff
+            doBlocks();
             
             characterBatch.begin();
             player.update(delta);
@@ -236,6 +244,23 @@ public class GameplayScreen extends ScreenAdapter{
         game.batch.end();
         
     }
+    private void doBlocks(){
+        if (currentBlock.isFinished()) {
+            // Reset the finished status and move on
+            currentBlock.setExecutionResult(false);
+            currentBlock = (DecisionBlock)blockIterator.next();
+        }
+        // If at the end of the tree, restart the tree.
+        if (currentBlock instanceof RootBlock)
+            initAI();
+        currentBlock.execute(gameData, levelData);
+    }
+
+    private void initAI(){
+        blockIterator = player.getAI().iterator();
+        currentBlock = (DecisionBlock)blockIterator.next();
+    }
+    
     public void checkForCollisions(){
         
     }

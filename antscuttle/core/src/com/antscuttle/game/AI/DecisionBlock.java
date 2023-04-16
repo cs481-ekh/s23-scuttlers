@@ -5,7 +5,16 @@ package com.antscuttle.game.AI;
 import java.io.Serializable;
 import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.Level.LevelData;
+import com.antscuttle.game.LevelObject.LevelObject;
 import com.antscuttle.game.Util.GameData;
+import com.antscuttle.game.Util.GraphUtils;
+import com.badlogic.gdx.math.Vector2;
+import java.awt.Point;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -13,8 +22,12 @@ import com.antscuttle.game.Util.GameData;
  * @author antho
  */
 public abstract class DecisionBlock implements Serializable{
-    private Boolean executionResult = null;
-    protected int duration;
+    // Execution result represents whether the block was able to
+    // achieve its goal. This is used during tree traversal.
+    private Boolean executionResult;
+    // Finished represents whether the block is done executing.
+    // This is used to determine whether to continue using this block.
+    private boolean finished = false;
     protected BlockOptions options;
     
     
@@ -40,8 +53,15 @@ public abstract class DecisionBlock implements Serializable{
     public boolean getExecutionResult(){
         return executionResult;
     }
-    public int getDuration(){
-        return duration;
+
+    public void setExecutionResult(boolean bool) {
+        executionResult = bool;
+    }
+    public Boolean isFinished(){
+        return finished;
+    }
+    public void setFinished(boolean finished){
+        this.finished = finished;
     }
     public void execute(GameData gameData, LevelData levelData){
         // Temp code
@@ -49,5 +69,52 @@ public abstract class DecisionBlock implements Serializable{
     }
     public static Class<? extends BlockOptions> getOptionsClass(){
         return null;
+    }
+    public Set<Point> findTargets(LevelData levelData, GameData gameData, String targetType){
+        Set<Point> targets = new HashSet<>();
+        Set<LevelObject> levelObjs = new HashSet<>();
+        Ant player = gameData.getCurrentAnt();
+        Vector2 playerPos = player.getPos();
+        int antX = levelData.AntPosToGraphPos(playerPos.x);
+        int antY = levelData.AntPosToGraphPos(playerPos.y);
+        switch(targetType){
+            case "Ant": 
+                Set<Point> enemyPoints = levelData.getEnemyNeighboringPoints();
+                targets.addAll(enemyPoints);
+                break;
+            case "Random": 
+                targets.add(getRandomNeighbor(antX, antY));
+                break;
+            default: // LevelObject
+                levelObjs = levelData.getTargetableObjects();
+                for(LevelObject obj : levelObjs){
+                    String className = obj.getClass().getSimpleName();
+                    if(className.equals(targetType)){
+                        Vector2 pos = obj.getPos();
+                        int x = levelData.LevelObjPosToGraphPos(pos.x);
+                        int y = levelData.LevelObjPosToGraphPos(pos.y);
+                        // Check if it's collidable, because you can't target a collidable in the graph
+                        if(levelData.getCollidableObjects().contains(obj))
+                            targets.addAll(GraphUtils.getVertexNeighborsAsPoints(x, y));
+                        else
+                            targets.add(new Point(x, y));
+                    }
+                }
+
+                
+        }
+        return targets;
+    }
+    
+    public Point getRandomNeighbor(int x, int y){
+        Set<Point> neighbors = GraphUtils.getVertexNeighborsAsPoints(x, y);
+        int rand = new Random().nextInt(neighbors.size());
+        int i=0;
+        for(Point neighbor: neighbors){
+            if(rand == i++)
+                return neighbor;
+        }
+        // This line should never be hit
+        return (Point)neighbors.toArray()[0];
     }
 }

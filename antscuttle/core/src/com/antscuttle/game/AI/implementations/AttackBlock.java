@@ -17,7 +17,6 @@ public class AttackBlock extends DecisionBlock{
     
     public AttackBlock(AttackOptions options){
         super(options);
-        this.duration = Integer.MAX_VALUE;
     }
     
     
