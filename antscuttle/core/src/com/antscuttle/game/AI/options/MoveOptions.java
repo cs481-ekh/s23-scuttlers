@@ -17,7 +17,8 @@ public class MoveOptions extends BlockOptions{
         "Water",
         "Lava",
         "Random",
-        "End"};
+        "End",
+        "Rock"};
     
     public MoveOptions(String option1){
         super(option1, null);
