@@ -47,4 +47,5 @@ public interface Ant{
     public void setPos(float x, float y);
     public Vector2 getPos();
     public void render(SpriteBatch characterBatch);
+    public void update(float deltaTime);
 }

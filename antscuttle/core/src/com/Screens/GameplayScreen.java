@@ -9,6 +9,8 @@ import com.antscuttle.game.Buttons.StartButton;
 import com.antscuttle.game.Level.Level;
 import com.antscuttle.game.Level.LevelData;
 import com.antscuttle.game.LevelObject.LevelObject;
+import com.antscuttle.game.LevelObject.implementations.Door;
+import com.antscuttle.game.LevelObject.implementations.PressurePlate;
 import com.antscuttle.game.Util.ClassFactory;
 import com.antscuttle.game.Util.GameData;
 import com.badlogic.gdx.Gdx;
@@ -33,6 +35,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import java.awt.Point;
+import java.util.Set;
 
 public class GameplayScreen extends ScreenAdapter{
     public static final float SPEED = 100;
@@ -210,6 +213,7 @@ public class GameplayScreen extends ScreenAdapter{
             levelBatch.end();
             
             characterBatch.begin();
+            player.update(delta);
             player.render(characterBatch);
             for(Ant enemy: levelData.getEnemies())
                 enemy.render(characterBatch);

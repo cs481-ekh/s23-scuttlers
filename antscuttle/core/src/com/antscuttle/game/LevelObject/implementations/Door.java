@@ -40,7 +40,6 @@ public class Door extends InteractableLevelObject{
             texture = closedTex;
             sprite.setRegion(texture);
         }
-        update(Gdx.graphics.getDeltaTime());
         
         return true;
         
