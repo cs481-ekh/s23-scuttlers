@@ -13,6 +13,7 @@ import com.antscuttle.game.Weapon.MeleeWeapon;
 import com.antscuttle.game.Weapon.RangedWeapon;
 import com.antscuttle.game.Weapon.Pistol;
 import com.antscuttle.game.Weapon.Sword;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -52,6 +53,7 @@ public abstract class BaseAnt implements Ant, Serializable{
     private AnimationDirection direction;
     private AnimationType state;
     private short stateTime;
+    private Vector2 lastPos;
     
     public enum AnimationType { Stand, Move, MeleeAttack, RangedAttack }
     public enum AnimationDirection { Up, Right, Down, Left }
@@ -99,15 +101,6 @@ public abstract class BaseAnt implements Ant, Serializable{
         this.stateTime = 0;
     }
     @Override
-    public void render(SpriteBatch batch){
-        Texture animation = getAnimation(state, direction); 
-        if(animation != null){
-        TextureRegion tex = new TextureRegion(animation)
-                .split(40, 40)[0][stateTime];
-            batch.draw(tex, pos.x, pos.y);
-        }
-    }
-    @Override
     public Rectangle getArea(){
         return new Rectangle(pos.x, pos.y, dim.x, dim.y);
     }
@@ -115,11 +108,7 @@ public abstract class BaseAnt implements Ant, Serializable{
     public Vector2 getPos() {
         return pos;
     }
-    @Override
-    public void setPos(float x, float y) {
-        pos.x=x;
-        pos.y=y;
-    }
+    
     @Override
     public Texture[] getAntPreviewAnimation() {
         Texture[] textures = new Texture[moveAnimationUnarmed.length];
@@ -153,6 +142,8 @@ public abstract class BaseAnt implements Ant, Serializable{
         }
     }
     protected Texture getMeleeMoveAnimation(AnimationDirection dir){
+        if(meleeWeapon == null)
+            return getUnarmedMoveAnimation(dir);
         Texture[] move = new Texture[moveAnimationSword.length];
         for (int i = 0; i < moveAnimationSword.length; i++) {
             move[i] = new Texture(moveAnimationSword[i]);
@@ -169,6 +160,8 @@ public abstract class BaseAnt implements Ant, Serializable{
     }
     
     protected Texture getRangedMoveAnimation(AnimationDirection dir){
+        if(rangedWeapon == null)
+            return getUnarmedMoveAnimation(dir);
         Texture[] move = new Texture[moveAnimationPistol.length];
         for (int i = 0; i < moveAnimationPistol.length; i++) {
             move[i] = new Texture(moveAnimationPistol[i]);
@@ -231,6 +224,8 @@ public abstract class BaseAnt implements Ant, Serializable{
     }
     protected Texture getRangedAttackAnimation(AnimationDirection dir) {
         Texture[] move = new Texture[attackAnimationPistol.length];
+        if(rangedWeapon == null)
+            return getUnarmedMoveAnimation(dir);
         for (int i = 0; i < attackAnimationPistol.length; i++) {
             move[i] = new Texture(attackAnimationPistol[i]);
         }
@@ -356,10 +351,14 @@ public abstract class BaseAnt implements Ant, Serializable{
         DamageType damageType = DamageType.Physical;
         switch(attackType){
             case "Melee": 
+                lastTypeUsed = AnimationType.MeleeAttack;
+                state = AnimationType.MeleeAttack;
                 damage = getMeleeDamage();
                 damageType = getMeleeDamageType();
                 break;
             case "Ranged":
+                lastTypeUsed = AnimationType.RangedAttack;
+                state = AnimationType.RangedAttack;
                 damage = getRangedDamage();
                 damageType = getRangedDamageType();
                 break;
@@ -370,5 +369,55 @@ public abstract class BaseAnt implements Ant, Serializable{
             damageDone = ((Ant) target).receiveAttack(damage, damageType);
         }
         return damageDone;
+    }
+    @Override
+    public void setPos(float x, float y) {
+        if(lastPos == null){
+            lastPos = new Vector2();
+            lastPos.x = pos.x;
+            lastPos.y = pos.y;
+        }
+        
+        // Detect movement
+        if(state != AnimationType.MeleeAttack && state != AnimationType.RangedAttack)
+            state = AnimationType.Move;
+        // Detect direction
+        if(pos.x < x)
+            direction = AnimationDirection.Right;
+        else if(pos.x > x)
+            direction = AnimationDirection.Left;
+        else if(pos.y < y)
+            direction = AnimationDirection.Up;
+        else if(pos.y > y)
+            direction = AnimationDirection.Down;
+        pos.x=x;
+        pos.y=y;
+    }
+    @Override
+    public void update(float delta){
+        if(lastPos.equals(pos)){
+            state = AnimationType.Stand;
+            stateTime = 0;
+        }
+        lastPos.y = pos.y;
+        lastPos.x = pos.x;
+        if(state != AnimationType.Stand)
+            stateTime++;
+        // Doing 3 animation frames at 20 calls per frame
+        if(stateTime > 59){
+            stateTime = 0;
+            state = AnimationType.Stand;
+        }
+        
+    }
+    
+    @Override
+    public void render(SpriteBatch batch){
+        Texture animation = getAnimation(state, direction); 
+        if(animation != null){
+        TextureRegion tex = new TextureRegion(animation)
+                .split(40, 40)[0][stateTime/20];
+            batch.draw(tex, pos.x, pos.y);
+        }
     }
 }

@@ -34,6 +34,8 @@ public class PressurePlate extends InteractableLevelObject{
             //affectedObject.interact(ant, levelData);
             isPressed = true;
             sprite.setRegion(anim[1]);
+            if(affectedObject != null)
+                affectedObject.interact(ant, levelData);
         }
         return true;
     }

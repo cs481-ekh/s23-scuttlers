@@ -32,7 +32,10 @@ public class AntDecorator implements Ant, Serializable{
     @Override
     public int attack(Object target, String attackType){
         int damageDone = 0;
-        damageDone = ((InteractableLevelObject)target).receiveAttack(damage, damageType);
+        if(target instanceof InteractableLevelObject)
+            damageDone = ((InteractableLevelObject)target).receiveAttack(damage, damageType);
+        else
+            damageDone = ((Ant)target).receiveAttack(damage, damageType);
         damageDone += wrappedAnt.attack(target, attackType);
         return damageDone;
     }
@@ -169,5 +172,10 @@ public class AntDecorator implements Ant, Serializable{
     @Override
     public void render(SpriteBatch characterBatch) {
         wrappedAnt.render(characterBatch);
+    }
+
+    @Override
+    public void update(float deltaTime) {
+        wrappedAnt.update(deltaTime);
     }
 }
