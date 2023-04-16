@@ -250,7 +250,7 @@ public final class Level1 extends Level{
         for(Point p: walls){
             obj = new Wall(null, 100);
             addObjAtPos(obj, p.x, p.y);
-            levelData.addAttackableObject(obj);
+            levelData.addCollidableObject(obj);
         }
         
         // Create end zone
