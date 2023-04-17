@@ -30,8 +30,10 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.ScreenAdapter;
@@ -86,7 +88,7 @@ public class GameplayScreen extends ScreenAdapter{
     private boolean gameStarted;
     private Iterator blockIterator;
     private DecisionBlock currentBlock;
-    
+
     public GameplayScreen(AntScuttleGame game, GameData gameData){
         this.game = game;
         this.gameData = gameData;
@@ -195,14 +197,15 @@ public class GameplayScreen extends ScreenAdapter{
         menuBatch.begin();
         menuBatch.draw(menuImg, gameX + (864), gameY, gameView.getWorldWidth()-864,gameView.getWorldHeight());
         menuBatch.end();
-        // Check for game over
-        if(levelData.isGameFinished()){
+        // Check for game over  
+        if(levelData.isGameFinished()){        
             if(levelData.isGameWon()){
                 Object unlockedItem =gameData.unlockRandomItem();
                 Level unlockedLevel = gameData.unlockNewLevel();
                 //Display game won + items unlocked dialog, go to NewGameScreen
             } else {
                 //Display game lost dialog, go to NewGameScreen
+                endGame();
             }
         }
         if(!gameStarted){
@@ -215,7 +218,7 @@ public class GameplayScreen extends ScreenAdapter{
             titleBatch.end();
         }
         if(gameStarted){
-            
+
             levelBatch.begin();
             level.render(levelBatch);
             for(LevelObject obj: levelData.getAllObjects()){
@@ -256,8 +259,10 @@ public class GameplayScreen extends ScreenAdapter{
             ScuttleButton.draw(game, this, gameData, 20+pause.getWidth()/2, 20+pause.getWidth()/2, pause, 1);
         }
         game.batch.end();
+        stage.draw();
         
     }
+
     private void removeEnemies(){
         Set<Ant> enemies = levelData.getEnemies();
         Set<Ant> enemiesToRemove = new HashSet<>();
@@ -269,6 +274,20 @@ public class GameplayScreen extends ScreenAdapter{
         for(Ant enemy:enemiesToRemove){
             levelData.removeEnemy(enemy);
         }
+    }
+    public void endGame(){
+        //game.setScreen(new MainMenuScreen(game, gameData, true));
+        Dialog dialog = new Dialog("Game Over", skin);
+        dialog.text("You lost. Press OK to go back to the Main Menu");
+        dialog.button("OK").addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                game.setScreen(new MainMenuScreen(game, gameData, true));
+            }        
+        });
+        dialog.setBounds((stage.getWidth() / 2 - dialog.getWidth() / 2)-350, stage.getHeight() / 2 - dialog.getHeight() / 2, 400, 200);
+        stage.addActor(dialog);  
+
     }
     private void doBlocks(){
         if (currentBlock.isFinished()) {
