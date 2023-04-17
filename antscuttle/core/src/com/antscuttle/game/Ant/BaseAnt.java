@@ -9,6 +9,7 @@ import com.antscuttle.game.Damage.DamageType;
 import com.antscuttle.game.Level.LevelData;
 import com.antscuttle.game.LevelObject.LevelObject;
 import com.antscuttle.game.LevelObject.InteractableLevelObject;
+import com.antscuttle.game.LevelObject.implementations.Projectile;
 import com.antscuttle.game.Weapon.MeleeWeapon;
 import com.antscuttle.game.Weapon.RangedWeapon;
 import com.antscuttle.game.Weapon.Pistol;
@@ -55,7 +56,7 @@ public abstract class BaseAnt implements Ant, Serializable{
     private short stateTime;
     private Vector2 lastPos;
     
-    public enum AnimationType { Stand, Move, MeleeAttack, RangedAttack }
+    public enum AnimationType { Stand, Move, MeleeAttack, RangedAttack, Dead }
     public enum AnimationDirection { Up, Right, Down, Left }
 
     public BaseAnt(String name, 
@@ -99,6 +100,7 @@ public abstract class BaseAnt implements Ant, Serializable{
         this.direction = AnimationDirection.Down;
         this.state = AnimationType.Stand;
         this.stateTime = 0;
+        
     }
     @Override
     public Rectangle getArea(){
@@ -128,6 +130,8 @@ public abstract class BaseAnt implements Ant, Serializable{
             case RangedAttack:
                 lastTypeUsed = AnimationType.RangedAttack;
                 return getRangedAttackAnimation(dir);
+            case Dead:
+                return null;
             default:
                 return getMoveAnimation(dir);
         }
@@ -158,7 +162,9 @@ public abstract class BaseAnt implements Ant, Serializable{
         }
         return null;
     }
-    
+    public AnimationDirection getDirection(){
+        return direction;
+    }
     protected Texture getRangedMoveAnimation(AnimationDirection dir){
         if(rangedWeapon == null)
             return getUnarmedMoveAnimation(dir);
@@ -336,16 +342,19 @@ public abstract class BaseAnt implements Ant, Serializable{
         return (rangedWeapon == null) ? null : rangedWeapon.getDamageType();
     }
     @Override
-    public int receiveAttack(int damage, DamageType damageType){
+    public int receiveAttack(int damage, DamageType damageType, LevelData levelData){
         int defense = (armor == null) ? baseDefense : baseDefense + armor.getDefense();
         int damageTaken = damage - defense;
         if(damageTaken < 1)
             return 0;
         health -= damageTaken;
+        if(health < 1){
+            state = AnimationType.Dead;
+        }
         return damageTaken;
     }
     @Override
-    public int attack(Object target, String attackType){
+    public int attack(Object target, String attackType, LevelData levelData){
         int damageDone = 0;
         int damage = 0;
         DamageType damageType = DamageType.Physical;
@@ -355,19 +364,41 @@ public abstract class BaseAnt implements Ant, Serializable{
                 state = AnimationType.MeleeAttack;
                 damage = getMeleeDamage();
                 damageType = getMeleeDamageType();
+                if(target instanceof LevelObject){
+                    damageDone = ((InteractableLevelObject) target).receiveAttack(damage, damageType);
+                } else if(target instanceof Ant){
+                    damageDone = ((Ant) target).receiveAttack(damage, damageType, levelData);
+                }
                 break;
             case "Ranged":
                 lastTypeUsed = AnimationType.RangedAttack;
                 state = AnimationType.RangedAttack;
                 damage = getRangedDamage();
                 damageType = getRangedDamageType();
+                Projectile proj = new Projectile(new TextureRegion(rangedWeapon.getBulletImg()),
+                        direction,
+                        rangedWeapon.getBulletSpeed(),
+                        damage,
+                        damageType);
+                switch(direction){
+                    case Left: proj.setPos(pos.x/2-20, pos.y/2);
+                        break;
+                    case Up: proj.setPos(pos.x/2,pos.y/2+20);
+                        break;
+                    case Right: proj.setPos(pos.x/2+20,pos.y/2);
+                        break;
+                    case Down: proj.setPos(pos.x/2, pos.y/2-20);
+                        break;
+                }
+                    
+                levelData.addProjectile(proj);
+                levelData.addToAllObjects(proj);
+
+                    
                 break;
         }
-        if(target instanceof LevelObject){
-            damageDone = ((InteractableLevelObject) target).receiveAttack(damage, damageType);
-        } else if(target instanceof Ant){
-            damageDone = ((Ant) target).receiveAttack(damage, damageType);
-        }
+        
+        
         return damageDone;
     }
     @Override
@@ -395,6 +426,7 @@ public abstract class BaseAnt implements Ant, Serializable{
     }
     @Override
     public void update(float delta){
+        
         if(lastPos.equals(pos)){
             state = AnimationType.Stand;
             stateTime = 0;
@@ -413,6 +445,7 @@ public abstract class BaseAnt implements Ant, Serializable{
     
     @Override
     public void render(SpriteBatch batch){
+        
         Texture animation = getAnimation(state, direction); 
         if(animation != null){
         TextureRegion tex = new TextureRegion(animation)

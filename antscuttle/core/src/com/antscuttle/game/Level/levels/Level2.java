@@ -408,7 +408,7 @@ public class Level2 extends Level{
         for(Point p: end){
             obj = new End();
             addObjAtPos(obj, p.x, p.y);
-            levelData.addInteractableObject(obj);
+            levelData.addEndSpace(obj);
         }
     }
 }

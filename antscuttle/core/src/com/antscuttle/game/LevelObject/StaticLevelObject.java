@@ -2,7 +2,7 @@
  * StaticLevelObject: implementation of LevelObject for non-interactable
  *                    tiles such as buildings.
  */
-package com.antscuttle.game.LevelObject.implementations;
+package com.antscuttle.game.LevelObject;
 
 import com.antscuttle.game.Damage.DamageType;
 import com.antscuttle.game.LevelObject.LevelObject;
@@ -13,7 +13,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  *
  * @author antho
  */
-public class StaticLevelObject extends LevelObject{
+public abstract class StaticLevelObject extends LevelObject{
 
     public StaticLevelObject(TextureRegion tex){
         super(tex, 0);

@@ -173,7 +173,7 @@ public class GameData implements java.io.Serializable{
     public Object unlockRandomItem(){
         if(lockedItems.isEmpty())
             return false;
-        int rand = new Random().nextInt(lockedItems.size()) - 1;
+        int rand = new Random().nextInt(lockedItems.size());
         Object unlockedItem = lockedItems.get(rand);
         lockedItems.remove(unlockedItem);
         if( unlockedItem instanceof Weapon )

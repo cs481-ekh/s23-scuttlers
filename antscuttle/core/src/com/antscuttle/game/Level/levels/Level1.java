@@ -257,7 +257,7 @@ public final class Level1 extends Level{
         for(Point p: endLocs){
             obj = new End();
             addObjAtPos(obj,p.x,p.y);
-            levelData.addInteractableObject(obj);
+            levelData.addEndSpace(obj);
         }
     }
 }

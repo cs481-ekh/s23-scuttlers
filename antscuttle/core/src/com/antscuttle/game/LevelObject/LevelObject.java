@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import java.awt.Point;
 
 public abstract class LevelObject extends Actor{
     // Fields
@@ -38,9 +39,9 @@ public abstract class LevelObject extends Actor{
         return r1.overlaps(r2);
     }
     public boolean collides(Ant a){
-        Rectangle r1 = getArea();
-        Rectangle r2 = a.getArea();
-        return r1.overlaps(r2);
+        Point objTile = new Point((int)pos.x/16, (int)pos.y/16);
+        Point antTile = new Point((int)a.getPos().x/32, (int)a.getPos().y/32);
+        return objTile.x == antTile.x && objTile.y == antTile.y;
     }
     protected Rectangle getArea(){
         return new Rectangle(pos.x, pos.y, dim.x, dim.y);
