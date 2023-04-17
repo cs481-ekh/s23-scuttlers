@@ -272,6 +272,7 @@ public class GameplayScreen extends ScreenAdapter{
     }
     private void doBlocks(){
         if (currentBlock.isFinished()) {
+            System.out.println("finished block");
             // Reset the finished status and move on
             DecisionBlock prev = currentBlock;
             currentBlock = (DecisionBlock)blockIterator.next();

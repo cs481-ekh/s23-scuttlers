@@ -87,7 +87,7 @@ public class AttackBlock extends DecisionBlock{
         if(pathCounter++ == 20){
             findTargetAndPath(gameData,levelData);
             pathCounter = 0;
-            if(path == null || path.isEmpty()){
+            if(path == null ){
                 setExecutionResult(false);
                 setFinished(true);
                 return;
@@ -97,18 +97,19 @@ public class AttackBlock extends DecisionBlock{
         if(attackCounter < attackCooldown)
             attackCounter++;
         // Check if path exists
-        if(currEdge == null) {
+        if(currEdge == null && !objectIsAlive(levelData)) {
             setExecutionResult(false);
             setFinished(true);
             return;
         }
         // check if not at the next tile
-        srcX = Integer.parseInt(g.getEdgeSource(currEdge).substring(1,3));
-        srcY = Integer.parseInt(g.getEdgeSource(currEdge).substring(3,5));
+        if(currEdge != null){
+            srcX = Integer.parseInt(g.getEdgeSource(currEdge).substring(1,3));
+            srcY = Integer.parseInt(g.getEdgeSource(currEdge).substring(3,5));
 
-        targX = Integer.parseInt(g.getEdgeTarget(currEdge).substring(1,3));
-        targY = Integer.parseInt(g.getEdgeTarget(currEdge).substring(3,5));
-        
+            targX = Integer.parseInt(g.getEdgeTarget(currEdge).substring(1,3));
+            targY = Integer.parseInt(g.getEdgeTarget(currEdge).substring(3,5));
+        }
         if(targX == srcTile.x && targY == srcTile.y){
             // Edge is backwards
             int temp = srcX;
@@ -148,8 +149,11 @@ public class AttackBlock extends DecisionBlock{
         }
         if((antX == targX && antY == targY)){
             // Ant has reached edge target
-            if(path == null){
-                if(antX == finalTarget.x && antY == finalTarget.y){
+            if(path!= null && !path.isEmpty())
+                path.removeFirst();
+            if(path == null || path.isEmpty()){
+                
+                if(((int)antX) == finalTarget.x && ((int)antY) == finalTarget.y){
                     // Ant reached target
                     // Attack the target
                     int damageDone = 0;
@@ -158,28 +162,36 @@ public class AttackBlock extends DecisionBlock{
                     String targetType = options.getSecondOptionChoice();
                     if(damageType == null)
                         return;
-                    
-                     if(!targetType.equals("Ant")){
-                         objectTarget = levelData.objAt(finalTarget);
-                         damageDone = ((InteractableLevelObject)objectTarget).receiveAttack(damage, damageType);
-                     }else {
-                         objectTarget = levelData.enemyAt(finalTarget);
-                         damageDone = ((Ant)objectTarget).receiveAttack(damage, damageType, levelData);
-                     }
-                    if(damageDone > 0)
-                        setExecutionResult(true);
-                    else
-                        setExecutionResult(false);
-                    return;
+                    if(attackCounter == attackCooldown){
+                        attackCounter = 0;
+                        if(!targetType.equals("Ant")){
+                            objectTarget = levelData.objAt(finalTarget);
+                            damageDone = ant.attack(objectTarget,"Melee", levelData);
+                        }else {
+                            
+                            damageDone = ant.attack(objectTarget, "Melee", levelData);
+                            if(((Ant)objectTarget).getHealth()<1){
+                                setExecutionResult(true);
+                                setFinished(true);
+                                return;
+                            }
+                        }
+                        if(damageDone < 1){
+                            setExecutionResult(false);
+                            setFinished(true);
+                            return;
+                        }
+                    }
                     
                 } else {
                     setExecutionResult(false);
+                    setFinished(true);
                 }
-                setFinished(true);
+                
                 return;
             }
             
-            path.removeFirst();
+            
             srcTile = new Point(targX,targY);
             currEdge = path.peek();
         }
@@ -196,7 +208,7 @@ public class AttackBlock extends DecisionBlock{
             float newY = ant.getPos().y-delta*ant.getSpeed();
             ant.setPos(ant.getPos().x, Float.max(newY, targY*32));
         }
-            // Movement towards target, if necessary, has completed
+        
             
         
     }
@@ -245,7 +257,7 @@ public class AttackBlock extends DecisionBlock{
                 path = (LinkedList<DefaultEdge>)potentialPath;
                 finalTarget = p;
                 if(targetType.equals("Ant"))
-                    objectTarget = levelData.enemyAt(p);
+                    objectTarget = (attackType.equals("Ranged"))? levelData.enemyAt(p): findEnemyAroundPoint(p, levelData);
             }
         }
         if(path != null)
@@ -301,6 +313,38 @@ public class AttackBlock extends DecisionBlock{
     }
     public static Class<? extends BlockOptions> getOptionsClass(){
         return AttackOptions.class;
+    }
+
+    private Ant findEnemyAroundPoint(Point p, LevelData levelData) {
+        Set<Ant> enemies = levelData.getEnemies();
+        for(Ant e:enemies){
+            int ex = (int)e.getPos().x/32;
+            int ey = (int)e.getPos().y/32;
+            if(ex-1 == p.x && ey == p.y
+                    || ex+1 == p.x && ey == p.y
+                    || ex == p.x && ey-1 == p.y
+                    || ex == p.x && ey+1 == p.y)
+                return e;
+        }
+        return null;
+    }
+
+    private boolean objectIsAlive(LevelData levelData) {
+        if(objectTarget == null)
+            return false;
+        if(objectTarget instanceof Ant
+                && ((Ant)objectTarget).getHealth() > 0)
+            return true;
+        if(objectTarget instanceof LevelObject){
+            LevelObject obj = (LevelObject)objectTarget;
+            Point objPos = new Point(
+                    levelData.LevelObjPosToGraphPos(obj.getPos().x),
+                    levelData.LevelObjPosToGraphPos(obj.getPos().y));
+            if(obj.equals(levelData.objAt(objPos)))
+                return true;
+        } 
+                
+        return false;
     }
 
 }

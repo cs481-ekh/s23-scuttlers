@@ -20,6 +20,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import java.awt.Point;
 import java.io.Serializable;
 
 /**
@@ -358,6 +359,33 @@ public abstract class BaseAnt implements Ant, Serializable{
         int damageDone = 0;
         int damage = 0;
         DamageType damageType = DamageType.Physical;
+        
+        // Find direction
+        Point theirPos, myPos;
+        AnimationDirection theirDir;
+        if(target instanceof Ant){
+            theirPos = new Point(
+                levelData.AntPosToGraphPos(((Ant)target).getPos().x),
+                levelData.AntPosToGraphPos(((Ant)target).getPos().y));
+        } else {
+            theirPos = new Point(
+                levelData.LevelObjPosToGraphPos(((LevelObject)target).getPos().x),
+                levelData.LevelObjPosToGraphPos(((LevelObject)target).getPos().y));
+        }
+        myPos = new Point(
+            levelData.AntPosToGraphPos(pos.x),
+            levelData.AntPosToGraphPos(pos.y));
+        System.out.println("Attack: theirpos: "+theirPos.x+","+theirPos.y
+            +" myPos: "+myPos.x+","+myPos.y);
+        if(theirPos.x > myPos.x)
+            theirDir = AnimationDirection.Right;
+        else if(theirPos.x < myPos.x)
+            theirDir = AnimationDirection.Left;
+        else if(theirPos.y < myPos.y)
+            theirDir = AnimationDirection.Down;
+        else
+            theirDir = AnimationDirection.Up;
+        direction = theirDir;
         switch(attackType){
             case "Melee": 
                 lastTypeUsed = AnimationType.MeleeAttack;
