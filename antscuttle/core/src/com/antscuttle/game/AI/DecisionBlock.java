@@ -2,6 +2,7 @@
 package com.antscuttle.game.AI;
 
 
+import com.antscuttle.game.AI.implementations.MoveBlock;
 import java.io.Serializable;
 import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.Level.LevelData;
@@ -15,6 +16,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.jgrapht.Graph;
+import org.jgrapht.graph.DefaultEdge;
 
 
 /**
@@ -70,7 +73,7 @@ public abstract class DecisionBlock implements Serializable{
     public static Class<? extends BlockOptions> getOptionsClass(){
         return null;
     }
-    public Set<Point> findTargets(LevelData levelData, GameData gameData, String targetType){
+    public Set<Point> findTargets(LevelData levelData, GameData gameData, String targetType, Graph<String,DefaultEdge> g){
         Set<Point> targets = new HashSet<>();
         Set<LevelObject> levelObjs = new HashSet<>();
         Ant player = gameData.getCurrentAnt();
@@ -83,7 +86,9 @@ public abstract class DecisionBlock implements Serializable{
                 targets.addAll(enemyPoints);
                 break;
             case "Random": 
-                targets.add(getRandomNeighbor(antX, antY));
+                Point n = getRandomNeighbor(antX, antY, g);
+                if(n != null)
+                    targets.add(n);
                 break;
             default: // LevelObject
                 levelObjs = levelData.getTargetableObjects();
@@ -106,15 +111,21 @@ public abstract class DecisionBlock implements Serializable{
         return targets;
     }
     
-    public Point getRandomNeighbor(int x, int y){
+   public Point getRandomNeighbor(int x, int y, Graph<String,DefaultEdge> g){
         Set<Point> neighbors = GraphUtils.getVertexNeighborsAsPoints(x, y);
         int rand = new Random().nextInt(neighbors.size());
         int i=0;
         for(Point neighbor: neighbors){
+            if(!g.containsVertex(GraphUtils.getVertexName(neighbor.x, neighbor.y))){
+                if(rand == i)
+                    rand++;
+                i++;
+                continue;
+            }
             if(rand == i++)
                 return neighbor;
         }
-        // This line should never be hit
-        return (Point)neighbors.toArray()[0];
+        
+        return null;
     }
 }

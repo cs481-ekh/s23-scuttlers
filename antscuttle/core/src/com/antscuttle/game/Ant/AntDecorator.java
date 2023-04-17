@@ -5,6 +5,7 @@ import java.io.Serializable;
 import com.antscuttle.game.AI.AI;
 import com.antscuttle.game.Armor.Armor;
 import com.antscuttle.game.Damage.DamageType;
+import com.antscuttle.game.Level.LevelData;
 import com.antscuttle.game.LevelObject.InteractableLevelObject;
 import com.antscuttle.game.Weapon.MeleeWeapon;
 import com.antscuttle.game.Weapon.RangedWeapon;
@@ -30,13 +31,16 @@ public class AntDecorator implements Ant, Serializable{
         return damageType;
     }
     @Override
-    public int attack(Object target, String attackType){
+    public int attack(Object target, String attackType, LevelData levelData){
         int damageDone = 0;
-        if(target instanceof InteractableLevelObject)
-            damageDone = ((InteractableLevelObject)target).receiveAttack(damage, damageType);
-        else
-            damageDone = ((Ant)target).receiveAttack(damage, damageType);
-        damageDone += wrappedAnt.attack(target, attackType);
+        if(attackType.equals("Melee")){
+            if(target instanceof InteractableLevelObject)
+                damageDone = ((InteractableLevelObject)target).receiveAttack(damage, damageType);
+            else
+                damageDone = ((Ant)target).receiveAttack(damage, damageType, levelData);
+            
+        }
+        damageDone += wrappedAnt.attack(target, attackType, levelData);
         return damageDone;
     }
     
@@ -150,8 +154,8 @@ public class AntDecorator implements Ant, Serializable{
     }
 
     @Override
-    public int receiveAttack(int damage, DamageType damageType) {
-        return wrappedAnt.receiveAttack(damage, damageType);
+    public int receiveAttack(int damage, DamageType damageType, LevelData levelData) {
+        return wrappedAnt.receiveAttack(damage, damageType, levelData);
     }
 
     @Override
@@ -177,5 +181,10 @@ public class AntDecorator implements Ant, Serializable{
     @Override
     public void update(float deltaTime) {
         wrappedAnt.update(deltaTime);
+    }
+
+    @Override
+    public BaseAnt.AnimationDirection getDirection() {
+        return wrappedAnt.getDirection();
     }
 }

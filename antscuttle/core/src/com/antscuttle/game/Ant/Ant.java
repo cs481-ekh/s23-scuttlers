@@ -2,9 +2,11 @@
 package com.antscuttle.game.Ant;
 
 import com.antscuttle.game.AI.AI;
+import com.antscuttle.game.Ant.BaseAnt.AnimationDirection;
 import com.antscuttle.game.Ant.BaseAnt.AnimationType;
 import com.antscuttle.game.Armor.Armor;
 import com.antscuttle.game.Damage.DamageType;
+import com.antscuttle.game.Level.LevelData;
 import com.antscuttle.game.Weapon.MeleeWeapon;
 import com.antscuttle.game.Weapon.RangedWeapon;
 import com.badlogic.gdx.graphics.Texture;
@@ -41,11 +43,12 @@ public interface Ant{
     public int getRangedDamage();
     public DamageType getMeleeDamageType();
     public DamageType getRangedDamageType();
-    public int receiveAttack(int damage, DamageType damageType);
-    public int attack(Object target, String attackType);
+    public int receiveAttack(int damage, DamageType damageType, LevelData levelData);
+    public int attack(Object target, String attackType, LevelData levelData);
     public Rectangle getArea();
     public void setPos(float x, float y);
     public Vector2 getPos();
     public void render(SpriteBatch characterBatch);
     public void update(float deltaTime);
+    public AnimationDirection getDirection();
 }

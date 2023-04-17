@@ -146,7 +146,7 @@ public class MoveBlock extends DecisionBlock {
         Set<Point> potentialTargets;
         // Find all potential targets of type targetType
         String targetType = options.getFirstOptionChoice();
-        potentialTargets = findTargets(levelData, gameData, targetType);
+        potentialTargets = findTargets(levelData, gameData, targetType, g);
         for(Point p: potentialTargets){
             // Find path for each potential target
             List<DefaultEdge> potentialPath = findPath(p);
@@ -178,4 +178,8 @@ public class MoveBlock extends DecisionBlock {
     public static Class<? extends BlockOptions> getOptionsClass(){
         return InteractOptions.class;
     }
+    public Point getTargetTile(){
+        return finalTarget;
+    }
+     
 }

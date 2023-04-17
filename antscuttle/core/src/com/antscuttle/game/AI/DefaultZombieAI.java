@@ -1,8 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.antscuttle.game.AI;
+
+import com.antscuttle.game.AI.implementations.MoveBlock;
+import com.antscuttle.game.AI.options.MoveOptions;
 
 /**
  *
@@ -11,7 +11,9 @@ package com.antscuttle.game.AI;
 public class DefaultZombieAI extends AI{    
     public DefaultZombieAI(Node root, String name){
         super(root, name);
-        // TODO: Build default Zombie AI tree here
+        DecisionBlock move1 = new MoveBlock(new MoveOptions("Wall"));
+        Node n = new Node(move1);
+        root.addChild(n);
     }
 
     @Override

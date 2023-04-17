@@ -11,9 +11,11 @@ import com.antscuttle.game.Buttons.PauseButton;
 import com.antscuttle.game.Buttons.StartButton;
 import com.antscuttle.game.Level.Level;
 import com.antscuttle.game.Level.LevelData;
+import com.antscuttle.game.LevelObject.InteractableLevelObject;
 import com.antscuttle.game.LevelObject.LevelObject;
 import com.antscuttle.game.LevelObject.implementations.Door;
 import com.antscuttle.game.LevelObject.implementations.PressurePlate;
+import com.antscuttle.game.LevelObject.implementations.Projectile;
 import com.antscuttle.game.Util.ClassFactory;
 import com.antscuttle.game.Util.GameData;
 import com.badlogic.gdx.Gdx;
@@ -39,7 +41,9 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import java.awt.Point;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Set;
@@ -168,6 +172,7 @@ public class GameplayScreen extends ScreenAdapter{
                     player.setPos(startLoc.x*32, startLoc.y*32);
                     gameStarted = true;
                     level.startLevel();
+                    startBtn.setVisible(false);
                     initAI();
                 }
                 return true;
@@ -224,13 +229,22 @@ public class GameplayScreen extends ScreenAdapter{
             doBlocks();
             
             characterBatch.begin();
+            if(player.getHealth() < 1){
+                levelData.setGameFinished(true);
+                levelData.setGameWon(false);
+            }
             player.update(delta);
             player.render(characterBatch);
-            for(Ant enemy: levelData.getEnemies())
+            Set<Ant> enemies = levelData.getEnemies();
+            for(Ant enemy: enemies){
                 enemy.render(characterBatch);
+                enemy.update(delta);
+            }
+            checkForCollisions(characterBatch);
             characterBatch.end();
             
-            checkForCollisions();
+            removeEnemies();
+            
         }
         game.batch.begin();
 
@@ -248,6 +262,19 @@ public class GameplayScreen extends ScreenAdapter{
         stage.draw();
         
     }
+
+    private void removeEnemies(){
+        Set<Ant> enemies = levelData.getEnemies();
+        Set<Ant> enemiesToRemove = new HashSet<>();
+        for(Ant enemy: enemies){
+            if(enemy.getHealth()<1){
+                enemiesToRemove.add(enemy);
+            }
+        }
+        for(Ant enemy:enemiesToRemove){
+            levelData.removeEnemy(enemy);
+        }
+    }
     public void endGame(){
         //game.setScreen(new MainMenuScreen(game, gameData, true));
         Dialog dialog = new Dialog("Game Over", skin);
@@ -260,12 +287,15 @@ public class GameplayScreen extends ScreenAdapter{
         });
         dialog.setBounds((stage.getWidth() / 2 - dialog.getWidth() / 2)-350, stage.getHeight() / 2 - dialog.getHeight() / 2, 400, 200);
         stage.addActor(dialog);  
+
     }
     private void doBlocks(){
         if (currentBlock.isFinished()) {
+            System.out.println("finished block");
             // Reset the finished status and move on
-            currentBlock.setExecutionResult(false);
+            DecisionBlock prev = currentBlock;
             currentBlock = (DecisionBlock)blockIterator.next();
+            prev.setFinished(false);
         }
         // If at the end of the tree, restart the tree.
         if (currentBlock instanceof RootBlock)
@@ -278,7 +308,51 @@ public class GameplayScreen extends ScreenAdapter{
         currentBlock = (DecisionBlock)blockIterator.next();
     }
     
-    public void checkForCollisions(){
+    public void checkForCollisions(SpriteBatch batch){
+        Set<LevelObject> ends = levelData.getEndSpaces();
+        Set<LevelObject> hazards = levelData.getHazardousObjects();
+        Set<Projectile> projectiles = levelData.getProjectiles();
+        for(LevelObject o: ends){
+            if(o.collides(player))
+                levelData.setGameFinished(true);
+                levelData.setGameWon(true);
+        }
+        for(LevelObject o: hazards){
+            if(o.collides(player))
+                ((InteractableLevelObject)o).interact(player, levelData);
+        }
+        for(Projectile p: projectiles){
+            
+            if(p.collides(player)){
+                p.attack(player, levelData);
+                p.setToDispose();
+            }
+            for(LevelObject o: levelData.getCollidableObjects()){
+                if(p.collides(o)){
+                   if(o instanceof InteractableLevelObject)
+                       p.attack(o, levelData);
+                   p.setToDispose();
+                }
+            }
+            Set<Ant> enemies = levelData.getEnemies();
+            for(Ant ant: enemies){
+                if(p.collides(ant)){
+                    p.attack(ant, levelData);
+                    p.setToDispose();
+                    
+                }
+                
+            }
+        }
+        Set<Projectile> done = new HashSet<>();
+        for(Projectile p: levelData.getProjectiles()){
+            if(p.shouldDispose())
+                done.add(p);
+        }
+        for(Projectile p: done){
+            
+            p.dispose(levelData);
+        }
         
     }
     @Override

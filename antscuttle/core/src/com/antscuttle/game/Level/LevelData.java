@@ -3,6 +3,7 @@ package com.antscuttle.game.Level;
 
 import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.LevelObject.LevelObject;
+import com.antscuttle.game.LevelObject.implementations.Projectile;
 import com.antscuttle.game.Util.GameData;
 import com.antscuttle.game.Util.GraphUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -25,6 +26,8 @@ public class LevelData implements Serializable{
     protected Set<LevelObject> collidableObjects;
     protected Set<LevelObject> hazardousObjects;
     protected Set<LevelObject> allObjects;
+    protected Set<LevelObject> endSpaces;
+    protected Set<Projectile> projectiles;
     protected Set<Ant> enemies;
     protected Graph<String, DefaultEdge> zeroIntelligenceGraph;
     protected Graph<String, DefaultEdge> normalIntelligenceGraph;
@@ -40,10 +43,26 @@ public class LevelData implements Serializable{
         hazardousObjects = new HashSet<>();
         enemies = new HashSet<>();
         allObjects = new HashSet<>();
+        projectiles = new HashSet<>();
+        endSpaces = new HashSet<>();
         zeroIntelligenceGraph = new SimpleGraph<>(DefaultEdge.class);
         normalIntelligenceGraph = new SimpleGraph<>(DefaultEdge.class);
     }
-
+    public void addEndSpace(LevelObject o){
+        endSpaces.add(o);
+    }
+    public Set<LevelObject> getEndSpaces(){
+        return endSpaces;
+    }
+    public Set<Projectile> getProjectiles(){
+        return projectiles;
+    }
+    public void addProjectile(Projectile p){
+        projectiles.add(p);
+    }
+    public void removeProjectile(Projectile p){
+        projectiles.remove(p);
+    }
     public boolean isGameFinished() {
         return gameFinished;
     }
@@ -218,5 +237,21 @@ public class LevelData implements Serializable{
         targetables.addAll(hazardousObjects);
         targetables.addAll(collidableObjects);
         return targetables;
+    }
+    public Ant enemyAt(Point p){
+        for(Ant enemy:enemies){
+            if(AntPosToGraphPos(enemy.getPos().x) == p.x
+                    && AntPosToGraphPos(enemy.getPos().y) == p.y)
+                return enemy;
+        }
+        return null;
+    }
+    public LevelObject objAt(Point p){
+        for(LevelObject obj: allObjects){
+            if(LevelObjPosToGraphPos(obj.getPos().x) == p.x
+                    && LevelObjPosToGraphPos(obj.getPos().y) == p.y)
+                return obj;
+        }
+        return null;
     }
 }

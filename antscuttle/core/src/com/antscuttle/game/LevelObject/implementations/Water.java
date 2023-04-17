@@ -14,6 +14,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  */
 public class Water extends InteractableLevelObject{
     private static final int drowningDamage = 2;
+    private int cooldown = 40;
+    private int counter = 0;
     
     public Water(TextureRegion tex){
         super(tex, 0, 0);
@@ -21,8 +23,10 @@ public class Water extends InteractableLevelObject{
     
     @Override
     public boolean interact(Ant ant, LevelData levelData) {
-        // Call when an ant is in water for drowning
-        ant.receiveAttack(drowningDamage, DamageType.Water);
+        if(++counter == cooldown){
+            counter = 0;
+            ant.receiveAttack(drowningDamage, DamageType.Water, levelData);
+        }
         return false;
     }
 
