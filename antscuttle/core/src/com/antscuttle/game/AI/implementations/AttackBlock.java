@@ -167,7 +167,7 @@ public class AttackBlock extends DecisionBlock{
                         }else {
                             
                             damageDone = ant.attack(objectTarget, "Melee", levelData);
-                            if(((Ant)objectTarget).getHealth()<1){
+                            if(objectTarget == null || ((Ant)objectTarget).getHealth()<1){
                                 setExecutionResult(true);
                                 setFinished(true);
                                 return;

@@ -159,7 +159,7 @@ public class LevelData implements Serializable{
         }
     }
     public void removeCollidableObject(LevelObject o){
-        if(collidableObjects != null){
+        if(collidableObjects != null && collidableObjects.contains(o)){
             collidableObjects.remove(o);
             removeFromGraphs(o);
         }
@@ -211,7 +211,6 @@ public class LevelData implements Serializable{
         Vector2 pos = obj.getPos();
         int tileX = LevelObjPosToGraphPos(pos.x);
         int tileY = LevelObjPosToGraphPos(pos.y);
-        System.out.println("addToGraph: "+obj.getClass().getSimpleName());
         GraphUtils.addToGraph(zeroIntelligenceGraph, tileX, tileY);
         GraphUtils.addToGraph(normalIntelligenceGraph, tileX, tileY);
     }
