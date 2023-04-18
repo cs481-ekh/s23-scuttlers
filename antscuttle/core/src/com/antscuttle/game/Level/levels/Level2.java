@@ -61,7 +61,6 @@ public class Level2 extends Level{
         new Point(21,0),
         new Point(1,5),
         new Point(2,5),
-        new Point(3,5),
         new Point(4,5),
         new Point(5,5),
         new Point(18,5),
@@ -74,7 +73,6 @@ public class Level2 extends Level{
         new Point(25,5),
         new Point(1,10),
         new Point(2,10),
-        new Point(3,10),
         new Point(4,10),
         new Point(5,10),
         new Point(6,10),
@@ -85,7 +83,6 @@ public class Level2 extends Level{
         new Point(11,10),
         new Point(12,10),
         new Point(22,10),
-        new Point(23,10),
         new Point(24,10),
         new Point(25,10),
         new Point(1,15),
@@ -96,7 +93,6 @@ public class Level2 extends Level{
         new Point(6,15),
         new Point(8,15),
         new Point(9,15),
-        new Point(10,15),
         new Point(11,15),
         new Point(12,15),
         new Point(13,15),
@@ -245,7 +241,6 @@ public class Level2 extends Level{
         new Point(6,16),
         new Point(8,16),
         new Point(9,16),
-        new Point(10,16),
         new Point(11,16),
         new Point(12,16),
         new Point(13,16),
@@ -254,7 +249,6 @@ public class Level2 extends Level{
         new Point(16,16),
         new Point(1,11),
         new Point(2,11),
-        new Point(3,11),
         new Point(4,11),
         new Point(5,11),
         new Point(6,11),
@@ -264,12 +258,10 @@ public class Level2 extends Level{
         new Point(11,11),
         new Point(12,11),
         new Point(22,11),
-        new Point(23,11),
         new Point(24,11),
         new Point(25,11),
         new Point(1,6),
         new Point(2,6),
-        new Point(3,6),
         new Point(4,6),
         new Point(5,6),
         new Point(6,6),
@@ -403,6 +395,7 @@ public class Level2 extends Level{
         
         for(LevelObject plate: plates){
             levelData.addInteractableObject(plate);
+            levelData.addHazardousObject(plate);
         }
         
         for(Point p: end){

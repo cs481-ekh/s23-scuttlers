@@ -5,8 +5,10 @@ import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.Damage.DamageType;
 import com.antscuttle.game.Level.LevelData;
 import com.antscuttle.game.LevelObject.InteractableLevelObject;
+import com.antscuttle.game.Util.GraphUtils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import java.awt.Point;
 
 /**
  *
@@ -29,14 +31,17 @@ public class Door extends InteractableLevelObject{
         if(ant.getIntelligence() < intelligenceReq)
             return false;
         isOpen = !isOpen;
+        Point p = new Point((int)pos.x/16, (int)pos.y/16);
         // Adjust collidability
         if(isOpen){
             levelData.removeCollidableObject(this);
+            levelData.addToGraphs(this);
             texture = openTex;
             sprite.setRegion(texture);
         }
         else{
             levelData.addCollidableObject(this);
+            levelData.removeFromGraphs(this);
             texture = closedTex;
             sprite.setRegion(texture);
         }

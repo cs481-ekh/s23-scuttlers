@@ -94,8 +94,10 @@ public class GraphUtils {
         
         g.addVertex(vertex);
         for(String n : neighbors){
-            if(g.containsVertex(vertex) && g.containsVertex(n))
+            if(g.containsVertex(vertex) && g.containsVertex(n)){
                 g.addEdge(vertex, n);
+                System.out.println("Added edge: "+vertex.toString()+":"+n.toString());
+            }
         }
         
     }

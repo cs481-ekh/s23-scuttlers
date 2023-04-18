@@ -146,6 +146,7 @@ public class MoveBlock extends DecisionBlock {
         Set<Point> potentialTargets;
         // Find all potential targets of type targetType
         String targetType = options.getFirstOptionChoice();
+        targetType = targetType.replaceAll(" ", "");
         potentialTargets = findTargets(levelData, gameData, targetType, g, ant);
         for(Point p: potentialTargets){
             // Find path for each potential target
