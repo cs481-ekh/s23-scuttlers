@@ -128,4 +128,5 @@ public abstract class DecisionBlock implements Serializable{
         
         return null;
     }
+   public abstract void resetBlock();
 }

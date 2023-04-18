@@ -73,7 +73,8 @@ public class MoveBlock extends DecisionBlock {
         
         // Refresh path every so many calls
         if(pathCounter++ == 20){
-            findTargetAndPath(gameData,levelData);
+            currEdge = null;
+            refreshPath(gameData,levelData);
             pathCounter = 0;
             if(path == null || path.isEmpty()){
                 setExecutionResult(false);
@@ -117,7 +118,6 @@ public class MoveBlock extends DecisionBlock {
                 setFinished(true);
                 return;
             }
-            
             path.removeFirst();
             srcTile = new Point(targX,targY);
             currEdge = path.peek();
@@ -154,8 +154,37 @@ public class MoveBlock extends DecisionBlock {
             if(potentialPath != null && (path == null || potentialPath.size()< path.size())){
                 path = (LinkedList<DefaultEdge>)potentialPath;
                 finalTarget = p;
+                if(targetType.equals("Ant")){
+                    objectTarget = levelData.enemyAt(p);
+                } else {
+                    objectTarget = levelData.objAt(p);
+                }
             }
         }
+        if(path != null)
+            currEdge = path.peek();
+    }
+    protected void refreshPath(GameData gameData, LevelData levelData){
+        Vector2 objPos;
+        Point tilePos;
+        // If target no longer exists, block fails
+        if(objectTarget == null){
+            path = null;
+            currEdge = null;
+            return;
+        }
+        if(objectTarget instanceof Ant){
+            objPos = ((Ant)objectTarget).getPos();
+            tilePos = new Point(
+                (int)(objPos.x/32),
+                (int)(objPos.y/32));
+        } else {
+            objPos = ((LevelObject)objectTarget).getPos();
+            tilePos = new Point(
+                (int)(objPos.x/16),
+                (int)(objPos.y/16));
+        }
+        path = findPath(tilePos);
         if(path != null)
             currEdge = path.peek();
     }
@@ -163,7 +192,7 @@ public class MoveBlock extends DecisionBlock {
         List<DefaultEdge> potentialPath;
         try{
             GraphPath gp = shortestPath
-                    .getPath(GraphUtils.getVertexName((int) ant.getPos().x / 32, (int) ant.getPos().y / 32),  GraphUtils.getVertexName(sink.x, sink.y));
+                    .getPath(GraphUtils.getVertexName((int) (ant.getPos().x / 32), (int) (ant.getPos().y / 32)),  GraphUtils.getVertexName(sink.x, sink.y));
             if(gp == null)
                 return null;
             potentialPath = gp.getEdgeList();
@@ -180,6 +209,21 @@ public class MoveBlock extends DecisionBlock {
     }
     public Point getTargetTile(){
         return finalTarget;
+    }
+    @Override
+    public void resetBlock(){
+        setup = false;
+        ant = null;
+        g = null;
+        shortestPath = null;
+        path = null;
+        currEdge = null;
+        srcTile = null;
+        pathCounter = 0;
+        finalTarget = null;
+        objectTarget = null;
+        setFinished(false);
+        setExecutionResult(true);
     }
      
 }

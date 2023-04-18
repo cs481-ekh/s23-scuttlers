@@ -236,6 +236,7 @@ public class LevelData implements Serializable{
         targetables.addAll(interactableObjects);
         targetables.addAll(hazardousObjects);
         targetables.addAll(collidableObjects);
+        targetables.addAll(endSpaces);
         return targetables;
     }
     public Ant enemyAt(Point p){
