@@ -59,8 +59,8 @@ public class AttackBlock extends DecisionBlock{
     
     
     @Override
-    public void execute(GameData gameData, LevelData levelData){
-        ant = gameData.getCurrentAnt();
+    public void execute(GameData gameData, LevelData levelData, Ant dbOwner){
+        
         String attackType = options.getFirstOptionChoice();
         float delta = Gdx.graphics.getDeltaTime();
         
@@ -68,7 +68,7 @@ public class AttackBlock extends DecisionBlock{
         if(!setup) {
             pathCounter = 0;
             attackCounter = 0;
-            ant = gameData.getCurrentAnt();
+            ant = dbOwner;
             g = levelData.getLevelGraph(ant.getIntelligence());
             srcTile = new Point((int)((ant.getPos().x)/32),(int)((ant.getPos().y)/32));
             shortestPath = new BFSShortestPath<>(g);
@@ -122,10 +122,7 @@ public class AttackBlock extends DecisionBlock{
         }
         if(attackType.equals("Ranged") && playerHasLineOfSight(finalTarget,path)){
             Ant enemy = (Ant)objectTarget;
-            // No movement required, attack
-            int damageDone = 0;
-            int playerDamage = ant.getRangedDamage();
-            DamageType damageType = ant.getRangedDamageType();
+            
             // Make bullet, add it to the levelData
             RangedWeapon rw = ant.getRangedWeapon();
             if(attackCounter == attackCooldown){
@@ -236,14 +233,21 @@ public class AttackBlock extends DecisionBlock{
         }
         
         potentialTargets = new HashSet<>();
-        if(targetType.equals("Ant") && attackType.equals("Ranged"))
+        if(ant.getName().equals("npc")){
+            if(attackType.equals("Ranged"))
+                potentialTargets.add(new Point(
+                    levelData.AntPosToGraphPos(gameData.getCurrentAnt().getPos().x),
+                    levelData.AntPosToGraphPos(gameData.getCurrentAnt().getPos().y)));
+            else
+                potentialTargets = findTargets(levelData, gameData, targetType, g, ant);
+        }else if(targetType.equals("Ant") && attackType.equals("Ranged"))
             for(Ant enemy: levelData.getEnemies()){
                 potentialTargets.add(new Point(
                         levelData.AntPosToGraphPos(enemy.getPos().x),
                         levelData.AntPosToGraphPos(enemy.getPos().y)));
             }
         else
-            potentialTargets = findTargets(levelData, gameData, targetType, g);
+            potentialTargets = findTargets(levelData, gameData, targetType, g, ant);
        
         if(targetIsCollidable && attackType.equals("Ranged")){
             

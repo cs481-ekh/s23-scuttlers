@@ -25,7 +25,6 @@ public class Zombie extends BaseAnt{
     private static final int baseDefense = 2;
     private static final int intelligence = 1;
     private static final int speed = 20;
-    private static AI defaultAI = new DefaultZombieAI(new Node(new RootBlock()), "default");
     
     private static final String[] moveAnimationUnarmed = {
         new String("animations/zombie/zombie_walk_up.png"),
@@ -48,7 +47,7 @@ public class Zombie extends BaseAnt{
             baseDefense,
             intelligence,
             speed, 
-            defaultAI, 
+            new DefaultZombieAI(new Node(new RootBlock()), "default"), 
             moveAnimationUnarmed, 
             null, 
             null, 

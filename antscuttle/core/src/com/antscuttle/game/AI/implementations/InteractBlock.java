@@ -22,7 +22,7 @@ public class InteractBlock extends DecisionBlock{
     }
     
     @Override
-    public void execute(GameData gameData, LevelData levelData){
+    public void execute(GameData gameData, LevelData levelData, Ant dbOwner){
         // get the current ant 
         // BaseAnt ant = (BaseAnt) gameData.getCurrentAnt();
 
