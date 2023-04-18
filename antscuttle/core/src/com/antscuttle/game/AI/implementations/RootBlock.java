@@ -12,7 +12,7 @@ import com.antscuttle.game.AI.options.RootOptions;
 public class RootBlock extends DecisionBlock {
     public RootBlock(){
         super(new RootOptions());
-        execute(null, null);
+        execute(null, null, null);
     }
     @Override
     public void resetBlock(){};

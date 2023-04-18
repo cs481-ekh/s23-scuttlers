@@ -50,13 +50,13 @@ public class MoveBlock extends DecisionBlock {
         super(options);
     }
     @Override
-    public void execute(GameData gameData, LevelData levelData){
+    public void execute(GameData gameData, LevelData levelData, Ant dbOwner){
         float delta = Gdx.graphics.getDeltaTime();
         
         
         if(!setup) {
             pathCounter = 0;
-            ant = gameData.getCurrentAnt();
+            ant = dbOwner;
             g = levelData.getLevelGraph(ant.getIntelligence());
             shortestPath = new BFSShortestPath<>(g);
             findTargetAndPath(gameData, levelData);
@@ -146,7 +146,7 @@ public class MoveBlock extends DecisionBlock {
         Set<Point> potentialTargets;
         // Find all potential targets of type targetType
         String targetType = options.getFirstOptionChoice();
-        potentialTargets = findTargets(levelData, gameData, targetType, g);
+        potentialTargets = findTargets(levelData, gameData, targetType, g, ant);
         for(Point p: potentialTargets){
             // Find path for each potential target
             List<DefaultEdge> potentialPath = findPath(p);
