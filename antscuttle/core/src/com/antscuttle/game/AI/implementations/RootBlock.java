@@ -14,4 +14,6 @@ public class RootBlock extends DecisionBlock {
         super(new RootOptions());
         execute(null, null);
     }
+    @Override
+    public void resetBlock(){};
 }

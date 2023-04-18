@@ -27,6 +27,14 @@ public class AI implements Iterable, Serializable{
     public Node getRoot(){
         return root;
     }
+    public void resetAI(){
+        AIIterator it = this.iterator();
+        DecisionBlock db;
+        while(it.hasNextForceChildUse()){
+            db = it.nextForceChildUse();
+            db.resetBlock();
+        }
+    }
     // Not the Java Iterator because ours relies on DecisionBlock execution
     @Override
     public AIIterator iterator() {
@@ -41,7 +49,46 @@ public class AI implements Iterable, Serializable{
         public AIIterator(Node root){
             this.currentNode = this.root = root;
         }
-
+        public boolean hasNextForceChildUse(){
+            // If current block execution failed, then don't use the children
+            if(currentNode.hasChildren())
+                return true;
+            
+            // Check for siblings to the right
+            if(currentNode.hasRightSibling())
+                return true;
+            
+            // Check parents for siblings to the right
+            Node parent = currentNode;
+            while((parent = parent.getParent()) != null){
+                if(parent.hasRightSibling()){
+                    return true;
+                }
+            }
+            return false;
+        }
+        public DecisionBlock nextForceChildUse(){
+            Node startingNode = currentNode;
+            // If current block execution succeeded and children exist, use them
+            if(currentNode.hasChildren()){
+                currentNode = currentNode.getChildren().getFirst();
+            // Else if current Node has a right sibling use it
+            } else if(currentNode.hasRightSibling()){
+                currentNode = currentNode.getRightSibling();
+                
+            // Else search parents for siblings, potentially up to root
+            } else {
+                while(currentNode.hasParent()){
+                    currentNode = currentNode.getParent();
+                    if(currentNode.hasRightSibling()){
+                        currentNode = currentNode.getRightSibling();
+                        break;
+                    }
+                }
+            }
+            currentBlock = currentNode.getBlock();
+            return currentNode.equals(startingNode) ? null : currentNode.getBlock();
+        }
         @Override
         public boolean hasNext() {
             
@@ -55,8 +102,8 @@ public class AI implements Iterable, Serializable{
                 return true;
             
             // Check parents for siblings to the right
-            Node parent;
-            while((parent = currentNode.getParent()) != null){
+            Node parent = currentNode;
+            while((parent = parent.getParent()) != null){
                 if(parent.hasRightSibling()){
                     return true;
                 }

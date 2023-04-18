@@ -202,6 +202,7 @@ public class GameplayScreen extends ScreenAdapter{
             if(levelData.isGameWon()){
                 Object unlockedItem =gameData.unlockRandomItem();
                 Level unlockedLevel = gameData.unlockNewLevel();
+                
                 //Display game won + items unlocked dialog, go to NewGameScreen
             } else {
                 //Display game lost dialog, go to NewGameScreen
@@ -291,11 +292,9 @@ public class GameplayScreen extends ScreenAdapter{
     }
     private void doBlocks(){
         if (currentBlock.isFinished()) {
-            System.out.println("finished block");
+            
             // Reset the finished status and move on
-            DecisionBlock prev = currentBlock;
             currentBlock = (DecisionBlock)blockIterator.next();
-            prev.setFinished(false);
         }
         // If at the end of the tree, restart the tree.
         if (currentBlock instanceof RootBlock)
@@ -304,6 +303,7 @@ public class GameplayScreen extends ScreenAdapter{
     }
 
     private void initAI(){
+        player.getAI().resetAI();
         blockIterator = player.getAI().iterator();
         currentBlock = (DecisionBlock)blockIterator.next();
     }
@@ -313,9 +313,10 @@ public class GameplayScreen extends ScreenAdapter{
         Set<LevelObject> hazards = levelData.getHazardousObjects();
         Set<Projectile> projectiles = levelData.getProjectiles();
         for(LevelObject o: ends){
-            if(o.collides(player))
+            if(o.collides(player)){
                 levelData.setGameFinished(true);
                 levelData.setGameWon(true);
+            }
         }
         for(LevelObject o: hazards){
             if(o.collides(player))

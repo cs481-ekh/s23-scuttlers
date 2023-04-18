@@ -134,7 +134,7 @@ public class AttackBlock extends DecisionBlock{
                     if(enemy.getHealth()>0)
                         ant.attack(enemy, "Ranged", levelData);
                     else{
-                        System.out.println("enemy out of health");
+                        //enemy out of health
                         objectTarget = null;
                         setExecutionResult(true);
                         setFinished(true);
@@ -346,5 +346,23 @@ public class AttackBlock extends DecisionBlock{
                 
         return false;
     }
+    @Override
+    public void resetBlock(){
+        targetTile = null;
+        ant = null;
+        g = null;
+        shortestPath = null;
+        path = null;
+        setup = false;
+        currEdge = null;
+        srcTile = null;
+        pathCounter = 0;
+        finalTarget = null;
+        objectTarget = null;
+        attackCounter = 0;
+        setFinished(false);
+        setExecutionResult(true);
+    }
 
+    
 }

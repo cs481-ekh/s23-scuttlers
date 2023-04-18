@@ -41,4 +41,8 @@ public class InteractBlock extends DecisionBlock{
     public static Class<? extends BlockOptions> getOptionsClass(){
         return InteractOptions.class;
     }
+    @Override
+    public void resetBlock(){
+        
+    }
 }
