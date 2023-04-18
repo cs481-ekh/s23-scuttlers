@@ -207,10 +207,11 @@ public class LevelData implements Serializable{
         normalIntelligenceGraph.removeVertex(vertex);
     }
 
-    private void addToGraphs(LevelObject obj) {
+    public void addToGraphs(LevelObject obj) {
         Vector2 pos = obj.getPos();
         int tileX = LevelObjPosToGraphPos(pos.x);
         int tileY = LevelObjPosToGraphPos(pos.y);
+        System.out.println("addToGraph: "+obj.getClass().getSimpleName());
         GraphUtils.addToGraph(zeroIntelligenceGraph, tileX, tileY);
         GraphUtils.addToGraph(normalIntelligenceGraph, tileX, tileY);
     }
@@ -234,7 +235,6 @@ public class LevelData implements Serializable{
         Set<LevelObject> targetables = new HashSet<>();
         targetables.addAll(attackableObjects);
         targetables.addAll(interactableObjects);
-        targetables.addAll(hazardousObjects);
         targetables.addAll(collidableObjects);
         targetables.addAll(endSpaces);
         return targetables;

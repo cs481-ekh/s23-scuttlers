@@ -87,7 +87,7 @@ public abstract class DecisionBlock implements Serializable{
                     Vector2 pos = gameData.getCurrentAnt().getPos();
                     int posx = (int)(pos.x/32);
                     int posy = (int)(pos.y/32);
-                    enemyPoints.add(new Point(posx, posy));
+                    enemyPoints.addAll(GraphUtils.getVertexNeighborsAsPoints(posx, posy));
                 }else
                     enemyPoints = levelData.getEnemyNeighboringPoints();
                 targets.addAll(enemyPoints);

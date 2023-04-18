@@ -360,6 +360,8 @@ public abstract class BaseAnt implements Ant, Serializable{
         int damage = 0;
         DamageType damageType = DamageType.Physical;
         
+        if(target == null)
+            return 0;
         // Find direction
         Point theirPos, myPos;
         AnimationDirection theirDir;
