@@ -44,6 +44,7 @@ public class AntScuttleGame extends Game {
 		FileHandle folder = Gdx.files.internal("saves");
 		LinkedList<String> fileNames = new LinkedList<>();
 		for(FileHandle file: folder.list()){
+                    if(file.toString().endsWith(".txt"))
 			fileNames.add(file.toString());
 		}
 
