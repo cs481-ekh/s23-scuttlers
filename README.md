@@ -1,6 +1,47 @@
+# AntScuttle
+
+Contributors:<br>
+Anthony Baird<br>
+Jack Cunningham<br>
+Kyle Hanson<br>
+
+## Abstract
+Artificial Intelligence has become a major field in Computer Science. The sponsor wishes to be
+provided a game that can be used as an educational tool to introduce players to AI concepts. This
+game must use object-oriented design patterns in order to be easily extensible so that he, or others,
+can add to the project in the future with minimal effort.
+
+This project will provide the sponsor with Antscuttle, a top-down-pixel simulator. In the game,
+players will be given a scenario and, using their limited options for a level, design ants and decision
+trees that will complete the level. Completing a level may involve solving an environmental puzzle
+and/or defeating enemies. This gives the player a simple introduction to AI-related concepts while,
+hopefully, keeping their interest.
+
+A secondary goal was to design the game to make it easy for a developer to add new armors, weapons,
+characters, and decision blocks. We chose to use an open source license to promote accessibility of
+the code. The idea is that a developer should be able to add new items to the game with as little 
+effort as possible, and without having to change much game code (if any).
+
+## Project Description
+
+TBD (what we actually built, how it works, include screenshots)
+
+## Build
+To build the project from the main directory:
+```
+./build.sh
+```
+
+The build provides a fat jar, which will work apart from the codebase. It can be run using:
+```
+java -jar antscuttle-1.5-all.jar
+```
+
+### Build / Run Requirements
+Java JDK 11+
+
+### Build Status
 ![main workflow](https://github.com/cs481-ekh/s23-scuttlers/actions/workflows/main.yml/badge.svg)
-# capstone-template
-BSU CS481 Capstone project template
 
 ## Attributions
 
@@ -15,6 +56,7 @@ https://opengameart.org/content/characters-zombies-and-weapons-oh-my
 https://opengameart.org/content/roguelikerpg-pack-1700-tiles
 
 https://opengameart.org/content/play-pause-mute-and-unmute-buttons
+
 https://www.flaticon.com/free-icons/pause
 
 https://opengameart.org/content/fantasy-sword-set
