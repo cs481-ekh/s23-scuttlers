@@ -34,7 +34,7 @@ To build the project from the main directory:
 
 The build provides a fat jar, which will work apart from the codebase. It can be run using:
 ```
-java -jar antscuttle-1.5-all.jar
+java -jar antscuttle-1.6-all.jar
 ```
 
 ### Build / Run Requirements
