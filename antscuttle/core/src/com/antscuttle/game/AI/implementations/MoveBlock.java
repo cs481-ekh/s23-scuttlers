@@ -44,8 +44,9 @@ public class MoveBlock extends DecisionBlock {
     Point srcTile;
     int pathCounter;
     Point finalTarget;
-    Object objectTarget;
 
+    public Object objectTarget;
+    
     public MoveBlock(MoveOptions options){
         super(options);
     }
