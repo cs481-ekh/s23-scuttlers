@@ -19,6 +19,7 @@ public class PressurePlate extends InteractableLevelObject{
     private boolean isPressed;
     private TextureRegion anim[];
     private int pressedTime;
+    private boolean triggered = false;
     
     public PressurePlate(TextureRegion tex[], InteractableLevelObject o){
         super(tex[0], 0, 0);
@@ -30,12 +31,15 @@ public class PressurePlate extends InteractableLevelObject{
     
     @Override
     public boolean interact(Ant ant, LevelData levelData) {
-        if(!isPressed){
+        if(!isPressed && !triggered){
             //affectedObject.interact(ant, levelData);
-            isPressed = true;
+            isPressed = triggered = true;
             sprite.setRegion(anim[1]);
             if(affectedObject != null)
                 affectedObject.interact(ant, levelData);
+            if(triggered){
+                levelData.removeInteractableObject(this);
+            }
         }
         return true;
     }

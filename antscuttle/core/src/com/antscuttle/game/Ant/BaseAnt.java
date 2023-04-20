@@ -360,6 +360,8 @@ public abstract class BaseAnt implements Ant, Serializable{
         int damage = 0;
         DamageType damageType = DamageType.Physical;
         
+        if(target == null)
+            return 0;
         // Find direction
         Point theirPos, myPos;
         AnimationDirection theirDir;
@@ -375,8 +377,7 @@ public abstract class BaseAnt implements Ant, Serializable{
         myPos = new Point(
             levelData.AntPosToGraphPos(pos.x),
             levelData.AntPosToGraphPos(pos.y));
-        System.out.println("Attack: theirpos: "+theirPos.x+","+theirPos.y
-            +" myPos: "+myPos.x+","+myPos.y);
+        
         if(theirPos.x > myPos.x)
             theirDir = AnimationDirection.Right;
         else if(theirPos.x < myPos.x)
@@ -409,13 +410,13 @@ public abstract class BaseAnt implements Ant, Serializable{
                         damage,
                         damageType);
                 switch(direction){
-                    case Left: proj.setPos(pos.x/2-20, pos.y/2);
+                    case Left: proj.setPos(pos.x/2-16, pos.y/2);
                         break;
-                    case Up: proj.setPos(pos.x/2,pos.y/2+20);
+                    case Up: proj.setPos(pos.x/2,pos.y/2+16);
                         break;
-                    case Right: proj.setPos(pos.x/2+20,pos.y/2);
+                    case Right: proj.setPos(pos.x/2+16,pos.y/2);
                         break;
-                    case Down: proj.setPos(pos.x/2, pos.y/2-20);
+                    case Down: proj.setPos(pos.x/2, pos.y/2-16);
                         break;
                 }
                     
@@ -455,7 +456,7 @@ public abstract class BaseAnt implements Ant, Serializable{
     @Override
     public void update(float delta){
         
-        if(lastPos.equals(pos)){
+        if(lastPos.equals(pos) && state.equals(AnimationType.Move)){
             state = AnimationType.Stand;
             stateTime = 0;
         }
@@ -463,8 +464,8 @@ public abstract class BaseAnt implements Ant, Serializable{
         lastPos.x = pos.x;
         if(state != AnimationType.Stand)
             stateTime++;
-        // Doing 3 animation frames at 20 calls per frame
-        if(stateTime > 59){
+        // Doing 3 animation frames at 15 calls per frame
+        if(stateTime > 44){
             stateTime = 0;
             state = AnimationType.Stand;
         }
@@ -477,7 +478,7 @@ public abstract class BaseAnt implements Ant, Serializable{
         Texture animation = getAnimation(state, direction); 
         if(animation != null){
         TextureRegion tex = new TextureRegion(animation)
-                .split(40, 40)[0][stateTime/20];
+                .split(40, 40)[0][stateTime/15];
             batch.draw(tex, pos.x, pos.y);
         }
     }

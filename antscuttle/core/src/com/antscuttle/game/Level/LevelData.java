@@ -159,7 +159,7 @@ public class LevelData implements Serializable{
         }
     }
     public void removeCollidableObject(LevelObject o){
-        if(collidableObjects != null){
+        if(collidableObjects != null && collidableObjects.contains(o)){
             collidableObjects.remove(o);
             removeFromGraphs(o);
         }
@@ -207,7 +207,7 @@ public class LevelData implements Serializable{
         normalIntelligenceGraph.removeVertex(vertex);
     }
 
-    private void addToGraphs(LevelObject obj) {
+    public void addToGraphs(LevelObject obj) {
         Vector2 pos = obj.getPos();
         int tileX = LevelObjPosToGraphPos(pos.x);
         int tileY = LevelObjPosToGraphPos(pos.y);
@@ -234,8 +234,8 @@ public class LevelData implements Serializable{
         Set<LevelObject> targetables = new HashSet<>();
         targetables.addAll(attackableObjects);
         targetables.addAll(interactableObjects);
-        targetables.addAll(hazardousObjects);
         targetables.addAll(collidableObjects);
+        targetables.addAll(endSpaces);
         return targetables;
     }
     public Ant enemyAt(Point p){

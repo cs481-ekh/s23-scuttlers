@@ -33,6 +33,8 @@ public class AntDecorator implements Ant, Serializable{
     @Override
     public int attack(Object target, String attackType, LevelData levelData){
         int damageDone = 0;
+        if(target == null)
+            return 0;
         if(attackType.equals("Melee")){
             if(target instanceof InteractableLevelObject)
                 damageDone = ((InteractableLevelObject)target).receiveAttack(damage, damageType);

@@ -66,23 +66,30 @@ public abstract class DecisionBlock implements Serializable{
     public void setFinished(boolean finished){
         this.finished = finished;
     }
-    public void execute(GameData gameData, LevelData levelData){
+    public void execute(GameData gameData, LevelData levelData, Ant dbOwner){
         // Temp code
         executionResult = true;
     }
     public static Class<? extends BlockOptions> getOptionsClass(){
         return null;
     }
-    public Set<Point> findTargets(LevelData levelData, GameData gameData, String targetType, Graph<String,DefaultEdge> g){
+    public Set<Point> findTargets(LevelData levelData, GameData gameData, String targetType, Graph<String,DefaultEdge> g, Ant dbOwner){
         Set<Point> targets = new HashSet<>();
         Set<LevelObject> levelObjs = new HashSet<>();
-        Ant player = gameData.getCurrentAnt();
+        Ant player = dbOwner;
         Vector2 playerPos = player.getPos();
         int antX = levelData.AntPosToGraphPos(playerPos.x);
         int antY = levelData.AntPosToGraphPos(playerPos.y);
         switch(targetType){
             case "Ant": 
-                Set<Point> enemyPoints = levelData.getEnemyNeighboringPoints();
+                Set<Point> enemyPoints = new HashSet<>();
+                if(player.getName().equals("npc")){
+                    Vector2 pos = gameData.getCurrentAnt().getPos();
+                    int posx = (int)(pos.x/32);
+                    int posy = (int)(pos.y/32);
+                    enemyPoints.addAll(GraphUtils.getVertexNeighborsAsPoints(posx, posy));
+                }else
+                    enemyPoints = levelData.getEnemyNeighboringPoints();
                 targets.addAll(enemyPoints);
                 break;
             case "Random": 
@@ -128,4 +135,5 @@ public abstract class DecisionBlock implements Serializable{
         
         return null;
     }
+   public abstract void resetBlock();
 }

@@ -24,7 +24,9 @@ public class InteractBlock extends DecisionBlock{
     }
     
     @Override
-    public void execute(GameData gameData, LevelData levelData){
+
+    public void execute(GameData gameData, LevelData levelData, Ant dbOwner){
+
         MoveBlock moveBlock = new MoveBlock(new MoveOptions(options.getFirstOptionChoice()));
         // get the current ant 
         // BaseAnt ant = (BaseAnt) gameData.getCurrentAnt();
@@ -59,5 +61,9 @@ public class InteractBlock extends DecisionBlock{
     }
     public static Class<? extends BlockOptions> getOptionsClass(){
         return InteractOptions.class;
+    }
+    @Override
+    public void resetBlock(){
+        
     }
 }

@@ -12,6 +12,7 @@ import com.antscuttle.game.AI.implementations.InteractBlock;
 import com.antscuttle.game.AI.implementations.MoveBlock;
 import com.antscuttle.game.AI.implementations.RootBlock;
 import com.antscuttle.game.AI.options.AttackOptions;
+import com.antscuttle.game.AI.options.InteractOptions;
 import com.antscuttle.game.AI.options.MoveOptions;
 import com.antscuttle.game.Buttons.BackButton;
 import com.antscuttle.game.Buttons.ScuttleButton;
@@ -86,7 +87,7 @@ public class AIEditorScreen extends ScreenAdapter{
     public final RootBlock rBlock;
     public MoveBlock mBlock;
     public AttackBlock aBlock;
-    public final InteractBlock iBlock;
+    public InteractBlock iBlock;
     public LinkedList<DecisionBlock> moveList;
     AntScuttleGame game;
     GameData gameData;
@@ -94,6 +95,7 @@ public class AIEditorScreen extends ScreenAdapter{
     final Skin skin;
     public final Image moveImage;
     public final Image attackImage;
+    public final Image interactImage;
     public final Image rootImage;
     public final Image saveImage;
 
@@ -106,12 +108,13 @@ public class AIEditorScreen extends ScreenAdapter{
         this.rBlock = new RootBlock();
         this.mBlock = new MoveBlock(new MoveOptions(null));
         this.aBlock = new AttackBlock(new AttackOptions(null, null));
-        this.iBlock = new InteractBlock(null);
+        this.iBlock = new InteractBlock(new InteractOptions(null));
         System.out.println(gameData.getAllAIs());
         dragAndDrop = new DragAndDrop();
         skin = new Skin(Gdx.files.internal("skin/clean-crispy-ui.json"));
         skin.add("move", new Texture("buttons/ai-editor/Move.png"));
 		skin.add("attack", new Texture("buttons/ai-editor/Attack.png"));
+        skin.add("interact", new Texture("buttons/ai-editor/Act.png"));
         skin.add("root", new Texture("buttons/ai-editor/Root.png"));
         skin.add("save", new Texture("buttons/ai-editor/Save-AI.png"));
         saveImage = new Image(skin, "save");
@@ -120,6 +123,8 @@ public class AIEditorScreen extends ScreenAdapter{
 		moveImage.setBounds(MENU_MOVE_X, MENU_MOVE_Y, 100, 50);
 		attackImage = new Image(skin, "attack");
 		attackImage.setBounds(MENU_ATTACK_X, MENU_ATTACK_Y, 100, 50);
+        interactImage = new Image(skin, "interact");
+        interactImage.setBounds(MENU_INTERACT_X, MENU_INTERACT_Y, 100, 50);
 		rootImage = new Image(skin, "root");
 		rootImage.setBounds(TREE_ROOT_X, TREE_ROOT_Y, 100, 50);
         this.targetNodeX = TREE_ROOT_X -150;
@@ -151,6 +156,7 @@ public class AIEditorScreen extends ScreenAdapter{
 		Gdx.input.setInputProcessor(stage);
         addNewSource(moveImage);
         addNewSource(attackImage);
+        addNewSource(interactImage);
         addNewTarget(rootImage);      
         stage.addActor(saveImage);
 
@@ -247,7 +253,16 @@ public class AIEditorScreen extends ScreenAdapter{
                     // getNextPosition(parentPosition);
                     addNewSource(attackImage);
                 }else{
-
+                    payload.getDragActor().setPosition(currentPosition.x, currentPosition.y);
+                    Node temp = new Node(iBlock);
+                    if(isLeftNode){
+                        parentNode.addChildAt(0,temp);
+                    }else{
+                        parentNode.addChildAt(1,temp);
+                    }
+                    nodeMap.put(temp, currentPosition);
+                    // getNextPosition(parentPosition);
+                    addNewSource(interactImage);
                 }
                 
                 //update the ai
@@ -372,7 +387,7 @@ public class AIEditorScreen extends ScreenAdapter{
                     selectBox.setVisible(false);
                 }
             });
-        }else{
+        }else if(imageName.equals("attack")){
             newImage.setBounds(MENU_ATTACK_X, MENU_ATTACK_Y, 100, 50);
             stage.addActor(newImage);
             selectBox = new SelectBox<String>(skin);
@@ -412,6 +427,28 @@ public class AIEditorScreen extends ScreenAdapter{
                     });
                 }
             }); 
+        }else{
+            newImage.setBounds(MENU_INTERACT_X, MENU_INTERACT_Y, 100, 50);
+            stage.addActor(newImage);
+            selectBox = new SelectBox<String>(skin);
+            selectBox.setName("Target");
+            selectBox.setItems(iBlock.getAllOptionOnes());
+            selectBox.setWidth(100f);
+            selectBox.setHeight(50f);
+            stage.addActor(selectBox);
+            selectBox.setVisible(true);
+            selectBox.setPosition(MENU_INTERACT_X, MENU_INTERACT_Y);
+            selectBox.toFront();
+
+            selectBox.addListener(new ChangeListener() {
+                public void changed(ChangeEvent event, Actor actor) {
+                    String selected = selectBox.getSelected();
+                    System.out.println(selected);
+                    iBlock = new InteractBlock(new InteractOptions(selected));
+                   // moveList.add(mBlock);
+                    selectBox.setVisible(false);
+                }
+            });
         }
        
         dragAndDrop.addSource(new Source(newImage) {
@@ -438,12 +475,13 @@ public class AIEditorScreen extends ScreenAdapter{
                 payload.setValidDragActor(validLabel);
                 newMove = ((coordinates.x == MENU_MOVE_X) && (coordinates.y == MENU_MOVE_Y)) ? true : false;
                 newAttack = ((coordinates.x == MENU_ATTACK_X) && (coordinates.y == MENU_ATTACK_Y)) ? true : false;
+                newInteraction = ((coordinates.x == MENU_INTERACT_X) && (coordinates.y == MENU_INTERACT_Y)) ? true: false;
                 return payload;
             }
             @Override
             public void dragStop(InputEvent event, float x, float y, int pointer, Payload payload, Target target) {
                 if (target == null) {
-                    if (newMove || newAttack) {
+                    if (newMove || newAttack || newInteraction) {
                         newImage.remove();
                         addNewSource(newImage);
                         return;

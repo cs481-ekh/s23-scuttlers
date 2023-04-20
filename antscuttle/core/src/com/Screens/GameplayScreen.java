@@ -1,5 +1,6 @@
 package com.Screens;
 
+import com.antscuttle.game.AI.AI;
 import com.antscuttle.game.AI.DecisionBlock;
 import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.AntScuttleGame;
@@ -43,9 +44,11 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import java.awt.Point;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Set;
 
 public class GameplayScreen extends ScreenAdapter{
@@ -88,6 +91,8 @@ public class GameplayScreen extends ScreenAdapter{
     private boolean gameStarted;
     private Iterator blockIterator;
     private DecisionBlock currentBlock;
+    private Map<Ant,DecisionBlock> enemyDBMap;
+    private Map<Ant,Iterator> enemyIterMap;
 
     public GameplayScreen(AntScuttleGame game, GameData gameData){
         this.game = game;
@@ -174,6 +179,7 @@ public class GameplayScreen extends ScreenAdapter{
                     level.startLevel();
                     startBtn.setVisible(false);
                     initAI();
+                    initEnemyAIs();
                 }
                 return true;
             }
@@ -202,6 +208,7 @@ public class GameplayScreen extends ScreenAdapter{
             if(levelData.isGameWon()){
                 Object unlockedItem =gameData.unlockRandomItem();
                 Level unlockedLevel = gameData.unlockNewLevel();
+                
                 //Display game won + items unlocked dialog, go to NewGameScreen
             } else {
                 //Display game lost dialog, go to NewGameScreen
@@ -291,31 +298,59 @@ public class GameplayScreen extends ScreenAdapter{
     }
     private void doBlocks(){
         if (currentBlock.isFinished()) {
-            System.out.println("finished block");
+            
             // Reset the finished status and move on
-            DecisionBlock prev = currentBlock;
             currentBlock = (DecisionBlock)blockIterator.next();
-            prev.setFinished(false);
         }
         // If at the end of the tree, restart the tree.
         if (currentBlock instanceof RootBlock)
             initAI();
-        currentBlock.execute(gameData, levelData);
+        currentBlock.execute(gameData, levelData, player);
+        
+        
+        Set<Ant> enemies = levelData.getEnemies();
+        for(Ant enemy: enemies){
+            Iterator iter = enemyIterMap.get(enemy);
+            DecisionBlock db = enemyDBMap.get(enemy);
+            if(db.isFinished()){
+                db = (DecisionBlock)iter.next();
+                enemyDBMap.put(enemy,db);
+            }
+            if(db instanceof RootBlock){
+                enemy.getAI().resetAI();
+                iter = enemy.getAI().iterator();
+                enemyIterMap.put(enemy, iter);
+                db = (DecisionBlock)iter.next();
+                enemyDBMap.put(enemy, db);
+            }
+            db.execute(gameData, levelData, enemy);
+        }
     }
 
     private void initAI(){
+        player.getAI().resetAI();
         blockIterator = player.getAI().iterator();
         currentBlock = (DecisionBlock)blockIterator.next();
     }
-    
+    private void initEnemyAIs(){
+        enemyDBMap = new HashMap<>();
+        enemyIterMap = new HashMap<>();
+        Set<Ant> enemies = levelData.getEnemies();
+        for(Ant enemy: enemies){
+            Iterator iter = enemy.getAI().iterator();
+            enemyIterMap.put(enemy, iter);
+            enemyDBMap.put(enemy, (DecisionBlock)iter.next());
+        }
+    }
     public void checkForCollisions(SpriteBatch batch){
         Set<LevelObject> ends = levelData.getEndSpaces();
         Set<LevelObject> hazards = levelData.getHazardousObjects();
         Set<Projectile> projectiles = levelData.getProjectiles();
         for(LevelObject o: ends){
-            if(o.collides(player))
+            if(o.collides(player)){
                 levelData.setGameFinished(true);
                 levelData.setGameWon(true);
+            }
         }
         for(LevelObject o: hazards){
             if(o.collides(player))
