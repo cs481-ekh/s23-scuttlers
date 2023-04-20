@@ -28,24 +28,10 @@ public class InteractBlock extends DecisionBlock{
     public void execute(GameData gameData, LevelData levelData, Ant dbOwner){
 
         MoveBlock moveBlock = new MoveBlock(new MoveOptions(options.getFirstOptionChoice()));
-        // get the current ant 
-        // BaseAnt ant = (BaseAnt) gameData.getCurrentAnt();
-
-        // get the graph
-        // Graph g = levelData.getLevelGraph(ant.getIntelligence())
-
-        // get the ant coords
-        // Point interactCoords = ant.getCoords();
-        
-        // get the levelObject from the graph
-        // LevelObject target = g.getLevelObjectAtCoords(interactCoords)
-
-        // interact with the levelObject
-        // target.interact();
-        
+    
         
         if(!moveBlock.isFinished()) {
-            moveBlock.execute(gameData, levelData) ;
+            moveBlock.execute(gameData, levelData, dbOwner) ;
         }  else {
             // Successfully traveled to target
             if (moveBlock.getExecutionResult()) {
