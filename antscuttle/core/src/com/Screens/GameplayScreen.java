@@ -208,7 +208,7 @@ public class GameplayScreen extends ScreenAdapter{
             if(levelData.isGameWon()){
                 Object unlockedItem =gameData.unlockRandomItem();
                 Level unlockedLevel = gameData.unlockNewLevel();
-                
+                winGame(unlockedItem, unlockedLevel);
                 //Display game won + items unlocked dialog, go to NewGameScreen
             } else {
                 //Display game lost dialog, go to NewGameScreen
@@ -286,6 +286,31 @@ public class GameplayScreen extends ScreenAdapter{
         //game.setScreen(new MainMenuScreen(game, gameData, true));
         Dialog dialog = new Dialog("Game Over", skin);
         dialog.text("You lost. Press OK to go back to the Main Menu");
+        dialog.button("OK").addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                game.setScreen(new MainMenuScreen(game, gameData, true));
+            }        
+        });
+        dialog.setBounds((stage.getWidth() / 2 - dialog.getWidth() / 2)-350, stage.getHeight() / 2 - dialog.getHeight() / 2, 400, 200);
+        stage.addActor(dialog);  
+
+    }
+    public void winGame(Object unlockedItem, Object unlockedLevel){
+        String unlockedItemString;
+        String unlockedLevelString;
+        if(!unlockedItem.toString().equals("false"))
+            unlockedItemString = "\n\nItem: " + unlockedItem.toString();
+        else    
+            unlockedItemString = "\n\nItem: Sorry, there are no more items available";
+        if(unlockedLevel != null)
+            unlockedLevelString = "\n\nLevel: " + unlockedLevel.toString();
+        else
+            unlockedLevelString = "\n\nLevel: Sorry, there are no more levels available";
+        //game.setScreen(new MainMenuScreen(game, gameData, true));
+        Dialog dialog = new Dialog("\t\t\t\t\tYou Win!", skin);
+        dialog.text("\tPress OK to go back to the Main Menu and\n\t\t\tcollect your rewards!" + unlockedItemString + unlockedLevelString);
+
         dialog.button("OK").addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
