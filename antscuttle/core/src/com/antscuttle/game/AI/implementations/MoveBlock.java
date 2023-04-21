@@ -160,6 +160,9 @@ public class MoveBlock extends DecisionBlock {
                     objectTarget = levelData.enemyAt(p);
                 } else {
                     objectTarget = levelData.objAt(p);
+                    if(objectTarget == null){
+                        objectTarget = levelData.findObjectAroundPoint(targetType, p);
+                    }
                 }
             }
         }
@@ -173,6 +176,8 @@ public class MoveBlock extends DecisionBlock {
         if(objectTarget == null){
             path = null;
             currEdge = null;
+            setFinished(true);
+            setExecutionResult(false);
             return;
         }
         if(objectTarget instanceof Ant){
@@ -181,10 +186,7 @@ public class MoveBlock extends DecisionBlock {
                 (int)(objPos.x/32),
                 (int)(objPos.y/32));
         } else {
-            objPos = ((LevelObject)objectTarget).getPos();
-            tilePos = new Point(
-                (int)(objPos.x/16),
-                (int)(objPos.y/16));
+            tilePos = finalTarget;
         }
         path = findPath(tilePos);
         if(path != null)

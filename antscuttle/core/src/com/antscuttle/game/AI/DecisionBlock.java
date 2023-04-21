@@ -53,7 +53,7 @@ public abstract class DecisionBlock implements Serializable{
         return options;
     }
     
-    public boolean getExecutionResult(){
+    public Boolean getExecutionResult(){
         return executionResult;
     }
 

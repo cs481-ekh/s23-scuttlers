@@ -18,21 +18,23 @@ import com.badlogic.gdx.ai.pfa.Graph;
  */
 public class InteractBlock extends DecisionBlock{
     
-    
+    MoveBlock moveBlock;
     public InteractBlock(InteractOptions options){
         super(options);
+        moveBlock = new MoveBlock(new MoveOptions(options.getFirstOptionChoice()));
     }
     
     @Override
 
     public void execute(GameData gameData, LevelData levelData, Ant dbOwner){
 
-        MoveBlock moveBlock = new MoveBlock(new MoveOptions(options.getFirstOptionChoice()));
-    
         
+    
+        //System.out.println(moveBlock.getExecutionResult());
         if(!moveBlock.isFinished()) {
             moveBlock.execute(gameData, levelData, dbOwner) ;
         }  else {
+            
             // Successfully traveled to target
             if (moveBlock.getExecutionResult()) {
                 InteractableLevelObject ilo = (InteractableLevelObject) moveBlock.objectTarget;
@@ -50,6 +52,6 @@ public class InteractBlock extends DecisionBlock{
     }
     @Override
     public void resetBlock(){
-        
+        moveBlock = new MoveBlock(new MoveOptions(options.getFirstOptionChoice()));
     }
 }

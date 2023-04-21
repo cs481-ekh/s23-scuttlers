@@ -254,4 +254,19 @@ public class LevelData implements Serializable{
         }
         return null;
     }
+    public LevelObject findObjectAroundPoint(String targetType, Point p){
+        for(LevelObject obj: allObjects){
+            if(obj.getClass().getSimpleName().equals(targetType)){
+                Point objTile = new Point(
+                        (int)(obj.getPos().x/16),
+                        (int)(obj.getPos().y/16));
+                if((objTile.x == p.x-1 && objTile.y == p.y)
+                        || (objTile.x == p.x+1 && objTile.y == p.y)
+                        || (objTile.x == p.x && objTile.y == p.y+1)
+                        || (objTile.x == p.x && objTile.y == p.y-1))
+                    return obj;
+            }
+        }
+        return null;
+    }
 }
