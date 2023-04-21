@@ -64,7 +64,7 @@ public class MainMenuScreen extends ScreenAdapter {
     private Button settingsButton;
     private ButtonStyle settingsStyle;
     private Button continueButton;
-    private ButtonStyle continueStyle;
+    public ButtonStyle continueStyle;
     private final Texture logo = new Texture("antscuttle.png");
     private GameData gameData;
     /* y-axis for buttons */
@@ -313,6 +313,7 @@ public class MainMenuScreen extends ScreenAdapter {
                                 Object save = ois.readObject();
                                 if(save instanceof GameData){
                                     gameData = (GameData) save;
+                                    continueStyle.checkedOver = new TextureRegionDrawable(skin.getRegion("continueActive"));
                                 }
                                 
                             }catch (FileNotFoundException fnfe) {
