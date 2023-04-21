@@ -128,7 +128,8 @@ public class MainMenuScreen extends ScreenAdapter {
         skin.add("settingsActive", new Texture("buttons/cog2.png"));
         skin.add("settingsInactive", new Texture("buttons/cog1.png"));
         skin.add("continueActive", new Texture("buttons/main-menu/Continue-Active.png"));
-        skin.add("continueInactive", new Texture("buttons/main-menu/Continue-Unavailable.png"));
+        skin.add("continueInactive", new Texture("buttons/main-menu/Continue.png"));
+        skin.add("continueUnavailable", new Texture("buttons/main-menu/Continue-Unavailable.png"));
         saveStyle = new ButtonStyle();
         saveStyle.checked = new TextureRegionDrawable(skin.getRegion("saveInactive"));
         saveStyle.checkedOver = new TextureRegionDrawable(skin.getRegion("saveActive"));
@@ -148,9 +149,13 @@ public class MainMenuScreen extends ScreenAdapter {
         settingsStyle.checked = new TextureRegionDrawable(skin.getRegion("settingsInactive"));
         settingsStyle.checkedOver = new TextureRegionDrawable(skin.getRegion("settingsActive"));
         continueStyle = new ButtonStyle();
-        continueStyle.checked = new TextureRegionDrawable(skin.getRegion("continueInactive"));
-        if(gameData != null)
-            continueStyle.checkedOver = new TextureRegionDrawable(skin.getRegion("continueActive"));
+        if(gameData == null)
+            continueStyle.checked = new TextureRegionDrawable(skin.getRegion("continueUnavailable"));
+        else{
+            continueStyle.checked = new TextureRegionDrawable(skin.getRegion("continueActive"));
+            continueStyle.checkedOver = new TextureRegionDrawable(skin.getRegion("continueInactive"));
+        }
+
         exitButton = new Button(exitStyle);
         exitButton.setBounds(EXIT_BUTTON_LOC.x, EXIT_BUTTON_LOC.y, 200, 100);
         exitButton.setChecked(true);
@@ -313,7 +318,8 @@ public class MainMenuScreen extends ScreenAdapter {
                                 Object save = ois.readObject();
                                 if(save instanceof GameData){
                                     gameData = (GameData) save;
-                                    continueStyle.checkedOver = new TextureRegionDrawable(skin.getRegion("continueActive"));
+                                    continueStyle.checked = new TextureRegionDrawable(skin.getRegion("continueActive"));
+                                    continueStyle.checkedOver = new TextureRegionDrawable(skin.getRegion("continueInactive"));
                                 }
                                 
                             }catch (FileNotFoundException fnfe) {
