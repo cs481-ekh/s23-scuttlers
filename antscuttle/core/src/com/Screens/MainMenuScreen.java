@@ -152,8 +152,8 @@ public class MainMenuScreen extends ScreenAdapter {
         if(gameData == null)
             continueStyle.checked = new TextureRegionDrawable(skin.getRegion("continueUnavailable"));
         else{
-            continueStyle.checked = new TextureRegionDrawable(skin.getRegion("continueActive"));
-            continueStyle.checkedOver = new TextureRegionDrawable(skin.getRegion("continueInactive"));
+            continueStyle.checked = new TextureRegionDrawable(skin.getRegion("continueInactive"));
+            continueStyle.checkedOver = new TextureRegionDrawable(skin.getRegion("continueActive"));
         }
 
         exitButton = new Button(exitStyle);
@@ -318,8 +318,8 @@ public class MainMenuScreen extends ScreenAdapter {
                                 Object save = ois.readObject();
                                 if(save instanceof GameData){
                                     gameData = (GameData) save;
-                                    continueStyle.checked = new TextureRegionDrawable(skin.getRegion("continueActive"));
-                                    continueStyle.checkedOver = new TextureRegionDrawable(skin.getRegion("continueInactive"));
+                                    continueStyle.checked = new TextureRegionDrawable(skin.getRegion("continueInactive"));
+                                    continueStyle.checkedOver = new TextureRegionDrawable(skin.getRegion("continueActive"));
                                 }
                                 
                             }catch (FileNotFoundException fnfe) {
