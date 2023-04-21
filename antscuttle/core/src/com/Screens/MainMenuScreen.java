@@ -49,6 +49,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.badlogic.gdx.Preferences;
+import java.util.HashMap;
 
 public class MainMenuScreen extends ScreenAdapter {
     /* Buttons */
@@ -87,7 +88,7 @@ public class MainMenuScreen extends ScreenAdapter {
     int x;
     
     Preferences prefs; 
-
+    private File saveFolder = new File(System.getenv("APPDATA") + "\\" + "ScuttleSaves");
     
 
     AntScuttleGame game;
@@ -182,50 +183,11 @@ public class MainMenuScreen extends ScreenAdapter {
 
 
         // Create a list of file names from a folder
-        FileHandle folder = Gdx.files.internal("saves");
-        LinkedList<String> fileNames = new LinkedList<>();
-        for(FileHandle file: folder.list()){
-            fileNames.add(file.toString());
+        
+        if (!saveFolder.exists()){
+            saveFolder.mkdirs();
         }
-        if(isInitialMainScreen && fileNames.size() > 1){
-            // Create a new dialog
-            Dialog loadDialog = new Dialog("Title", skin);
-
-            // Create a select box for the dropdown
-            SelectBox<String> selectBox = new SelectBox<String>(skin);
-            TextButton okButton = new TextButton("OK", skin);
-            okButton.addListener(new ClickListener(){
-                @Override
-                public void clicked(InputEvent event, float x, float y){
-                    String fileName = selectBox.getSelected();
-                    FileInputStream fis;
-                    try {
-                        fis = new FileInputStream(fileName);
-                        ObjectInputStream ois = new ObjectInputStream(fis);
-                        Object save = ois.readObject();
-                        if(save instanceof GameData){
-                            gameData = (GameData) save;
-                        }
-                    }catch (FileNotFoundException fnfe) {
-                        Logger.getLogger(GameData.class.getName()).log(Level.SEVERE, null, fnfe);
-                    } catch (IOException ioe){
-                        Logger.getLogger(GameData.class.getName()).log(Level.SEVERE, null, ioe);
-                    } catch (ClassNotFoundException cnfe){
-                        Logger.getLogger(GameData.class.getName()).log(Level.SEVERE, null, cnfe);
-                    }
-                }
-            });
-                
-            // Add the file names to the select box
-            selectBox.setItems(fileNames.toArray(new String[0]));
-            loadDialog.button(okButton);
-            // Add the select box to the dialog
-            loadDialog.getContentTable().add(selectBox);
-            loadDialog.setBounds(stage.getWidth() / 2 - loadDialog.getWidth() / 2, stage.getHeight() / 2 - loadDialog.getHeight() / 2, 200, 100);
-            // Show the dialog
-            stage.addActor(loadDialog);
-            
-        }
+        
         
 
         saveGameButton.addListener(new ClickListener() {
@@ -245,7 +207,7 @@ public class MainMenuScreen extends ScreenAdapter {
                         // Serialize the SaveData object to a file using Kryo
                         if(gameData != null){ 
                             try {
-                                fos = new FileOutputStream("saves/" + fileName);
+                                fos = new FileOutputStream(saveFolder+"/" + fileName);
                                 ObjectOutputStream oos = new ObjectOutputStream(fos);
                                 oos.writeObject(gameData); 
                                 oos.close();
@@ -281,6 +243,7 @@ public class MainMenuScreen extends ScreenAdapter {
                     game.setScreen(new NewGameScreen(game, gameData)); 
                 } 
                 continueButton.setChecked(true);
+                
             }
 
         });
@@ -309,13 +272,21 @@ public class MainMenuScreen extends ScreenAdapter {
             public void clicked(InputEvent event, float x, float y){
                 long id = game.sfx.play(game.VOLUME);
                 // Create a list of file names from a folder
-                FileHandle folder = Gdx.files.internal("saves");
-                LinkedList<String> fileNames = new LinkedList<>();
-                for(FileHandle file: folder.list()){
-                    fileNames.add(file.toString());
+                Map<String,String> fileNameToFullPath = new HashMap<>();
+                for(File file: saveFolder.listFiles()){
+                    String full = file.getPath();
+                    String s = file.getName();
+                    // Remove extension
+                    s = s.substring(0,s.lastIndexOf("."));
+                    // Remove long path
+                    if(s.lastIndexOf("/") >= 0)
+                        s = s.substring(s.lastIndexOf("/"));
+                    if(s.lastIndexOf("\\") >= 0)
+                        s = s.substring(s.lastIndexOf("\\"));
+                    fileNameToFullPath.put(s, full);
                 }
 
-                if(fileNames.isEmpty()){
+                if(fileNameToFullPath.isEmpty()){
                     Dialog dialog = new Dialog("Load Error", skin);
                     dialog.text("You don't have any saved games");
                     dialog.button("OK");
@@ -333,12 +304,13 @@ public class MainMenuScreen extends ScreenAdapter {
                             String fileName = selectBox.getSelected();
                             FileInputStream fis;
                             try {
-                                fis = new FileInputStream(fileName);
+                                fis = new FileInputStream(fileNameToFullPath.get(fileName));
                                 ObjectInputStream ois = new ObjectInputStream(fis);
                                 Object save = ois.readObject();
                                 if(save instanceof GameData){
                                     gameData = (GameData) save;
                                 }
+                                
                             }catch (FileNotFoundException fnfe) {
                                 Logger.getLogger(GameData.class.getName()).log(Level.SEVERE, null, fnfe);
                             } catch (IOException ioe){
@@ -350,7 +322,7 @@ public class MainMenuScreen extends ScreenAdapter {
                     });
                         
                     // Add the file names to the select box
-                    selectBox.setItems(fileNames.toArray(new String[0]));
+                    selectBox.setItems(fileNameToFullPath.keySet().toArray(new String[0]));
                     loadDialog.button(okButton);
                     // Add the select box to the dialog
                     loadDialog.getContentTable().add(selectBox);
