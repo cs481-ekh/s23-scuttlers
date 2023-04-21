@@ -88,7 +88,7 @@ public class MainMenuScreen extends ScreenAdapter {
     int x;
     
     Preferences prefs; 
-    private File saveFolder = new File(System.getenv("APPDATA") + "\\" + "ScuttleSaves");
+    private File saveFolder;
     
 
     AntScuttleGame game;
@@ -166,8 +166,7 @@ public class MainMenuScreen extends ScreenAdapter {
         continueButton = new Button(continueStyle);
         continueButton.setBounds(CONTINUE_BUTTON_LOC.x, CONTINUE_BUTTON_LOC.y, 200, 100);
         continueButton.setChecked(true);
-
-
+        
     }
 
 
@@ -181,7 +180,12 @@ public class MainMenuScreen extends ScreenAdapter {
         stage.addActor(settingsButton);
         stage.addActor(newGameButton);
 
-
+        String os = System.getProperty("os.name").toLowerCase();
+        if(os.contains("windows"))
+            saveFolder = new File(System.getenv("APPDATA") + "\\" + "AntScuttle");
+        else
+            saveFolder = new File(System.getProperty("user.dir")+"/AntScuttle");
+        
         // Create a list of file names from a folder
         
         if (!saveFolder.exists()){
