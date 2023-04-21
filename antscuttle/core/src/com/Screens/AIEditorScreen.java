@@ -117,7 +117,7 @@ public class AIEditorScreen extends ScreenAdapter{
         skin.add("root", new Texture("buttons/ai-editor/Root.png"));
         skin.add("save", new Texture("buttons/ai-editor/Save-AI.png"));
         saveImage = new Image(skin, "save");
-        saveImage.setBounds((Gdx.graphics.getWidth() * 2/3)-150, 0, 100, 50);
+        saveImage.setBounds((Gdx.graphics.getWidth() * 2/3)-100, 0, 100, 50);
         moveImage = new Image(skin, "move");
 		moveImage.setBounds(MENU_MOVE_X, MENU_MOVE_Y, 100, 50);
 		attackImage = new Image(skin, "attack");
