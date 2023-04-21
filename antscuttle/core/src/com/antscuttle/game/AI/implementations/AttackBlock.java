@@ -53,6 +53,7 @@ public class AttackBlock extends DecisionBlock{
     int attackCounter;
     int attackCooldown = 40;
     
+    
     public AttackBlock(AttackOptions options){
         super(options);
     }
@@ -74,7 +75,7 @@ public class AttackBlock extends DecisionBlock{
             shortestPath = new BFSShortestPath<>(g);
             findTargetAndPath(gameData, levelData);
             setup = true;
-            if(path == null || path.isEmpty()){
+            if(path == null){
                 setExecutionResult(false);
                 setFinished(true);
                 return;
@@ -144,7 +145,8 @@ public class AttackBlock extends DecisionBlock{
             }
             return;
         }
-        if((antX == targX && antY == targY)){
+        if((antX == targX && antY == targY ||
+                antX == finalTarget.x && antY == finalTarget.y)){
             // Ant has reached edge target
             if(path!= null && !path.isEmpty())
                 path.removeFirst();

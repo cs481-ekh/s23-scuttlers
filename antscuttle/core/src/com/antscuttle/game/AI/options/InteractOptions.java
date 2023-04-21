@@ -8,8 +8,7 @@ import com.antscuttle.game.AI.BlockOptions;
  * @author antho
  */
 public class InteractOptions extends BlockOptions{
-    private static final String targetTypes[] = { "Door",
-        "Pressure Plate"};
+    private static final String targetTypes[] = { "Door"};
     public InteractOptions(String option1){
         super(option1, null);
     }
