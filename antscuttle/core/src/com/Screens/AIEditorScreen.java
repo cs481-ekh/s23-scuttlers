@@ -109,7 +109,6 @@ public class AIEditorScreen extends ScreenAdapter{
         this.mBlock = new MoveBlock(new MoveOptions(null));
         this.aBlock = new AttackBlock(new AttackOptions(null, null));
         this.iBlock = new InteractBlock(new InteractOptions(null));
-        System.out.println(gameData.getAllAIs());
         dragAndDrop = new DragAndDrop();
         skin = new Skin(Gdx.files.internal("skin/clean-crispy-ui.json"));
         skin.add("move", new Texture("buttons/ai-editor/Move.png"));
@@ -224,7 +223,6 @@ public class AIEditorScreen extends ScreenAdapter{
                 for (Map.Entry<Node, Vector2> entry : nodeMap.entrySet()) {
                     Node key = entry.getKey();
                     Vector2 value = entry.getValue();
-                    System.out.println(key + " is at position x= " + value.x +", y= " + value.y);
                     if(value.equals(parentPosition)){
                         parentNode = key;
                         break;
@@ -277,7 +275,6 @@ public class AIEditorScreen extends ScreenAdapter{
         for (Map.Entry<Node, Vector2> entry : nodeMap.entrySet()) {
             Node key = entry.getKey();
             Vector2 value = entry.getValue();
-            System.out.println(key + " is at position x= " + value.x +", y= " + value.y);
             if(value.equals(vector)){
                 vectorExists = true;
                 break;
@@ -381,7 +378,6 @@ public class AIEditorScreen extends ScreenAdapter{
             selectBox.addListener(new ChangeListener() {
                 public void changed(ChangeEvent event, Actor actor) {
                     String selected = selectBox.getSelected();
-                    System.out.println(selected);
                     mBlock = new MoveBlock(new MoveOptions(selected));
                    // moveList.add(mBlock);
                     selectBox.setVisible(false);
@@ -443,7 +439,6 @@ public class AIEditorScreen extends ScreenAdapter{
             selectBox.addListener(new ChangeListener() {
                 public void changed(ChangeEvent event, Actor actor) {
                     String selected = selectBox.getSelected();
-                    System.out.println(selected);
                     iBlock = new InteractBlock(new InteractOptions(selected));
                    // moveList.add(mBlock);
                     selectBox.setVisible(false);
