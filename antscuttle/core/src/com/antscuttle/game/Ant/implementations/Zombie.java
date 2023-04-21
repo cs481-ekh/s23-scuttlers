@@ -19,8 +19,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  */
 
 public class Zombie extends BaseAnt{
-    private static final int health = 30;
-    private static final int maxHealth = 30;
+    private static final int health = 25;
+    private static final int maxHealth = 25;
     private static final int baseDamage = 6;
     private static final int baseDefense = 2;
     private static final int intelligence = 1;

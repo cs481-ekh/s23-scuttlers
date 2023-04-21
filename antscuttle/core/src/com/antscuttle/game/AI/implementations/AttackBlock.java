@@ -249,9 +249,7 @@ public class AttackBlock extends DecisionBlock{
         else
             potentialTargets = findTargets(levelData, gameData, targetType, g, ant);
        
-        if(targetIsCollidable && attackType.equals("Ranged")){
-            
-        }
+        path = null;
         potentialPath = null;
         for(Point p: potentialTargets){
                 potentialPath = findPath(p);
@@ -260,8 +258,13 @@ public class AttackBlock extends DecisionBlock{
             if(potentialPath != null && (path == null || potentialPath.size()< path.size())){
                 path = (LinkedList<DefaultEdge>)potentialPath;
                 finalTarget = p;
-                if(targetType.equals("Ant"))
-                    objectTarget = (attackType.equals("Ranged"))? levelData.enemyAt(p): findEnemyAroundPoint(p, levelData);
+                if(targetType.equals("Ant")){
+                    if(ant.equals(gameData.getCurrentAnt()))
+                        objectTarget = (attackType.equals("Ranged"))? levelData.enemyAt(p): findEnemyAroundPoint(p, levelData);
+                    else
+                        objectTarget = gameData.getCurrentAnt();
+                }
+                    
             }
         }
         if(path != null)

@@ -53,5 +53,7 @@ public class InteractBlock extends DecisionBlock{
     @Override
     public void resetBlock(){
         moveBlock = new MoveBlock(new MoveOptions(options.getFirstOptionChoice()));
+        setFinished(false);
+        setExecutionResult(true);
     }
 }

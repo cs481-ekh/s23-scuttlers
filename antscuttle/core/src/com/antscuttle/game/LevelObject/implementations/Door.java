@@ -38,6 +38,8 @@ public class Door extends InteractableLevelObject{
             levelData.addToGraphs(this);
             texture = openTex;
             sprite.setRegion(texture);
+            levelData.removeAttackableObject(this);
+            levelData.removeInteractableObject(this);
         }
         else{
             levelData.addCollidableObject(this);

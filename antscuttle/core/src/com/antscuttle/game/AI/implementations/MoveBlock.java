@@ -73,7 +73,7 @@ public class MoveBlock extends DecisionBlock {
         float antY = ((ant.getPos().y)/32);
         
         // Refresh path every so many calls
-        if(pathCounter++ == 20){
+        if(pathCounter++ == 40){
             currEdge = null;
             refreshPath(gameData,levelData);
             pathCounter = 0;
