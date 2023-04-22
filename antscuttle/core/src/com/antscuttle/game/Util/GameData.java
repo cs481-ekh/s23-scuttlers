@@ -82,9 +82,6 @@ public class GameData implements java.io.Serializable{
         /* unlock first level */
         unlockNewLevel();
 
-        unlockedArmors.add(new Chestplate());
-        unlockedWeapons.add(new Glock());
-        unlockedWeapons.add(new SteelSword());
     }
 
     /* Getters */

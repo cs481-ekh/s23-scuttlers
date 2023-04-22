@@ -70,8 +70,7 @@ public class NewGameScreen extends ScreenAdapter{
         MAIN_MENU_HEIGHT = Gdx.graphics.getHeight();
         MAIN_MENU_WIDTH = Gdx.graphics.getWidth();
         
-        // TEMPORARY TO SHOW LEVEL SELECTION WORKS
-        gameData.unlockNewLevel();
+        
     }
 
     @Override
