@@ -189,4 +189,9 @@ public class AntDecorator implements Ant, Serializable{
     public BaseAnt.AnimationDirection getDirection() {
         return wrappedAnt.getDirection();
     }
+
+    @Override
+    public void reset() {
+        wrappedAnt.reset();
+    }
 }

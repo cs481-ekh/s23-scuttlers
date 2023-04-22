@@ -51,4 +51,5 @@ public interface Ant{
     public void render(SpriteBatch characterBatch);
     public void update(float deltaTime);
     public AnimationDirection getDirection();
+    public void reset();
 }

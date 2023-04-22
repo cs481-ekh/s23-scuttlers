@@ -204,7 +204,8 @@ public class GameplayScreen extends ScreenAdapter{
         menuBatch.draw(menuImg, gameX + (864), gameY, gameView.getWorldWidth()-864,gameView.getWorldHeight());
         menuBatch.end();
         // Check for game over  
-        if(levelData.isGameFinished()){        
+        if(levelData.isGameFinished()){
+            player.reset();
             if(levelData.isGameWon()){
                 Object unlockedItem =gameData.unlockRandomItem();
                 Level unlockedLevel = gameData.unlockNewLevel();

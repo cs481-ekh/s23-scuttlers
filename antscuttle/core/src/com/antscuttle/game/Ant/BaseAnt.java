@@ -456,7 +456,7 @@ public abstract class BaseAnt implements Ant, Serializable{
     @Override
     public void update(float delta){
         
-        if(lastPos.equals(pos) && state.equals(AnimationType.Move)){
+        if((lastPos == null || lastPos.equals(pos)) && state.equals(AnimationType.Move)){
             state = AnimationType.Stand;
             stateTime = 0;
         }
@@ -471,7 +471,15 @@ public abstract class BaseAnt implements Ant, Serializable{
         }
         
     }
-    
+    @Override
+    public void reset(){
+        health = maxHealth;
+        ai.resetAI();
+        direction = AnimationDirection.Down;
+        state = AnimationType.Stand;
+        stateTime = 0;
+        lastTypeUsed = null;
+    }
     @Override
     public void render(SpriteBatch batch){
         
