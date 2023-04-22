@@ -43,6 +43,9 @@ Java JDK 11+
 ### Build Status
 ![main workflow](https://github.com/cs481-ekh/s23-scuttlers/actions/workflows/main.yml/badge.svg)
 
+## Gameplay UI Tips
+When creating an AI, the blocks are placed in a tree structure. Each node can have two child nodes.
+
 ## Attributions
 
 ### CC0 licensed art:
