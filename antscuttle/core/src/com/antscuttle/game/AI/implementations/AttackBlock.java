@@ -4,20 +4,14 @@ package com.antscuttle.game.AI.implementations;
 import com.antscuttle.game.AI.BlockOptions;
 import com.antscuttle.game.AI.DecisionBlock;
 import com.antscuttle.game.AI.options.AttackOptions;
-import com.antscuttle.game.AI.options.MoveOptions;
 import com.antscuttle.game.Ant.Ant;
-import com.antscuttle.game.Ant.BaseAnt.AnimationDirection;
 import com.antscuttle.game.Damage.DamageType;
 import com.antscuttle.game.Level.LevelData;
 import com.antscuttle.game.LevelObject.LevelObject;
-import com.antscuttle.game.LevelObject.InteractableLevelObject;
-import com.antscuttle.game.LevelObject.implementations.Projectile;
 import com.antscuttle.game.Util.GameData;
 import com.antscuttle.game.Util.GraphUtils;
 import com.antscuttle.game.Weapon.RangedWeapon;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 import java.awt.Point;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -29,7 +23,7 @@ import org.jgrapht.alg.shortestpath.BFSShortestPath;
 import org.jgrapht.graph.DefaultEdge;
 
 /**
- *
+ * 
  * @author antho
  */
 public class AttackBlock extends DecisionBlock{
@@ -211,6 +205,11 @@ public class AttackBlock extends DecisionBlock{
             
         
     }
+    /**
+     * 
+     * @param gameData
+     * @param levelData 
+     */
     protected void findTargetAndPath(GameData gameData, LevelData levelData){
         Set<Point> potentialTargets;
         // Find all potential targets of type targetType
@@ -272,6 +271,12 @@ public class AttackBlock extends DecisionBlock{
         if(path != null)
             currEdge = path.peek();
     }
+    /**
+     * 
+     * @param target
+     * @param neighborPath
+     * @return 
+     */
     protected boolean playerHasLineOfSight(Point target, List<DefaultEdge> neighborPath){
         if(srcTile.x != target.x && srcTile.y != target.y)
             return false;
@@ -281,6 +286,12 @@ public class AttackBlock extends DecisionBlock{
             return pathHasStaticY(target.y, neighborPath);
         }
     }
+    /**
+     * 
+     * @param x
+     * @param path
+     * @return 
+     */
     protected boolean pathHasStaticX(int x, List<DefaultEdge> path){
         int srcx, targx;
         for(DefaultEdge edge : path){
@@ -293,6 +304,12 @@ public class AttackBlock extends DecisionBlock{
         }
         return true;
     }
+    /**
+     * 
+     * @param y
+     * @param path
+     * @return 
+     */
     protected boolean pathHasStaticY(int y, List<DefaultEdge> path){
         int srcy, targy;
         for(DefaultEdge edge : path){
@@ -303,6 +320,12 @@ public class AttackBlock extends DecisionBlock{
         }
         return true;
     }
+    
+    /**
+     * 
+     * @param sink
+     * @return 
+     */
     protected LinkedList<DefaultEdge> findPath(Point sink){
         List<DefaultEdge> potentialPath;
         try{
@@ -320,10 +343,20 @@ public class AttackBlock extends DecisionBlock{
         // Point not in graph
         return null;
     }
+    /**
+     * 
+     * @return options class 
+     */
     public static Class<? extends BlockOptions> getOptionsClass(){
         return AttackOptions.class;
     }
 
+    /**
+     * 
+     * @param p
+     * @param levelData
+     * @return 
+     */
     private Ant findEnemyAroundPoint(Point p, LevelData levelData) {
         Set<Ant> enemies = levelData.getEnemies();
         for(Ant e:enemies){
@@ -337,7 +370,11 @@ public class AttackBlock extends DecisionBlock{
         }
         return null;
     }
-
+    /**
+     * 
+     * @param levelData
+     * @return 
+     */
     private boolean objectIsAlive(LevelData levelData) {
         if(objectTarget == null)
             return false;

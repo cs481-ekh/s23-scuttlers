@@ -1,6 +1,4 @@
-/**
- * ClassFactory: 
- */
+
 package com.antscuttle.game.Util;
 
 import com.antscuttle.game.AI.BlockOptions;
@@ -16,7 +14,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
 
 /**
- *
+ * ClassFactory: Not the traditional factory, but an all-in-one tool to instantiate
+ *               a given class.
  * @author antho
  */
 public class ClassFactory {

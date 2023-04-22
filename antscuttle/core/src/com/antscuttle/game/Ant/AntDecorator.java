@@ -15,7 +15,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 /**
- *
+ * A decorator for Ants to add elemental damage.
  * @author antho
  */
 public class AntDecorator implements Ant, Serializable{

@@ -31,21 +31,38 @@ public abstract class LevelObject extends Actor{
         }
     }
     
-    // Methods
-    
+    /**
+     * 
+     * @param o the object to check collision with
+     * @return true if hitboxes overlap, else false
+     */
     public boolean collides(LevelObject o){
         Rectangle r1 = getArea();
         Rectangle r2 = o.getArea();
         return r1.overlaps(r2);
     }
+    /**
+     * 
+     * @param a the ant to check collision with
+     * @return true if hitboxes overlap, else false
+     */
     public boolean collides(Ant a){
         Point objTile = new Point((int)pos.x/16, (int)pos.y/16);
         Point antTile = new Point((int)a.getPos().x/32, (int)a.getPos().y/32);
         return objTile.x == antTile.x && objTile.y == antTile.y;
     }
+    /**
+     * 
+     * @return hitbox 
+     */
     protected Rectangle getArea(){
         return new Rectangle(pos.x, pos.y, dim.x, dim.y);
     }
+    /**
+     * 
+     * @param x
+     * @param y 
+     */
     public void setPos(float x, float y){
         pos.x = x;
         pos.y = y;
@@ -53,9 +70,14 @@ public abstract class LevelObject extends Actor{
             sprite.setPosition(x, y);
         
     }
+    /**
+     * 
+     * @return pos 
+     */
     public Vector2 getPos(){
         return pos;
     }
+    
     protected abstract void init();
     public void update(float delta){}
     public void render(SpriteBatch batch){

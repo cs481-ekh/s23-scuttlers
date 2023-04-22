@@ -1,5 +1,7 @@
 package com.antscuttle.game.Level;
-
+/**
+ * Level: abstract class for level implementations
+ */
 import com.antscuttle.game.LevelObject.LevelObject;
 import com.antscuttle.game.Util.GraphUtils;
 import com.badlogic.gdx.audio.Music;
@@ -35,6 +37,9 @@ public abstract class Level implements java.io.Serializable{
     }
 
     // Methods
+    /**
+     * Init level stuff
+     */
     public void startLevel() {
         // Load the level's resources
         loadResources();
@@ -44,24 +49,48 @@ public abstract class Level implements java.io.Serializable{
         if(soundtrack != null)
             soundtrack.play();
     }
+    /**
+     * 
+     * @return name of the level
+     */
     public String getName(){
         return name;
     }
+    /**
+     * 
+     * @return Tiled map file location
+     */
     public String getTiledMap(){
         return tiledMapLoc;
     }
+    /**
+     * 
+     * @return player's start tile position 
+     */
     public Point getPlayerStartLoc(){
         return playerStartLoc;
     }
+    /**
+     * perform init tasks
+     */
     protected abstract void initLevelData();
+    /**
+     * if using asset manager, load resources 
+     */
     protected abstract void loadResources();
-    
+    /**
+     * removes collidable objects from pathfinding graphs, so they will
+     * be pathfound-around
+     */
     protected void removeCollidablesFromGraph(){
         // Remove collidable levelobjects from the graph
         for(LevelObject obj: levelData.getCollidableObjects()){
             levelData.removeFromGraphs(obj);
         }
     }
+    /**
+     * Remove hazardous objects from intelligent graph
+     */
     protected void removeHazardsFromGraph(){
         // Removes hazardous objs from normalIntGraph, but 
         // not zeroIntGraph
@@ -72,6 +101,10 @@ public abstract class Level implements java.io.Serializable{
                 (int)obj.getY());
         }
     }
+    /**
+     * 
+     * @param batch 
+     */
     public void render(SpriteBatch batch){
         if(levelData != null)
             for(LevelObject o : levelData.allObjects){
@@ -79,10 +112,19 @@ public abstract class Level implements java.io.Serializable{
             }
         
     }
+    /**
+     * 
+     * @param obj
+     * @param x tile pos
+     * @param y tile pos
+     */
     protected void addObjAtPos(LevelObject obj, int x, int y){
         obj.setPos(x*16, y*16);
         levelData.addToAllObjects(obj);
     }
+    /**
+     * initialize pathfinding graphs
+     */
     protected void initGraphs(){
         levelData.setNormalIntelligenceGraph(GraphUtils.getFreshSimpleGraph());
         levelData.setZeroIntelligenceGraph(GraphUtils.getFreshSimpleGraph());

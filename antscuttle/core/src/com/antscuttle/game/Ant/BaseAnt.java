@@ -24,7 +24,7 @@ import java.awt.Point;
 import java.io.Serializable;
 
 /**
- *
+ * Base abstract class for Ant implementations
  * @author antho
  */
 public abstract class BaseAnt implements Ant, Serializable{
@@ -103,6 +103,7 @@ public abstract class BaseAnt implements Ant, Serializable{
         this.stateTime = 0;
         
     }
+    
     @Override
     public Rectangle getArea(){
         return new Rectangle(pos.x, pos.y, dim.x, dim.y);
@@ -137,6 +138,11 @@ public abstract class BaseAnt implements Ant, Serializable{
                 return getMoveAnimation(dir);
         }
     }
+    /**
+     * 
+     * @param dir direction of movement
+     * @return texture for moving state
+     */
     protected Texture getMoveAnimation(AnimationDirection dir){
         if(lastTypeUsed == null)
             lastTypeUsed = AnimationType.Move;
@@ -146,6 +152,11 @@ public abstract class BaseAnt implements Ant, Serializable{
             default: return getUnarmedMoveAnimation(dir);
         }
     }
+    /**
+     * 
+     * @param dir direction of movement
+     * @return Texture for moving holding sword
+     */
     protected Texture getMeleeMoveAnimation(AnimationDirection dir){
         if(meleeWeapon == null)
             return getUnarmedMoveAnimation(dir);
@@ -163,9 +174,18 @@ public abstract class BaseAnt implements Ant, Serializable{
         }
         return null;
     }
+    /**
+     * 
+     * @return ant direction
+     */
     public AnimationDirection getDirection(){
         return direction;
     }
+    /**
+     * 
+     * @param dir direction of movement
+     * @return texture for moving with pistol
+     */
     protected Texture getRangedMoveAnimation(AnimationDirection dir){
         if(rangedWeapon == null)
             return getUnarmedMoveAnimation(dir);
@@ -183,6 +203,11 @@ public abstract class BaseAnt implements Ant, Serializable{
         }
         return null;
     }
+    /**
+     * 
+     * @param dir direction of movement
+     * @return texture for moving unarmed
+     */
     protected Texture getUnarmedMoveAnimation(AnimationDirection dir){
         Texture[] move = new Texture[moveAnimationUnarmed.length];
         for (int i = 0; i < moveAnimationUnarmed.length; i++) {
@@ -196,11 +221,21 @@ public abstract class BaseAnt implements Ant, Serializable{
         }
         return null;
     }
+    /**
+     * 
+     * @param dir direction of movement
+     * @return texture for melee attack
+     */
     protected Texture getMeleeAttackAnimation(AnimationDirection dir){
         if(meleeWeapon == null)
             return getUnarmedAttackAnimation(dir);
         return getMeleeWeaponAttackAnimation(dir);
     }
+    /**
+     * 
+     * @param dir direction of movement
+     * @return Texture frame for melee attack animation
+     */
     protected Texture getMeleeWeaponAttackAnimation(AnimationDirection dir){
         Texture[] move = new Texture[attackAnimationSword.length];
         for (int i = 0; i < attackAnimationSword.length; i++) {
@@ -216,6 +251,11 @@ public abstract class BaseAnt implements Ant, Serializable{
         }
         return null;
     }
+    /**
+     * 
+     * @param dir direction of movement
+     * @return texture frame for unarmed attack
+     */
     protected Texture getUnarmedAttackAnimation(AnimationDirection dir) {
         Texture[] move = new Texture[attackAnimationUnarmed.length];
         for (int i = 0; i < attackAnimationUnarmed.length; i++) {
@@ -229,6 +269,11 @@ public abstract class BaseAnt implements Ant, Serializable{
         }
        return null;
     }
+    /**
+     * 
+     * @param dir direction of movement
+     * @return animation frame for pistol attack
+     */
     protected Texture getRangedAttackAnimation(AnimationDirection dir) {
         Texture[] move = new Texture[attackAnimationPistol.length];
         if(rangedWeapon == null)

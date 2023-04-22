@@ -4,7 +4,7 @@ package com.antscuttle.game.AI.options;
 import com.antscuttle.game.AI.BlockOptions;
 
 /**
- *
+ * Blank options for RootBlock, just because it needs something
  * @author antho
  */
 public class RootOptions extends BlockOptions{

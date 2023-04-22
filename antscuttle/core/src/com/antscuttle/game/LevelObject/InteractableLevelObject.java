@@ -1,13 +1,12 @@
 /*
  * InteractableLevelObject: implementation of LevelObject for interactable
- *                    tiles such as doors.
+ *                    tiles such as doors, and attackable tiles.
  */
 package com.antscuttle.game.LevelObject;
 
 import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.Damage.DamageType;
 import com.antscuttle.game.Level.LevelData;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
@@ -15,7 +14,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  * @author antho
  */
 public abstract class InteractableLevelObject extends LevelObject{
-    private int intelligenceRequirement;
+    private final int intelligenceRequirement;
     public InteractableLevelObject(TextureRegion tex, int def, int intelligenceRequired){
         super(tex, def);
         this.intelligenceRequirement = intelligenceRequired;

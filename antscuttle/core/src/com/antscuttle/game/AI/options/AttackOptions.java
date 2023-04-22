@@ -2,11 +2,9 @@
 package com.antscuttle.game.AI.options;
 
 import com.antscuttle.game.AI.BlockOptions;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
- *
+ * Options for AttackBlock
  * @author antho
  */
 public class AttackOptions extends BlockOptions{

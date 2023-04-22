@@ -4,9 +4,6 @@
  */
 package com.antscuttle.game.LevelObject;
 
-import com.antscuttle.game.Damage.DamageType;
-import com.antscuttle.game.LevelObject.LevelObject;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**

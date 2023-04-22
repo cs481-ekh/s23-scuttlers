@@ -4,10 +4,9 @@ package com.antscuttle.game.AI;
 import java.io.Serializable;
 import java.util.LinkedList;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 /**
- *
+ * A tree node for AIs
  * @author antho
  */
 public class Node implements Serializable{
@@ -21,13 +20,20 @@ public class Node implements Serializable{
     private Node prev;
     private Node parent;
     
+    /**
+     * 
+     * @param block 
+     */
     public Node(DecisionBlock block){
         this.pos = 0;
         this.block = block;
         children = new LinkedList<>();
         this.next = this.prev = this.parent = null;
     }
-    
+    /**
+     * 
+     * @param child 
+     */
     public void addChild(Node child){
         
         if(!children.isEmpty()){
@@ -37,14 +43,28 @@ public class Node implements Serializable{
         child.parent = this;
         children.add(child);
     }
+    /**
+     * 
+     * @param pos 
+     */
     public void setPos(int pos){
         this.pos  = pos;
     }
 
+    /**
+     * 
+     * @param node
+     * @return block 
+     */
     public DecisionBlock getBlock(Node node){
         return node.block;
     }
-
+    /**
+     * 
+     * @param index
+     * @param child
+     * @return success
+     */
     public boolean addChildAt(int index, Node child){
         try{
             if(index > 0){
@@ -64,29 +84,60 @@ public class Node implements Serializable{
             return false;
         }
     }
-    /* hasNext: whether this node has a right sibling */
+    /**
+     * 
+     * @return whether this node has a right sib under same parent
+     */
     public boolean hasRightSibling(){
         return next != null;
     }
+    /**
+     * 
+     * @return sibling node
+     */
     public Node getRightSibling(){
         return next;
     }
+    /**
+     * 
+     * @return whether this node has a parent 
+     */
     public boolean hasParent(){
         return parent != null;
     }
+    /**
+     * 
+     * @return parent node
+     */
     public Node getParent(){
         return parent;
     }
+    /**
+     * 
+     * @return block 
+     */
     public DecisionBlock getBlock(){
         return block;
     }
+    /**
+     * 
+     * @return whether this node is a parent
+     */
     public boolean hasChildren(){
         return !children.isEmpty();
     }
+    /**
+     * 
+     * @return all children 
+     */
     public LinkedList<Node> getChildren(){
         return children;
     }
-    
+    /**
+     * 
+     * @param child
+     * @return success
+     */
     public boolean removeChild(Node child){
         if(child.prev != null)
             child.prev.next = child.next;
@@ -105,7 +156,10 @@ public class Node implements Serializable{
             return false;
         }
     }
-    
+    /**
+     * 
+     * @param children 
+     */
     public void setChildren(LinkedList<Node> children){
         this.children = children;
     }

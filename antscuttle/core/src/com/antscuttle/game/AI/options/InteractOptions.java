@@ -4,7 +4,7 @@ package com.antscuttle.game.AI.options;
 import com.antscuttle.game.AI.BlockOptions;
 
 /**
- *
+ * Options for InteractBlock
  * @author antho
  */
 public class InteractOptions extends BlockOptions{

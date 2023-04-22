@@ -1,25 +1,20 @@
 package com.antscuttle.game.AI.implementations;
 
 
-import com.antscuttle.game.AntScuttleGame;
 import com.antscuttle.game.AI.BlockOptions;
 import com.antscuttle.game.AI.DecisionBlock;
 import com.antscuttle.game.AI.options.InteractOptions;
 import com.antscuttle.game.AI.options.MoveOptions;
 import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.Level.LevelData;
-import com.antscuttle.game.LevelObject.LevelObject;
 import com.antscuttle.game.Util.GameData;
 import com.antscuttle.game.Util.GraphUtils;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.awt.Point;
-import java.util.HashSet;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 import org.jgrapht.Graph;
@@ -143,6 +138,11 @@ public class MoveBlock extends DecisionBlock {
         }
         
     }
+    /**
+     * 
+     * @param gameData
+     * @param levelData 
+     */
     protected void findTargetAndPath(GameData gameData, LevelData levelData){
         Set<Point> potentialTargets;
         // Find all potential targets of type targetType
@@ -169,6 +169,11 @@ public class MoveBlock extends DecisionBlock {
         if(path != null)
             currEdge = path.peek();
     }
+    /**
+     * 
+     * @param gameData
+     * @param levelData 
+     */
     protected void refreshPath(GameData gameData, LevelData levelData){
         Vector2 objPos;
         Point tilePos;
@@ -192,6 +197,11 @@ public class MoveBlock extends DecisionBlock {
         if(path != null)
             currEdge = path.peek();
     }
+    /**
+     * 
+     * @param sink the tile to pathfind to
+     * @return path
+     */
     protected LinkedList<DefaultEdge> findPath(Point sink){
         List<DefaultEdge> potentialPath;
         try{
@@ -208,12 +218,21 @@ public class MoveBlock extends DecisionBlock {
         // Point not in graph
         return null;
     }
+    /**
+     * 
+     * @return the options class 
+     */
     public static Class<? extends BlockOptions> getOptionsClass(){
         return InteractOptions.class;
     }
+    /**
+     * 
+     * @return tile pos of pathfinding target
+     */
     public Point getTargetTile(){
         return finalTarget;
     }
+    
     @Override
     public void resetBlock(){
         setup = false;

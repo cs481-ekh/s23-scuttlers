@@ -13,8 +13,10 @@ import java.util.LinkedList;
 import java.util.Set;
 
 /**
- * ClassDetector: finds implemented Armors, Weapons, Levels, Ants, DBs
- * @author antho
+ * ClassDetector: finds implemented Armors, Weapons, Levels, Ants, DBs.
+ *                places them in a list in the assets folder to be read at 
+ *                run time.
+ * @author anthony
  */
 public class ClassDetector {
     
@@ -26,6 +28,10 @@ public class ClassDetector {
     private static final String levelPackage = "Level.levels.";
     private boolean debugPrint = false;
     
+    /**
+     * 
+     * @return all armors detected by script in implementations folder
+     */
     public Set<Armor> findArmors() {
         Set<Armor> armors = new HashSet<>();
         ClassFactory cf = new ClassFactory();
@@ -55,7 +61,10 @@ public class ClassDetector {
         }
         return armors;
     }
-    
+    /**
+     * 
+     * @return all weapons detected by script in implementations folder
+     */
     public Set<Weapon> findWeapons() {
         Set<Weapon> weapons = new HashSet<>();
         
@@ -86,7 +95,10 @@ public class ClassDetector {
         }
         return weapons;
     }
-    
+    /**
+     * 
+     * @return all ant classes found by script in implementations folder
+     */
     public LinkedList<Class<? extends Ant>> findAntTypes(){
         LinkedList<Class<? extends Ant>> antTypes = new LinkedList<>();
         
@@ -118,7 +130,10 @@ public class ClassDetector {
         }
         return antTypes;
     }
-    
+    /**
+     * 
+     * @return all level classes found by script in levels folder
+     */
     public LinkedList<Class<? extends Level>> findLevels(){
         LinkedList<Class<? extends Level>> levels = new LinkedList<>();
         
@@ -148,7 +163,10 @@ public class ClassDetector {
         }
         return levels;
     }
-    
+    /**
+     * 
+     * @return all DecisionBlocks found by script in implementations folder
+     */
     public LinkedList<Class<? extends DecisionBlock>> findBlocks(){
         LinkedList<Class<? extends DecisionBlock>> blocks = new LinkedList<>();
         

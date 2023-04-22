@@ -6,16 +6,11 @@ import com.antscuttle.game.AI.DecisionBlock;
 import com.antscuttle.game.AI.options.InteractOptions;
 import com.antscuttle.game.AI.options.MoveOptions;
 import com.antscuttle.game.Ant.Ant;
-import com.antscuttle.game.Ant.BaseAnt;
 import com.antscuttle.game.Level.LevelData;
 import com.antscuttle.game.LevelObject.InteractableLevelObject;
 import com.antscuttle.game.Util.GameData;
-import com.badlogic.gdx.ai.pfa.Graph;
 
-/**
- *
- * @author antho
- */
+
 public class InteractBlock extends DecisionBlock{
     
     MoveBlock moveBlock;
@@ -25,12 +20,8 @@ public class InteractBlock extends DecisionBlock{
     }
     
     @Override
-
     public void execute(GameData gameData, LevelData levelData, Ant dbOwner){
 
-        
-    
-        //System.out.println(moveBlock.getExecutionResult());
         if(!moveBlock.isFinished()) {
             moveBlock.execute(gameData, levelData, dbOwner) ;
         }  else {
@@ -47,6 +38,10 @@ public class InteractBlock extends DecisionBlock{
             }
         }
     }
+    /**
+     * 
+     * @return options class
+     */
     public static Class<? extends BlockOptions> getOptionsClass(){
         return InteractOptions.class;
     }

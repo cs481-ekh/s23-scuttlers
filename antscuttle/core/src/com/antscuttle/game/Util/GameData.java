@@ -4,13 +4,8 @@ package com.antscuttle.game.Util;
 import com.antscuttle.game.AI.*;
 import com.antscuttle.game.Ant.Ant;
 import com.antscuttle.game.Armor.Armor;
-import com.antscuttle.game.Armor.implementations.Chestplate;
 import com.antscuttle.game.Level.Level;
 import com.antscuttle.game.Weapon.Weapon;
-import com.antscuttle.game.Weapon.implementations.Glock;
-import com.antscuttle.game.Weapon.implementations.SteelSword;
-
-import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
@@ -18,8 +13,8 @@ import java.util.Random;
 import java.util.Set;
 
 /**
- *
- * @author antho
+ * Structure to hold current game data
+ * @author anthony
  */
 public class GameData implements java.io.Serializable{
     private static final long serialVersionUID = 2022L;
@@ -88,50 +83,81 @@ public class GameData implements java.io.Serializable{
     public LinkedList<Ant> getAllAnts() {
         return userAnts;
     }
-
+    /**
+     * 
+     * @return all ant classes in game
+     */
     public LinkedList<Class<? extends Ant>> getAllAntTypes() {
         return allAntTypes;
     }
-
+    /**
+     * 
+     * @return all user-created ai's
+     */
     public LinkedList<AI> getAllAIs() {
         return userAIs;
     }
     
-    public LinkedList<Class<? extends Ant>> getAntTypes(){
-        return allAntTypes;
-    }
+    /**
+     * 
+     * @return all levels in game
+     */
     public LinkedList<Class<? extends Level>> getAllLevels() {
         return allLevels;
     }
-
+    /**
+     * 
+     * @return all armors in game
+     */
     public Set<Armor> getAllArmors() {
         return allArmors;
     }
-
+    /**
+     * 
+     * @return all weapons in game
+     */
     public Set<Weapon> getAllWeapons() {
         return allWeapons;
     }
-
+    /**
+     * 
+     * @return all decision block classes
+     */
     public LinkedList<Class<? extends DecisionBlock>> getAllDBs() {
         return allDBs;
     }
-
+    /**
+     * 
+     * @return currently unlocked armors
+     */
     public LinkedList<Armor> getUnlockedArmors() {
         return unlockedArmors;
     }
-
+    /**
+     * 
+     * @return currently unlocked weapons 
+     */
     public LinkedList<Weapon> getUnlockedWeapons() {
         return unlockedWeapons;
     }
-
+    /**
+     * 
+     * @return levels currently unlocked
+     */
     public LinkedList<Class<? extends Level>> getUnlockedLevels() {
         return unlockedLevels;
     }
-
+    /**
+     * 
+     * @return current selected player ant
+     */
     public Ant getCurrentAnt() {
         return currentAnt;
     }
-
+    /**
+     * 
+     * @return current selected level
+     */
     public Level getCurrentLevel() {
         return currentLevel;
     }
@@ -140,23 +166,40 @@ public class GameData implements java.io.Serializable{
     public void setCurrentAnt(Ant currentAnt) {
         this.currentAnt = currentAnt;
     }
-
+    /**
+     * 
+     * @param currentLevel 
+     */
     public void setCurrentLevel(Level currentLevel) {
         this.currentLevel = currentLevel;
     }
-    
+    /**
+     * 
+     * @param ant
+     * @return successful
+     */
     public boolean deleteAnt(Ant ant){
         return userAnts.remove(ant);
     }
-    
+    /**
+     * 
+     * @param ant 
+     */
     public void addAnt(Ant ant){
         userAnts.add(ant);
     }
-    
+    /**
+     * 
+     * @param ai
+     * @return successful
+     */
     public boolean deleteAI(AI ai){
         return userAIs.remove(ai);
     }
-    
+    /**
+     * 
+     * @param ai 
+     */
     public void addAI(AI ai){
         userAIs.add(ai);
     }
@@ -165,11 +208,11 @@ public class GameData implements java.io.Serializable{
     /**
      * unlockRandomItem
      * 
-     * @return true if successful, else false
+     * @return the item if successful, else null
      */
     public Object unlockRandomItem(){
         if(lockedItems.isEmpty())
-            return false;
+            return null;
         int rand = new Random().nextInt(lockedItems.size());
         Object unlockedItem = lockedItems.get(rand);
         lockedItems.remove(unlockedItem);
@@ -182,7 +225,7 @@ public class GameData implements java.io.Serializable{
     }
     /** unlockNewLevel unlocks a new level and assigns it to currentLevel
      * 
-     * @return true if successful, else false 
+     * @return the level if successful, else null
      */
     public Level unlockNewLevel(){
         if(lockedLevels.isEmpty())

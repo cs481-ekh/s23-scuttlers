@@ -5,7 +5,8 @@ import java.io.Serializable;
 import java.util.Iterator;
 
 /**
- *
+ * AI: an iterable tree structure for DecisionBlocks
+ * 
  * @author antho
  */
 public class AI implements Iterable, Serializable{
