@@ -44,7 +44,63 @@ Java JDK 11+
 ![main workflow](https://github.com/cs481-ekh/s23-scuttlers/actions/workflows/main.yml/badge.svg)
 
 ## Gameplay UI Tips
-When creating an AI, the blocks are placed in a tree structure. Each node can have two child nodes.
+
+### AI Operation
+When creating an AI, the blocks are placed in a tree structure. Each node can have two child nodes:
+<br><br>
+![picture](docs/aiLines.png)
+<br><br><br>
+The success of each block determines the execution order; if a block succeeds, then the child blocks will be executed next:
+<br><br>
+![picture](docs/aiSuccess.png)
+<br><br><br>
+
+If the block fails, execution goes to the siblings instead of the children:
+<br><br>
+![picture](docs/aiFail.png)
+<br><br><br>
+
+When finished constructing the AI, you must hit 'Save AI' to save your changes. To use the created AI, equip it on the 'Ant' screen under the 'AI' tab.
+<br><br>
+
+## Developers
+
+AntScuttle is designed to be easy to add new weapons, armor, levels, and ant types to the game:
+
+### Armor
+
+Place your new armor implementation in the Armor.implementations package. Your new armor should extend Armor. In your constructor, call super() with the appropriate parameters. Your armor should now be in the game, ready to be unlocked!
+
+### Weapons
+Swords and Pistols:
+
+Place your new weapon implementation in the Weapon.implementations package. Your new weapon should extend either MeleeWeapon or Pistol. In your constructor, call super() with the appropriate parameters. After re-building, your weapon should now be in the game, ready to be unlocked!
+
+Other melee or ranged weapons are not currently animated, so the BaseAnt class would need to be modified to support them.
+
+### Levels
+Place your new level implementation in the Level.levels package. Your level should extend Level. In your constructor, call super() with the appropriate parameters. After re-building, your level should new be in the game, ready to be unlocked!
+
+- Currently, only levels designed with the Tiled editor are supported. 
+- Levels are made from 16x16 tiles, but in-game they show as 32x32.
+- Level size is 27w x 23h in tiles.
+- If you want an object to be collidable, i.e. you don't want ants to pathfind through it, it must be added to the set collidableObjects.
+
+### Ants
+Place your new ant implementation in the Ant.implementations package. Your new ant should extend BaseAnt. In your constructor, call super() with the appropriate parameters. After re-building, your ant should now be in the game, unlocked and playable!
+
+- You will need to specify animations for your new ant in the call to super()
+
+### DecisionBlocks
+DecisionBlocks are not currently as streamlined. Place your new DecisionBlock implementation in the AI.implementations package. Your implementation should extend DecisionBlock. In your constructor, call super() with the appropriate parameters. After re-building your block should be in the game, but it will not show on the AIEditorScreen. You will need to manually add it to this screen, using the drag-and-drop functionality displayed with the other blocks.
+
+### BlockOptions
+If you'd like a new set of options for your new DecisionBlock implementation, it should be placed in the AI.options package and should extend BlockOptions. Currently, up to two options are allowed. In your constructor, call super() with the appropriate parameters.
+
+If you'd just like to add options to existing blocks, find the appropriate options class in the AI.options package. Add your new option to the existing option list.
+
+
+### 
 
 ## Attributions
 
