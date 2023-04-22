@@ -62,7 +62,6 @@ public class GameplayScreen extends ScreenAdapter{
     SpriteBatch buttonBatch;
     SpriteBatch levelBatch;
     ScuttleButton back;
-    ScuttleButton pause;
     ScuttleButton start;
 
     Texture titleImg;
@@ -99,7 +98,6 @@ public class GameplayScreen extends ScreenAdapter{
         this.gameData = gameData;
         start = new StartButton();
         back = new BackButton();
-        pause = new PauseButton();
         skin = game.skin;
         this.gameStarted = false;
         this.player = gameData.getCurrentAnt();
@@ -184,6 +182,7 @@ public class GameplayScreen extends ScreenAdapter{
                 return true;
             }
         });
+        
     }
 
     @Override
@@ -203,6 +202,7 @@ public class GameplayScreen extends ScreenAdapter{
         menuBatch.begin();
         menuBatch.draw(menuImg, gameX + (864), gameY, gameView.getWorldWidth()-864,gameView.getWorldHeight());
         menuBatch.end();
+        
         // Check for game over  
         if(levelData.isGameFinished()){
             player.reset();
@@ -254,17 +254,16 @@ public class GameplayScreen extends ScreenAdapter{
             removeEnemies();
             
         }
+        
         game.batch.begin();
-
-        /* Back Button */
+        
+        /* Buttons */
         ScuttleButton.draw(game, this, gameData, 20, gameView.getWorldHeight() - back.getHeight() - 20, back, 1);
         if(!gameStarted){
             /* Start Game Button */
             startX = gameX + (gameView.getWorldWidth() * 3/12);
             ScuttleButton.draw(game, this, gameData, startX, START_BUTTON_Y, start, 1);
 
-        } else {
-            ScuttleButton.draw(game, this, gameData, 20+pause.getWidth()/2, 20+pause.getWidth()/2, pause, 1);
         }
         game.batch.end();
         stage.draw();
