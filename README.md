@@ -24,7 +24,51 @@ effort as possible, and without having to change much game code (if any).
 
 ## Project Description
 
-TBD (what we actually built, how it works, include screenshots)
+Antscuttle was built using the LibGDX game development framework and the Java programming language
+as a 2D, top-down, puzzle game.  The game contains preset levels with obstacles the player must work to
+overcome. To start a new game the player selects the "NEW GAME" button after the game starts and displays
+the main menu screen.
+
+![image](https://user-images.githubusercontent.com/37180847/233858110-0044d2d0-c5f3-4cc5-9a16-2168dbab3d72.png)
+
+From this screen the player also has options to load a previous game, save the game state they're on, or
+select different settings using the settings cog in the bottom right corner.  From the "NEW GAME" screen
+the player has multiple options.  They can either build a character(using the "ANT" button), or the AI
+that the character can use to move around the map.
+
+![image](https://user-images.githubusercontent.com/37180847/233858481-d3d658c4-24a3-4e7a-9bfd-38a1c29019be.png)
+
+A player instructs their character how to move within the map using the "AI" builder. This button will take
+the player to the AI screen where the player names the AI, and can select multiple blocks that specify how 
+they want the ant that uses this AI to interact with the map.  The first of these blocks is a "MOVE" block,
+with multiple options which will take the ant wherever specified.  The second is an "ATTACK" block that 
+specifies how the ant should attack enemies on the screen, and the third is an "ACT" block so that the ant
+can interact with different objects found in the levels. 
+
+![image](https://user-images.githubusercontent.com/37180847/233858915-3160380f-9204-41c8-894b-53b310f56f7f.png)
+
+When one of these blocks is placed on the root node, it is put on the correct place in a tree data structure.
+It is this structure that the AI uses to determine which action to take next.  The user can then select "SAVE AI"
+to be take back to the previous screen.
+
+![image](https://user-images.githubusercontent.com/37180847/233859066-a4a67c61-9b89-4859-8e2d-06aa8fa813f7.png)
+
+From here a player can build his or her "ANT" which can employ the saved AI, or use an AI that was
+loaded in from a previous save. To build and "ANT" the player uses the plus symbol at the bottom of the screen 
+and selects a "zombie" or "human" type after naming the ant, as well as the damage type the ant will have. 
+Clicking the AI button will bring up the Selection of AI's to choose from, and clicking the specific AI will assign
+it to the player's new ant. 
+
+![image](https://user-images.githubusercontent.com/37180847/233859359-31b9319f-e173-449c-9dec-da084c9c1ea4.png)
+
+Finally, a player can watch their ant scuttle through the puzzle by clicking the yellow back button at the top left,
+using the level select on the "NEW GAME" screen, and clicking "START". The player can then watch the ant make it's way
+through the puzzle and see if their design can beat the obstacles put in its way!
+
+![image](https://user-images.githubusercontent.com/37180847/233859770-c8f8a102-9f48-48cb-b6c2-88b0a597ff0b.png)
+
+![image](https://user-images.githubusercontent.com/37180847/233859428-7143ba7d-ba1f-4774-9d83-2a1305ea2f46.png)
+
 
 ## Build
 To build the project from the main directory:
