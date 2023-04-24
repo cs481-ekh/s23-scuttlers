@@ -85,7 +85,7 @@ public class GameplayScreen extends ScreenAdapter{
     private DecisionBlock currentBlock;
     private Map<Ant,DecisionBlock> enemyDBMap;
     private Map<Ant,Iterator> enemyIterMap;
-    private boolean unlockedItems = false;
+    private boolean reachedGameFinished = false;
 
     public GameplayScreen(AntScuttleGame game, GameData gameData){
         this.game = game;
@@ -198,7 +198,9 @@ public class GameplayScreen extends ScreenAdapter{
         menuBatch.end();
         
         // Check for game over  
-        if(levelData.isGameFinished()){
+        if(levelData.isGameFinished() && !reachedGameFinished){
+            
+            reachedGameFinished = true;
             player.reset();
             if(levelData.isGameWon()){
                 Object unlockedItem =gameData.unlockRandomItem();
@@ -291,31 +293,30 @@ public class GameplayScreen extends ScreenAdapter{
 
     }
     public void winGame(Object unlockedItem, Object unlockedLevel){
-        if(!unlockedItems){
-            unlockedItems = true;
-            String unlockedItemString;
-            String unlockedLevelString;
-            if(unlockedItem != null)
-                unlockedItemString = "\n\nItem: " + unlockedItem.toString();
-            else    
-                unlockedItemString = "\n\nItem: Sorry, there are no more items available";
-            if(unlockedLevel != null)
-                unlockedLevelString = "\n\nLevel: " + ((Level)unlockedLevel).getName();
-            else
-                unlockedLevelString = "\n\nLevel: Sorry, there are no more levels available";
-            //game.setScreen(new MainMenuScreen(game, gameData, true));
-            Dialog dialog = new Dialog("\t\t\t\t\tYou Win!", skin);
-            dialog.text("\tPress OK to go back to the Main Menu and\n\t\t\tcollect your rewards!" + unlockedItemString + unlockedLevelString);
+        
+        String unlockedItemString;
+        String unlockedLevelString;
+        if(unlockedItem != null)
+            unlockedItemString = "\n\nItem: " + unlockedItem.toString();
+        else    
+            unlockedItemString = "\n\nItem: Sorry, there are no more items available";
+        if(unlockedLevel != null)
+            unlockedLevelString = "\n\nLevel: " + ((Level)unlockedLevel).getName();
+        else
+            unlockedLevelString = "\n\nLevel: Sorry, there are no more levels available";
+        //game.setScreen(new MainMenuScreen(game, gameData, true));
+        Dialog dialog = new Dialog("\t\t\t\t\tYou Win!", skin);
+        dialog.text("\tPress OK to go back to the Main Menu and\n\t\t\tcollect your rewards!" + unlockedItemString + unlockedLevelString);
 
-            dialog.button("OK").addListener(new ClickListener(){
-                @Override
-                public void clicked(InputEvent event, float x, float y){
-                    game.setScreen(new MainMenuScreen(game, gameData, true));
-                }        
-            });
-            dialog.setBounds((stage.getWidth() / 2 - dialog.getWidth() / 2)-350, stage.getHeight() / 2 - dialog.getHeight() / 2, 400, 200);
-            stage.addActor(dialog);  
-        }
+        dialog.button("OK").addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                game.setScreen(new MainMenuScreen(game, gameData, true));
+            }        
+        });
+        dialog.setBounds((stage.getWidth() / 2 - dialog.getWidth() / 2)-350, stage.getHeight() / 2 - dialog.getHeight() / 2, 400, 200);
+        stage.addActor(dialog);  
+        
     }
     private void doBlocks(){
         if (currentBlock.isFinished()) {
